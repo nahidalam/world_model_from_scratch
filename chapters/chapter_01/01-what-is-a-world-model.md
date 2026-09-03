@@ -14,28 +14,33 @@ The boundary of the world depends on the system and its task.
 
 A world model learns how that environment changes. It uses what has already been observed, and, when relevant, an action to predict what could happen next. For example: What happens if the car brakes? If the robot moves its arm? If the computer-use agent clicks a button?
 
-Formally, a world model learns the dynamics of an environment. Given a history of
-observations and, when applicable, a sequence of actions, it predicts a
-distribution over future trajectories:
+A prediction of the next observation is one predicted **transition**. A sequence
+of predicted future observations is a predicted trajectory. In this book, that
+predicted trajectory is called a **rollout**.
+
+The way an environment changes from one time step to the next is called its
+**dynamics**. This includes the effect of actions on that change. A world model
+learns an approximation of those dynamics. Given a history of observations
+and, when applicable, a sequence of actions, it predicts a distribution over
+future trajectories, or rollouts:
 
 $$
 p_\theta(o_{t+1:t+H} \mid o_{\leq t}, a_{t:t+H-1})
 $$
 
 Here, `H` is the prediction horizon. The predicted trajectory contains the
-observations from step `t + 1` through step `t + H`. A transition is the change
-from one step to the next.
+observations from step `t + 1` through step `t + H`.
 
 ![](../../figures/chapter_01/fig_1_1_transition.png)
 
 *Figure 1.1: Encode an observation, advance the learned state under an action,
 then decode a prediction.*
 
-## Building a Rollout
+## From One Transition to a Rollout
 
-A rollout is a predicted trajectory. Some models generate the full trajectory
-in one operation. Other models predict one transition at a time and use each
-prediction as input to the next step.
+There are two common ways to produce a rollout. Some models generate the full
+trajectory in one operation. Other models predict one transition at a time and
+carry the predicted state into the next step.
 
 The following pseudocode shows the second approach:
 

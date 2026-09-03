@@ -1,13 +1,15 @@
 # 1.4 Components of a World Model
 
-A world model receives recent observations and, when applicable, actions. It
-converts the observations into an internal state. It predicts how that state
-changes. It then converts the predicted state into an output.
+A world model must connect information about the present to a prediction about
+the future. Conceptually, it does this in three operations: encode the present,
+advance an internal state through time, and decode the result. The middle
+operation is called **dynamics**.
 
 ![](../../figures/chapter_01/fig_1_10_blueprint.png)
 
-*Figure 1.5: Information moves from an observation to a representation, through
-dynamics, and into a prediction. An action can affect the dynamics update.*
+*Figure 1.5: Dynamics is the learned state update between the representation of
+the present and the prediction of the future. An action, when present, enters
+this update.*
 
 ## Observations and Actions
 
@@ -30,38 +32,49 @@ and motion.
 
 ## Dynamics
 
-The dynamics function predicts how the internal state changes. It uses the
-current state and, when applicable, an action. Its output can be one next state
-or a distribution over possible next states.
+Environment dynamics describes how the environment changes over time. The
+model approximates this process with a dynamics function placed between the
+encoder and decoder:
+
+$$
+z_t = \operatorname{encode}(o_{\leq t}), \qquad
+z_{t+1} \sim \operatorname{dynamics}_\theta(z_t, a_t), \qquad
+\hat{o}_{t+1} = \operatorname{decode}(z_{t+1}).
+$$
+
+The function uses the current internal state $z_t$ and optional action $a_t$ to
+predict the next state $z_{t+1}$. A one-step model repeats this update; a
+sequence model may predict several future states jointly without a separate
+component named `dynamics`.
 
 ## Prediction
 
 The decoder converts the predicted internal state into an output. The output
 may be the next image, the next sensor reading, or another observation.
 
-The encoder, dynamics function, and decoder describe three roles in the
-prediction process. An architecture may implement them as separate components
-or combine them.
+## How the Model Generates a Rollout
 
-## One Transition Through the Pipeline
+Return to the self-driving-car example from Section 1.1:
 
-Consider the ball on the one-dimensional track from Section 1.1:
+1. The observation history contains recent camera frames and sensor readings.
+2. The encoder represents relevant information such as vehicle motion, lane
+   geometry, and nearby traffic in an internal state.
+3. A proposed action, such as braking, is supplied to the dynamics update.
+4. The dynamics function advances the internal state to represent what may
+   happen after that action.
+5. The decoder converts the future state into a predicted camera frame, sensor
+   reading, or other required output.
 
-1. The observation history contains recent positions of the ball.
-2. The encoder produces a representation of its position and motion.
-3. The action specifies whether to push left, push right, or not push.
-4. The dynamics function uses the representation and action to predict the next
-   state.
-5. The decoder converts that state into the predicted next position.
+The first future observation completes one predicted transition. Repeating the
+state update and prediction produces a sequence of future observations. As
+defined in Section 1.1, that predicted sequence is a **rollout**. A model may
+also generate all the observations in the rollout together rather than expose
+these repetitions one by one.
 
-These steps produce one predicted transition. Passing the predicted state
-through the dynamics function again produces another transition. Repeating the
-update produces a rollout.
-
-The pipeline walkthrough applies these steps to a ball moving along a line.
-Select Step to move through the operations. Change the observation format,
-the action, or whether the dynamics function produces one or several next
-states.
+To make this data flow visible, the pipeline walkthrough introduces a small toy
+world: a ball moving along a 12-cell line. Select Step to see exactly when the
+dynamics update is used. Change the action or switch from a single next state
+to several possible next states.
 
 [Open the world-model pipeline in a new tab](https://nahidalam.github.io/world_model_from_scratch/interactive/chapter_01/pipeline_walkthrough.html).
 
