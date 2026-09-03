@@ -1,0 +1,13 @@
+$schema: https://api.gitbook.com/gitbook-docs.yaml
+version: 1
+
+site:
+  title: World Models from Scratch
+  structure:
+    - type: space
+      key: world-models-from-scratch
+      title: World Models from Scratch
+      path: world-models-from-scratch
+      default: true
+      content:
+        directory: ./
