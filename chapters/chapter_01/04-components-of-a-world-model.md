@@ -42,8 +42,8 @@ z_{t+1} \sim \operatorname{dynamics}_\theta(z_t, a_t), \qquad
 \hat{o}_{t+1} = \operatorname{decode}(z_{t+1}).
 $$
 
-The function uses the current internal state $z_t$ and optional action $a_t$ to
-predict the next state $z_{t+1}$. A one-step model repeats this update; a
+The function uses the current internal state $$z_t$$ and optional action $$a_t$$ to
+predict the next state $$z_{t+1}$$. A one-step model repeats this update; a
 sequence model may predict several future states jointly without a separate
 component named `dynamics`.
 
