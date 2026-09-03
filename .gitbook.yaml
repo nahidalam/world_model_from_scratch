@@ -1,0 +1,9 @@
+# GitBook sync configuration.
+# Tells GitBook which files are book pages. Anything not reachable from
+# SUMMARY.md (src/, tests/, notebooks/, OPEN_ITEMS.md, CLAUDE.md) is left alone.
+
+root: ./
+
+structure:
+  readme: README.md
+  summary: SUMMARY.md

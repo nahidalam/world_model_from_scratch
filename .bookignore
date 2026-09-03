@@ -1,0 +1,16 @@
+# Kept out of the local honkit preview build.
+# GitBook.com uses .gitbook.yaml instead and ignores this file.
+
+.claude/
+.github/
+CLAUDE.md
+OPEN_ITEMS.md
+pyproject.toml
+requirements.txt
+src/
+tests/
+notebooks/
+interactive/
+outputs/
+_book/
+node_modules/

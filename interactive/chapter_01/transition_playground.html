@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transition and rollout playground</title>
+<style>
+  :root {
+    --surface: #f7f8fa;
+    --card: #ffffff;
+    --ink: #15171a;
+    --soft: #5d626a;
+    --rule: #d9dde3;
+    --current: #256fd1;
+    --prediction: #e66a32;
+    --history: #a9c7ec;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 28px 18px 40px;
+    background: var(--surface);
+    color: var(--ink);
+    font: 15px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  main { max-width: 820px; margin: 0 auto; }
+  h1 { margin: 0 0 6px; font-size: 24px; line-height: 1.25; }
+  h2 { margin: 0 0 8px; font-size: 16px; }
+  p { margin: 0; }
+  .lede { max-width: 720px; color: var(--soft); }
+
+  .instructions,
+  .playground {
+    margin-top: 18px;
+    padding: 18px;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    background: var(--card);
+  }
+
+  .instructions ol { margin: 8px 0 0; padding-left: 22px; }
+  .instructions li + li { margin-top: 4px; }
+
+  .controls {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+  legend { margin-bottom: 6px; color: var(--soft); font-size: 13px; font-weight: 600; }
+  .segment { display: flex; }
+
+  button {
+    min-height: 40px;
+    padding: 8px 13px;
+    border: 1px solid var(--rule);
+    background: #fff;
+    color: var(--ink);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  button:hover { border-color: var(--soft); }
+  button:focus-visible { outline: 3px solid #9fc5f5; outline-offset: 2px; }
+  button:disabled { cursor: not-allowed; opacity: 0.45; }
+  .segment button { flex: 1; }
+  .segment button:first-child { border-radius: 8px 0 0 8px; }
+  .segment button:last-child { border-radius: 0 8px 8px 0; }
+  .segment button + button { border-left: 0; }
+  .segment button.selected { background: var(--current); color: #fff; border-color: var(--current); }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .actions button { border-radius: 8px; }
+  .actions .primary { background: var(--current); color: #fff; border-color: var(--current); font-weight: 600; }
+
+  .diagram {
+    padding: 14px;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    background: #fff;
+  }
+
+  canvas { display: block; width: 100%; height: auto; }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 10px;
+    color: var(--soft);
+    font-size: 13px;
+  }
+
+  .key { display: inline-flex; align-items: center; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--current); }
+  .dot.prediction { background: var(--prediction); }
+  .dot.history { background: var(--history); }
+
+  .readout {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .readout div { padding: 10px 12px; border-radius: 8px; background: var(--surface); }
+  .readout span { display: block; color: var(--soft); font-size: 12px; }
+  .readout strong { display: block; margin-top: 2px; font-size: 14px; }
+
+  #message {
+    min-height: 48px;
+    margin-top: 14px;
+    padding: 11px 13px;
+    border-left: 3px solid var(--current);
+    background: #f2f7fd;
+    color: #343a42;
+  }
+
+  @media (max-width: 640px) {
+    body { padding: 20px 12px 32px; }
+    .controls, .readout { grid-template-columns: 1fr; }
+    .segment { flex-wrap: wrap; }
+    .segment button { min-width: 33%; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Transition and rollout playground</h1>
+  <p class="lede">This world is a one-dimensional track. The observation contains
+  the ball's position and speed. The action is to slow down, keep speed, or speed
+  up. The model predicts the next observation.</p>
+
+  <section class="instructions" aria-labelledby="instructions-heading">
+    <h2 id="instructions-heading">What to do</h2>
+    <ol>
+      <li>Choose an action and select one or multiple predicted futures.</li>
+      <li>Select <strong>Predict next observation</strong> to see one transition.</li>
+      <li>Select <strong>Use prediction as next step</strong>, then repeat to build a rollout.</li>
+    </ol>
+  </section>
+
+  <section class="playground" aria-label="Interactive transition playground">
+    <div class="controls">
+      <fieldset>
+        <legend>1. Choose an action</legend>
+        <div class="segment" id="actionControls">
+          <button type="button" data-action="-1">Slow down</button>
+          <button type="button" data-action="0" class="selected">Keep speed</button>
+          <button type="button" data-action="1">Speed up</button>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>2. Choose the prediction type</legend>
+        <div class="segment" id="futureControls">
+          <button type="button" data-futures="one" class="selected">One future</button>
+          <button type="button" data-futures="many">Multiple futures</button>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="primary" id="predict">Predict next observation</button>
+      <button type="button" id="advance" disabled>Use prediction as next step</button>
+      <button type="button" id="reset">Reset</button>
+    </div>
+
+    <div class="diagram">
+      <canvas id="track" width="760" height="280" aria-label="Current and predicted positions on a track"></canvas>
+      <div class="legend">
+        <span class="key"><span class="dot"></span>Current observation</span>
+        <span class="key"><span class="dot prediction"></span>Predicted next observation</span>
+        <span class="key"><span class="dot history"></span>Earlier observations</span>
+      </div>
+    </div>
+
+    <div class="readout" aria-live="polite">
+      <div><span>Current observation</span><strong id="currentState"></strong></div>
+      <div><span>Selected action</span><strong id="selectedAction"></strong></div>
+      <div><span>Rollout length</span><strong id="rolloutLength"></strong></div>
+    </div>
+
+    <p id="message">Choose an action, then predict the next observation.</p>
+  </section>
+</main>
+
+<script>
+"use strict";
+(() => {
+  const canvas = document.getElementById("track");
+  const ctx = canvas.getContext("2d");
+  const styles = getComputedStyle(document.documentElement);
+  const color = name => styles.getPropertyValue(name).trim();
+  const colors = {
+    ink: color("--ink"),
+    soft: color("--soft"),
+    rule: color("--rule"),
+    current: color("--current"),
+    prediction: color("--prediction"),
+    history: color("--history")
+  };
+
+  const actionNames = { "-1": "Slow down", "0": "Keep speed", "1": "Speed up" };
+  let state;
+  let action;
+  let futureType;
+  let predictions;
+  let selectedPrediction;
+  let history;
+  let rolloutLength;
+
+  const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
+  const xToPixel = x => 62 + (x / 10) * (canvas.width - 124);
+
+  function reset() {
+    state = { position: 1.2, speed: 0.65 };
+    action = 0;
+    futureType = "one";
+    predictions = [];
+    selectedPrediction = null;
+    history = [];
+    rolloutLength = 0;
+    selectButton("actionControls", "data-action", "0");
+    selectButton("futureControls", "data-futures", "one");
+    document.getElementById("advance").disabled = true;
+    setMessage("Choose an action, then predict the next observation.");
+    update();
+  }
+
+  function selectButton(groupId, attribute, value) {
+    document.querySelectorAll(`#${groupId} button`).forEach(button => {
+      button.classList.toggle("selected", button.getAttribute(attribute) === value);
+    });
+  }
+
+  function basePrediction() {
+    const speedChange = action * 0.18;
+    const speed = clamp(state.speed + speedChange, 0.15, 1.2);
+    const position = clamp(state.position + speed, 0.25, 9.75);
+    return { position, speed };
+  }
+
+  function predict() {
+    const base = basePrediction();
+    if (futureType === "one") {
+      predictions = [base];
+      selectedPrediction = base;
+      setMessage(`One transition predicts position ${base.position.toFixed(2)} from the current observation and action.`);
+    } else {
+      const offsets = [-0.34, -0.17, 0, 0.17, 0.34];
+      predictions = offsets.map(offset => ({
+        position: clamp(base.position + offset, 0.25, 9.75),
+        speed: clamp(base.speed + offset * 0.18, 0.15, 1.2)
+      }));
+      selectedPrediction = predictions[2];
+      setMessage("The same observation and action can produce several possible next observations. The outlined prediction will be used if you continue.");
+    }
+    document.getElementById("advance").disabled = false;
+    update();
+  }
+
+  function advance() {
+    if (!selectedPrediction) return;
+    history.push({ ...state });
+    state = { ...selectedPrediction };
+    rolloutLength += 1;
+    predictions = [];
+    selectedPrediction = null;
+    document.getElementById("advance").disabled = true;
+    setMessage(`The prediction is now the current observation. The rollout contains ${rolloutLength} ${rolloutLength === 1 ? "transition" : "transitions"}. Predict again to continue it.`);
+    update();
+  }
+
+  function setMessage(text) {
+    document.getElementById("message").textContent = text;
+  }
+
+  function drawBall(x, y, radius, fill, stroke = null) {
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fillStyle = fill;
+    ctx.fill();
+    if (stroke) {
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = stroke;
+      ctx.stroke();
+    }
+  }
+
+  function drawArrow(fromX, toX, y) {
+    ctx.strokeStyle = colors.prediction;
+    ctx.fillStyle = colors.prediction;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(fromX + 15, y);
+    ctx.lineTo(toX - 16, y);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(toX - 16, y);
+    ctx.lineTo(toX - 24, y - 6);
+    ctx.lineTo(toX - 24, y + 6);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const trackY = 174;
+    const currentX = xToPixel(state.position);
+
+    ctx.fillStyle = colors.ink;
+    ctx.font = "600 16px Helvetica, Arial, sans-serif";
+    ctx.fillText("World: a track from position 0 to 10", 38, 32);
+    ctx.fillStyle = colors.soft;
+    ctx.font = "13px Helvetica, Arial, sans-serif";
+    ctx.fillText("Observation = position + speed", 38, 55);
+
+    ctx.strokeStyle = colors.rule;
+    ctx.lineWidth = 8;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(xToPixel(0), trackY);
+    ctx.lineTo(xToPixel(10), trackY);
+    ctx.stroke();
+
+    ctx.lineWidth = 1;
+    ctx.lineCap = "butt";
+    ctx.fillStyle = colors.soft;
+    ctx.font = "12px Helvetica, Arial, sans-serif";
+    for (let tick = 0; tick <= 10; tick += 2) {
+      const tickX = xToPixel(tick);
+      ctx.beginPath();
+      ctx.moveTo(tickX, trackY - 7);
+      ctx.lineTo(tickX, trackY + 7);
+      ctx.strokeStyle = colors.soft;
+      ctx.stroke();
+      ctx.fillText(String(tick), tickX - 4, trackY + 26);
+    }
+
+    history.forEach(previous => drawBall(xToPixel(previous.position), trackY, 6, colors.history));
+
+    if (predictions.length) {
+      const predictionXs = predictions.map(item => xToPixel(item.position));
+      drawArrow(currentX, predictionXs[Math.floor(predictionXs.length / 2)], trackY - 35);
+      predictions.forEach(item => {
+        const isSelected = item === selectedPrediction;
+        drawBall(xToPixel(item.position), trackY, 10, colors.prediction, isSelected && predictions.length > 1 ? colors.ink : null);
+      });
+      ctx.fillStyle = colors.prediction;
+      ctx.font = "600 13px Helvetica, Arial, sans-serif";
+      ctx.fillText(predictions.length === 1 ? "predicted next observation" : "possible next observations", predictionXs[0] - 50, trackY - 62);
+    }
+
+    drawBall(currentX, trackY, 12, colors.current);
+    ctx.fillStyle = colors.current;
+    ctx.font = "600 13px Helvetica, Arial, sans-serif";
+    ctx.fillText("current", currentX - 22, trackY + 50);
+  }
+
+  function update() {
+    document.getElementById("currentState").textContent = `position ${state.position.toFixed(2)}, speed ${state.speed.toFixed(2)}`;
+    document.getElementById("selectedAction").textContent = actionNames[String(action)];
+    document.getElementById("rolloutLength").textContent = `${rolloutLength} ${rolloutLength === 1 ? "transition" : "transitions"}`;
+    draw();
+  }
+
+  document.getElementById("actionControls").addEventListener("click", event => {
+    const button = event.target.closest("button");
+    if (!button) return;
+    action = Number(button.dataset.action);
+    selectButton("actionControls", "data-action", button.dataset.action);
+    predictions = [];
+    selectedPrediction = null;
+    document.getElementById("advance").disabled = true;
+    setMessage("The action changed. Predict the next observation.");
+    update();
+  });
+
+  document.getElementById("futureControls").addEventListener("click", event => {
+    const button = event.target.closest("button");
+    if (!button) return;
+    futureType = button.dataset.futures;
+    selectButton("futureControls", "data-futures", futureType);
+    predictions = [];
+    selectedPrediction = null;
+    document.getElementById("advance").disabled = true;
+    setMessage("The prediction type changed. Predict the next observation.");
+    update();
+  });
+
+  document.getElementById("predict").addEventListener("click", predict);
+  document.getElementById("advance").addEventListener("click", advance);
+  document.getElementById("reset").addEventListener("click", reset);
+
+  reset();
+})();
+</script>
+</body>
+</html>

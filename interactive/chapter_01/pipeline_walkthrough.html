@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>World model pipeline walkthrough</title>
+<style>
+  :root {
+    --surface: #fcfcfb; --ink: #0b0b0b; --soft: #52514e; --faint: #8f8e88;
+    --learned: #2a78d6; --given: #eb6834; --spread: #1baf7a; --rule: #d6d5cf;
+    --learned-bg: #e6f0fc; --given-bg: #fdece4;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 20px; background: var(--surface); color: var(--ink);
+         font: 15px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  main { max-width: 860px; margin: 0 auto; }
+  h1 { font-size: 19px; margin: 0 0 4px; }
+  p.lede { margin: 0 0 14px; color: var(--soft); font-size: 14px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px; }
+  button, .seg { font: inherit; font-size: 13px; padding: 6px 12px; border: 1.5px solid var(--rule);
+           border-radius: 8px; background: #fff; cursor: pointer; }
+  button.primary { border-color: var(--learned); color: var(--learned); font-weight: 600; }
+  .seg { display: inline-flex; padding: 0; overflow: hidden; }
+  .seg button { border: none; border-radius: 0; }
+  .seg button.on { background: var(--learned); color: #fff; }
+  .seg.action button.on { background: var(--given); }
+  .stages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  @media (max-width: 700px) { .stages { grid-template-columns: repeat(2, 1fr); } }
+  .stage { border: 1.5px solid var(--rule); border-radius: 10px; background: #fff;
+           padding: 10px; min-height: 128px; transition: box-shadow .15s, border-color .15s; }
+  .stage h2 { font-size: 13.5px; margin: 0 0 2px; }
+  .stage p { margin: 0 0 8px; font-size: 11.5px; color: var(--faint); }
+  .stage.learned h2 { color: var(--learned); }
+  .stage.given h2 { color: var(--given); }
+  .stage.active { border-color: var(--learned); box-shadow: 0 0 0 3px var(--learned-bg); }
+  .stage.given.active { border-color: var(--given); box-shadow: 0 0 0 3px var(--given-bg); }
+  .readout { font-size: 12.5px; color: var(--soft); min-height: 3.2em; }
+  .strip { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px; margin: 4px 0; }
+  .cell { aspect-ratio: 1; border-radius: 3px; background: #eeede8; }
+  .cell.on { background: var(--given); }
+  .cell.ghost { background: var(--spread); opacity: .45; }
+  .bars { display: flex; gap: 8px; align-items: flex-end; height: 42px; margin: 4px 0; }
+  .bar { width: 20px; background: var(--learned); border-radius: 3px 3px 0 0; }
+  .bar-label { font-size: 10.5px; color: var(--faint); text-align: center; }
+  #narration { margin-top: 12px; font-size: 13.5px; color: var(--ink); min-height: 2.2em; }
+  .hint { margin-top: 8px; font-size: 12.5px; color: var(--faint); }
+</style>
+</head>
+<body>
+<main>
+  <h1>World model pipeline walkthrough</h1>
+  <p class="lede">A ball moves on a 12-cell line. Follow one observation
+  through representation, dynamics, and prediction. The action enters the
+  dynamics operation.</p>
+
+  <div class="controls">
+    <span class="seg" id="obsType">
+      <button data-v="frame" class="on">Raw frame</button>
+      <button data-v="vector">State vector</button>
+    </span>
+    <span class="seg action" id="action">
+      <button data-v="-1">Push left</button>
+      <button data-v="0" class="on">No push</button>
+      <button data-v="1">Push right</button>
+    </span>
+    <span class="seg" id="dyn">
+      <button data-v="det" class="on">Deterministic</button>
+      <button data-v="sto">Stochastic</button>
+    </span>
+    <button class="primary" id="step">Step</button>
+    <button id="reset">Reset</button>
+  </div>
+
+  <div class="stages">
+    <div class="stage given" id="st-obs">
+      <h2>Observation</h2><p>what enters the system</p>
+      <div class="readout" id="ro-obs"></div>
+    </div>
+    <div class="stage learned" id="st-rep">
+      <h2>Representation</h2><p>state used for prediction</p>
+      <div class="readout" id="ro-rep"></div>
+    </div>
+    <div class="stage learned" id="st-dyn">
+      <h2>Dynamics + Action</h2><p>update state using the action</p>
+      <div class="readout" id="ro-dyn"></div>
+    </div>
+    <div class="stage learned" id="st-pred">
+      <h2>Prediction</h2><p>output the next observation</p>
+      <div class="readout" id="ro-pred"></div>
+    </div>
+  </div>
+
+  <div id="narration"></div>
+  <p class="hint">Select Step once for each operation. The fourth selection
+  applies the prediction as the next observation. Repeat the cycle to build a
+  rollout. Change the action to see where it enters. Select Stochastic to
+  produce several possible next observations.</p>
+</main>
+
+<script>
+"use strict";
+(() => {
+  const N = 12;
+  let pos, vel, prevPos, phase, obsType = "frame", act = 0, stochastic = false;
+  let pending = null;
+
+  const $ = id => document.getElementById(id);
+  const stages = ["st-obs", "st-rep", "st-dyn", "st-pred"];
+  const NARR = [
+    "Observation: the system receives a frame or a state vector.",
+    "Representation: the input becomes an internal state containing position and velocity.",
+    "Dynamics: the action updates the internal state.",
+    "Prediction: the updated state produces the next observation.",
+  ];
+
+  function reset() {
+    pos = 3; vel = 1; prevPos = pos - vel; phase = 0; pending = null;
+    renderAll(); narrate("Press Step to move information through the pipeline.");
+    highlight(-1);
+  }
+
+  function strip(p, ghosts = []) {
+    let h = '<div class="strip">';
+    for (let i = 0; i < N; i++) {
+      const g = ghosts.includes(i) && i !== p;
+      h += `<div class="cell ${i === p ? "on" : g ? "ghost" : ""}"></div>`;
+    }
+    return h + "</div>";
+  }
+  const bars = (p, v) => `
+    <div class="bars">
+      <div><div class="bar" style="height:${8 + p * 3}px"></div><div class="bar-label">pos ${p}</div></div>
+      <div><div class="bar" style="height:${22 + v * 10}px"></div><div class="bar-label">vel ${v > 0 ? "+" : ""}${v}</div></div>
+    </div>`;
+
+  function renderObs() {
+    $("ro-obs").innerHTML = obsType === "frame"
+      ? strip(pos) + `<i>a frame: position visible, velocity not</i>`
+      : `<code>[pos=${pos}, vel=${vel}]</code><br><i>a state vector: nothing hidden</i>`;
+  }
+  function renderRep() {
+    $("ro-rep").innerHTML = phase >= 1
+      ? bars(pos, vel) + (obsType === "frame" ? `<i>velocity inferred from two frames</i>` : `<i>read directly from the vector</i>`)
+      : "";
+  }
+  function renderDyn() {
+    $("ro-dyn").innerHTML = phase >= 2 && pending
+      ? `vel ${vel} ${act ? (act > 0 ? "+ push" : "− push") : "+ 0"} → <b>${pending.v}</b><br>` +
+        `pos ${pos} + vel → <b>${pending.candidates[0]}</b>` +
+        (stochastic ? `<br><i>stochastic: the rule now yields a spread</i>` : "")
+      : "";
+  }
+  function renderPred() {
+    $("ro-pred").innerHTML = phase >= 3 && pending
+      ? strip(pending.candidates[0], pending.candidates) +
+        (stochastic ? `<i>${pending.candidates.length} possible next states</i>` : `<i>one next state</i>`)
+      : "";
+  }
+  function renderAll() { renderObs(); renderRep(); renderDyn(); renderPred(); }
+
+  const clamp = x => Math.max(0, Math.min(N - 1, x));
+  function narrate(t) { $("narration").textContent = t; }
+  function highlight(i) {
+    stages.forEach((id, k) => $(id).classList.toggle("active", k === i));
+  }
+
+  function step() {
+    if (phase === 0) { renderObs(); }
+    if (phase === 1) { renderRep(); }
+    if (phase === 2) {
+      const v = clampVel(vel + act);
+      const base = clamp(pos + v);
+      const candidates = stochastic
+        ? [...new Set([base, clamp(base - 1), clamp(base + 1)])]
+        : [base];
+      pending = { v, candidates };
+      renderDyn();
+    }
+    if (phase === 3) { renderPred(); }
+    narrate(NARR[phase]);
+    highlight(phase);
+    if (phase === 3) {
+      // Commit: the prediction becomes the next state; the loop closes.
+      prevPos = pos;
+      pos = pending.candidates[Math.floor(Math.random() * pending.candidates.length)];
+      vel = pending.v;
+      phase = 0; pending = null;
+      setTimeout(() => { renderAll(); highlight(-1); }, 350);
+    } else {
+      phase++;
+    }
+  }
+  const clampVel = v => Math.max(-2, Math.min(2, v));
+
+  function segment(id, fn) {
+    $(id).addEventListener("click", e => {
+      const b = e.target.closest("button"); if (!b) return;
+      $(id).querySelectorAll("button").forEach(x => x.classList.toggle("on", x === b));
+      fn(b.dataset.v);
+    });
+  }
+  segment("obsType", v => { obsType = v; renderObs(); });
+  segment("action", v => { act = +v; });
+  segment("dyn", v => { stochastic = v === "sto"; });
+  $("step").addEventListener("click", step);
+  $("reset").addEventListener("click", reset);
+
+  reset();
+})();
+</script>
+</body>
+</html>

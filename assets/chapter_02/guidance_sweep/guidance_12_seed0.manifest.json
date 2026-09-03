@@ -1,0 +1,22 @@
+{
+  "checkpoint": "nvidia/Cosmos-Predict2.5-2B",
+  "revision": "diffusers/base/post-trained",
+  "seed": 0,
+  "num_frames": 29,
+  "guidance_scale": 12.0,
+  "num_inference_steps": 15,
+  "height": 704,
+  "width": 1280,
+  "prompt": "an aerial view of a sand mining operation; the machinery keeps moving and the water keeps flowing",
+  "observation": "assets/chapter_02/sand_mining.mp4",
+  "outputs": [
+    "assets/chapter_02/guidance_sweep/guidance_12_seed0.mp4"
+  ],
+  "versions": {
+    "torch": "2.6.0+cu118",
+    "diffusers": "0.39.0",
+    "cosmos_guardrail": "not installed"
+  },
+  "created_at": "2026-08-16T06:45:18.388076+00:00",
+  "run_id": "50d4210398c4"
+}

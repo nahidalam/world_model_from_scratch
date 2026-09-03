@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rule-based simulator and learned model</title>
+<style>
+  :root {
+    --surface: #fcfcfb; --ink: #0b0b0b; --soft: #52514e; --faint: #8f8e88;
+    --learned: #2a78d6; --given: #eb6834; --spread: #1baf7a; --rule: #d6d5cf;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 20px; background: var(--surface); color: var(--ink);
+         font: 15px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  main { max-width: 860px; margin: 0 auto; }
+  h1 { font-size: 19px; margin: 0 0 4px; }
+  p.lede { margin: 0 0 14px; color: var(--soft); font-size: 14px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-bottom: 12px;
+              font-size: 13px; color: var(--soft); }
+  input[type=range] { width: 150px; accent-color: var(--learned); }
+  button { font: inherit; font-size: 13px; padding: 6px 12px; border: 1.5px solid var(--learned);
+           border-radius: 8px; background: #fff; color: var(--learned); font-weight: 600; cursor: pointer; }
+  label.toggle { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+  .panels { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 700px) { .panels { grid-template-columns: 1fr; } }
+  .panel { border: 1.5px solid var(--rule); border-radius: 10px; background: #fff; padding: 8px; }
+  .panel h2 { font-size: 13.5px; margin: 2px 6px 6px; }
+  .panel.sim h2 { color: var(--given); }
+  .panel.wm h2 { color: var(--learned); }
+  svg { display: block; width: 100%; }
+  #banner { min-height: 1.5em; font-size: 13px; font-weight: 600; color: var(--given); margin-top: 8px; }
+  .hint { margin-top: 8px; font-size: 12.5px; color: var(--faint); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Rule-based simulator and learned model</h1>
+  <p class="lede">Both panels represent the same projectile. The
+  <b>simulator</b> applies specified equations. The <b>learned model</b> fits a
+  function to sampled points from the trajectory.</p>
+
+  <div class="controls">
+    <span>gravity <input type="range" id="g" min="5" max="15" step="0.1" value="9.8">
+      <b id="gVal">9.8</b></span>
+    <span>sample region <input type="range" id="win" min="0" max="55" step="1" value="5"></span>
+    <button id="fit">Sample and fit</button>
+    <label class="toggle"><input type="checkbox" id="shade" checked> shade error</label>
+  </div>
+
+  <div class="panels">
+    <div class="panel sim"><h2>Simulator: specified equations</h2>
+      <svg id="svgSim" viewBox="0 0 400 260"></svg></div>
+    <div class="panel wm"><h2>Learned model: a fit to sampled points</h2>
+      <svg id="svgWm" viewBox="0 0 400 260"></svg></div>
+  </div>
+
+  <div id="banner"></div>
+  <p class="hint">Change gravity. The simulator uses the new parameter
+  immediately. The learned model retains its previous fit until you select
+  "Sample and fit." Move the sample region to compare interpolation with
+  extrapolation.</p>
+</main>
+
+<script>
+"use strict";
+(() => {
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const COL = { learned: css("--learned"), given: css("--given"), spread: css("--spread"),
+                soft: css("--soft"), rule: css("--rule"), faint: css("--faint") };
+  const V0 = 34, ANGLE = Math.PI / 4, DRAG = 0.010, DT = 0.02;
+  const XMAX = 110, YMAX = 42, WINDOW = 34;   // world units; sample window width
+
+  // The simulator: integrate the true dynamics (gravity + air drag).
+  // Drag makes the truth non-polynomial, so a polynomial fit cannot extrapolate it.
+  function trajectory(g) {
+    let x = 0, y = 0, vx = V0 * Math.cos(ANGLE), vy = V0 * Math.sin(ANGLE);
+    const pts = [[0, 0]];
+    while (y >= 0 && x <= XMAX) {
+      const v = Math.hypot(vx, vy);
+      vx += (-DRAG * v * vx) * DT;
+      vy += (-g - DRAG * v * vy) * DT;
+      x += vx * DT; y += vy * DT;
+      pts.push([x, Math.max(y, 0)]);
+    }
+    return pts;
+  }
+  const truthAt = (pts, x) => {
+    for (let i = 1; i < pts.length; i++)
+      if (pts[i][0] >= x) {
+        const [x0, y0] = pts[i - 1], [x1, y1] = pts[i];
+        return y0 + (y1 - y0) * (x - x0) / (x1 - x0 || 1);
+      }
+    return 0;
+  };
+
+  // "Training": least-squares quadratic through samples from the window.
+  function fitQuadratic(samples) {
+    let s = [0, 0, 0, 0, 0], t = [0, 0, 0];
+    for (const [x, y] of samples) {
+      const x2 = x * x;
+      s[0]++; s[1] += x; s[2] += x2; s[3] += x2 * x; s[4] += x2 * x2;
+      t[0] += y; t[1] += x * y; t[2] += x2 * y;
+    }
+    const A = [[s[0], s[1], s[2], t[0]], [s[1], s[2], s[3], t[1]], [s[2], s[3], s[4], t[2]]];
+    for (let i = 0; i < 3; i++) {               // Gaussian elimination
+      const p = A[i][i] || 1e-9;
+      for (let j = i; j < 4; j++) A[i][j] /= p;
+      for (let r = 0; r < 3; r++) if (r !== i) {
+        const f = A[r][i];
+        for (let j = i; j < 4; j++) A[r][j] -= f * A[i][j];
+      }
+    }
+    const [a, b, c] = [A[0][3], A[1][3], A[2][3]];
+    return x => a + b * x + c * x * x;
+  }
+
+  let g = 9.8, winStart = 5;
+  let fitted = null, fittedG = null, samples = [];
+
+  function sampleAndFit() {
+    const pts = trajectory(g);
+    samples = [];
+    for (let i = 0; i < 7; i++) {
+      const x = winStart + (i / 6) * WINDOW;
+      samples.push([x, truthAt(pts, x)]);
+    }
+    fitted = fitQuadratic(samples);
+    fittedG = g;
+    render();
+  }
+
+  const sx = x => 34 + x * (400 - 48) / XMAX;
+  const sy = y => 236 - y * (260 - 44) / YMAX;
+  const path = pts => "M" + pts.map(([x, y]) => sx(x).toFixed(1) + "," + sy(y).toFixed(1)).join("L");
+  const E = (tag, at) => {
+    const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+    for (const k in at) el.setAttribute(k, at[k]);
+    return el;
+  };
+
+  function axes(svg) {
+    svg.append(E("line", { x1: 34, y1: 236, x2: 386, y2: 236, stroke: COL.rule, "stroke-width": 1.5 }));
+    svg.append(E("line", { x1: 34, y1: 236, x2: 34, y2: 18, stroke: COL.rule, "stroke-width": 1.5 }));
+  }
+
+  function render() {
+    const pts = trajectory(g);
+    const simSvg = document.getElementById("svgSim");
+    const wmSvg = document.getElementById("svgWm");
+    simSvg.replaceChildren(); wmSvg.replaceChildren();
+    axes(simSvg); axes(wmSvg);
+
+    // Simulator panel: the exact rule at the current gravity.
+    simSvg.append(E("path", { d: path(pts), fill: "none", stroke: COL.given, "stroke-width": 2.5 }));
+
+    // Learned panel: current truth in gray, the fit in blue, its samples as dots.
+    wmSvg.append(E("path", { d: path(pts), fill: "none", stroke: COL.rule, "stroke-width": 2,
+                             "stroke-dasharray": "5 4" }));
+    if (fitted) {
+      const fitPts = [], err = [];
+      for (let x = 0; x <= XMAX; x += 1.4) {
+        const yF = Math.max(fitted(x), 0), yT = truthAt(pts, x);
+        fitPts.push([x, yF]); err.push([x, yF, yT]);
+      }
+      if (document.getElementById("shade").checked) {
+        const inWin = x => x >= winStart && x <= winStart + WINDOW;
+        const up = err.map(([x, yF]) => sx(x).toFixed(1) + "," + sy(yF).toFixed(1));
+        const dn = err.slice().reverse().map(([x, , yT]) => sx(x).toFixed(1) + "," + sy(yT).toFixed(1));
+        wmSvg.append(E("polygon", { points: up.concat(dn).join(" "),
+                                    fill: COL.given, opacity: 0.13 }));
+        // brighter shading outside the sampled region
+        const out = err.filter(([x]) => !inWin(x));
+        if (out.length > 1) {
+          const u2 = out.map(([x, yF]) => sx(x).toFixed(1) + "," + sy(yF).toFixed(1));
+          const d2 = out.slice().reverse().map(([x, , yT]) => sx(x).toFixed(1) + "," + sy(yT).toFixed(1));
+          wmSvg.append(E("polygon", { points: u2.concat(d2).join(" "),
+                                      fill: COL.given, opacity: 0.16 }));
+        }
+      }
+      wmSvg.append(E("path", { d: path(fitPts), fill: "none", stroke: COL.learned, "stroke-width": 2.5 }));
+      for (const [x, y] of samples)
+        wmSvg.append(E("circle", { cx: sx(x), cy: sy(y), r: 4, fill: COL.learned }));
+    } else {
+      const t = E("text", { x: 200, y: 130, "text-anchor": "middle", fill: COL.faint,
+                            "font-size": 13 });
+      t.textContent = "press “sample and fit” to train";
+      wmSvg.append(t);
+    }
+    // sample window marker
+    wmSvg.append(E("rect", { x: sx(winStart), y: 20, width: sx(winStart + WINDOW) - sx(winStart),
+                             height: 216, fill: COL.learned, opacity: 0.06 }));
+
+    const banner = document.getElementById("banner");
+    banner.textContent =
+      fitted && Math.abs(fittedG - g) > 0.15
+        ? `the learned model was fit at gravity ${fittedG.toFixed(1)}. Refit it for gravity ${g.toFixed(1)}`
+        : "";
+  }
+
+  document.getElementById("g").addEventListener("input", e => {
+    g = +e.target.value;
+    document.getElementById("gVal").textContent = g.toFixed(1);
+    render();                       // simulator adapts instantly; the fit does not
+  });
+  document.getElementById("win").addEventListener("input", e => {
+    winStart = +e.target.value; render();
+  });
+  document.getElementById("shade").addEventListener("change", render);
+  document.getElementById("fit").addEventListener("click", sampleAndFit);
+
+  sampleAndFit();
+})();
+</script>
+</body>
+</html>

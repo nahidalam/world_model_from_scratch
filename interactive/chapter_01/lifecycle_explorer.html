@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lifecycle explorer — a loop, not a line</title>
+<style>
+  :root {
+    --surface: #fcfcfb; --ink: #0b0b0b; --soft: #52514e; --faint: #8f8e88;
+    --learned: #2a78d6; --given: #eb6834; --spread: #1baf7a; --rule: #d6d5cf;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 20px; background: var(--surface); color: var(--ink);
+         font: 15px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  main { max-width: 880px; margin: 0 auto; }
+  h1 { font-size: 19px; margin: 0 0 4px; }
+  p.lede { margin: 0 0 14px; color: var(--soft); font-size: 14px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  button { font: inherit; font-size: 13px; padding: 6px 12px; border: 1.5px solid var(--rule);
+           border-radius: 8px; background: #fff; cursor: pointer; }
+  button.primary { border-color: var(--learned); color: var(--learned); font-weight: 600; }
+  button.danger { border-color: var(--given); color: var(--given); font-weight: 600; }
+  button:disabled { opacity: .45; cursor: default; }
+  .layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px; }
+  @media (max-width: 760px) { .layout { grid-template-columns: 1fr; } }
+  svg { display: block; width: 100%; border: 1.5px solid var(--rule); border-radius: 10px; background: #fff; }
+  .side { border: 1.5px solid var(--rule); border-radius: 10px; background: #fff; padding: 12px 14px; }
+  .side h2 { font-size: 14px; margin: 0 0 6px; color: var(--learned); }
+  .side dl { margin: 0 0 10px; font-size: 13px; }
+  .side dt { font-weight: 600; margin-top: 6px; }
+  .side dd { margin: 0; color: var(--soft); }
+  #log { font-size: 12.5px; color: var(--soft); max-height: 150px; overflow-y: auto;
+         border-top: 1px solid var(--rule); padding-top: 8px; }
+  #log div { padding: 1px 0; }
+  #log .fail { color: var(--given); font-weight: 600; }
+  #log .iter { color: var(--learned); font-weight: 600; }
+  .hint { margin-top: 10px; font-size: 12.5px; color: var(--faint); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Lifecycle explorer</h1>
+  <p class="lede">Six stages, drawn as the loop they really are. Click a stage to see what
+  it consumes, what it produces, and how it goes wrong. Run a sample project, then inject
+  a failure at deployment and watch the loop close.</p>
+
+  <div class="controls">
+    <button class="primary" id="run">Run a sample project</button>
+    <button class="danger" id="inject" disabled>Inject a failure at deployment</button>
+    <button id="reset">Reset</button>
+  </div>
+
+  <div class="layout">
+    <svg id="ring" viewBox="0 0 460 420"></svg>
+    <div class="side">
+      <h2 id="dTitle">Click a stage</h2>
+      <dl>
+        <dt>consumes</dt><dd id="dIn">—</dd>
+        <dt>produces</dt><dd id="dOut">—</dd>
+        <dt>main risk</dt><dd id="dRisk">—</dd>
+      </dl>
+      <div id="log"></div>
+    </div>
+  </div>
+  <p class="hint">The forward arrows are the pipeline you would draw on a whiteboard. The
+  dashed return path is the part real projects live in: deployment reveals a failure,
+  the failure directs new data, and a second, faster iteration closes the gap.</p>
+</main>
+
+<script>
+"use strict";
+(() => {
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const COL = { learned: css("--learned"), given: css("--given"), spread: css("--spread"),
+                ink: css("--ink"), soft: css("--soft"), rule: css("--rule") };
+
+  const STAGES = [
+    { name: "data collection", in_: "the environment: real, simulated, or both",
+      out: "raw transitions", risk: "coverage — situations you fail to collect are situations the model will fail to predict" },
+    { name: "data preparation", in_: "raw transitions",
+      out: "cleaned, formatted training data", risk: "quiet corruption — leaks, mislabeled actions, and gaps hide until training" },
+    { name: "training", in_: "prepared data",
+      out: "a model: learned dynamics", risk: "fitting the data without capturing the dynamics that generated it" },
+    { name: "evaluation", in_: "the trained model",
+      out: "an evaluation report", risk: "misleading averages — low mean error can hide failure exactly where it matters" },
+    { name: "deployment", in_: "an evaluated model",
+      out: "predictions in real use", risk: "the world drifts from the training data, and quality decays silently" },
+    { name: "continuous improvement", in_: "failures and surprises from deployment",
+      out: "new requirements, new data to collect", risk: "unrecorded changes — without comparable runs you cannot tell whether an update helped" },
+  ];
+
+  const svg = document.getElementById("ring");
+  const NS = "http://www.w3.org/2000/svg";
+  const E = (tag, at, parent = svg) => {
+    const el = document.createElementNS(NS, tag);
+    for (const k in at) el.setAttribute(k, at[k]);
+    parent.append(el);
+    return el;
+  };
+
+  const CX = 230, CY = 205, R = 150;
+  const posOf = i => {
+    const th = -Math.PI / 2 + i * (2 * Math.PI / 6);
+    return [CX + R * Math.cos(th), CY + R * Math.sin(th) * 0.92];
+  };
+
+  let marker = null, selected = null, running = false, atDeploy = false, iteration = 0;
+  const nodes = [];
+
+  function build() {
+    svg.replaceChildren();
+    // forward ring arrows
+    for (let i = 0; i < 6; i++) {
+      const [x0, y0] = posOf(i), [x1, y1] = posOf((i + 1) % 6);
+      const mx = (x0 + x1) / 2 + (CX - (x0 + x1) / 2) * -0.25;
+      const my = (y0 + y1) / 2 + (CY - (y0 + y1) / 2) * -0.25;
+      E("path", { d: `M${x0},${y0} Q${mx},${my} ${x1},${y1}`, fill: "none",
+                  stroke: COL.rule, "stroke-width": 2 });
+    }
+    // dashed return path: deployment -> data collection (the injected-failure route)
+    const [dx, dy] = posOf(4), [cx0, cy0] = posOf(0);
+    E("path", { id: "returnPath", d: `M${dx},${dy} Q${CX},${CY} ${cx0},${cy0}`,
+                fill: "none", stroke: COL.given, "stroke-width": 2.5,
+                "stroke-dasharray": "6 5", opacity: 0.25 });
+    // stage nodes
+    STAGES.forEach((s, i) => {
+      const [x, y] = posOf(i);
+      const gr = E("g", { cursor: "pointer" });
+      const rect = E("rect", { x: x - 62, y: y - 17, width: 124, height: 34, rx: 9,
+                               fill: "#fff", stroke: COL.rule, "stroke-width": 1.6 }, gr);
+      const words = s.name.split(" ");
+      const lines = words.length > 1 && s.name.length > 14
+        ? [words.slice(0, -1).join(" "), words.at(-1)] : [s.name];
+      lines.forEach((ln, k) => {
+        const t = E("text", { x, y: y + (lines.length === 1 ? 4 : k * 13 - 2),
+                              "text-anchor": "middle", "font-size": 11.5, fill: COL.ink }, gr);
+        t.textContent = ln;
+      });
+      gr.addEventListener("click", () => select(i));
+      nodes.push(rect);
+    });
+    marker = E("circle", { r: 8, fill: COL.learned, opacity: 0 });
+  }
+
+  function select(i) {
+    selected = i;
+    nodes.forEach((n, k) => {
+      n.setAttribute("stroke", k === i ? COL.learned : COL.rule);
+      n.setAttribute("stroke-width", k === i ? 2.5 : 1.6);
+    });
+    const s = STAGES[i];
+    document.getElementById("dTitle").textContent = s.name;
+    document.getElementById("dIn").textContent = s.in_;
+    document.getElementById("dOut").textContent = s.out;
+    document.getElementById("dRisk").textContent = s.risk;
+  }
+
+  const log = (t, cls = "") => {
+    const el = document.getElementById("log");
+    const d = document.createElement("div");
+    if (cls) d.className = cls;
+    d.textContent = t;
+    el.prepend(d);
+  };
+
+  const NOTES = [
+    "collected transitions from the environment",
+    "cleaned and formatted the data",
+    "trained the model on prepared transitions",
+    "evaluated: report in hand",
+    "deployed: predictions now in use",
+    "reviewing what deployment revealed",
+  ];
+
+  function moveMarker(i, fast, done) {
+    const [x, y] = posOf(i);
+    marker.setAttribute("opacity", 1);
+    marker.setAttribute("cx", x);
+    marker.setAttribute("cy", y);
+    select(i);
+    log((fast ? "· " : "") + NOTES[i]);
+    if (i === 4) {
+      atDeploy = true;
+      document.getElementById("inject").disabled = false;
+      running = false;
+      log("at deployment — inject a failure, or reset", "iter");
+      return;
+    }
+    setTimeout(() => step(i + 1, fast, done), fast ? 420 : 780);
+  }
+  function step(i, fast, done) {
+    if (i >= 6) { done && done(); return; }
+    moveMarker(i, fast, done);
+  }
+
+  document.getElementById("run").addEventListener("click", () => {
+    if (running || atDeploy) return;
+    running = true; iteration = 1;
+    log(`iteration ${iteration}: starting from data collection`, "iter");
+    step(0, false);
+  });
+
+  document.getElementById("inject").addEventListener("click", function () {
+    if (!atDeploy) return;
+    this.disabled = true; atDeploy = false;
+    log("failure in production: a situation the data never covered", "fail");
+    const rp = document.getElementById("returnPath");
+    rp.setAttribute("opacity", 1);
+    // ride the return path back to data collection, then a faster second loop
+    setTimeout(() => {
+      iteration = 2;
+      log("new requirement routed back to data collection", "fail");
+      log(`iteration ${iteration}: a second, faster pass`, "iter");
+      rp.setAttribute("opacity", 0.25);
+      let i = 0;
+      const fastStep = () => {
+        if (i === 4) {
+          moveMarkerEnd();
+          return;
+        }
+        const [x, y] = posOf(i);
+        marker.setAttribute("cx", x); marker.setAttribute("cy", y);
+        select(i); log("· " + NOTES[i]);
+        i++;
+        setTimeout(fastStep, 420);
+      };
+      const moveMarkerEnd = () => {
+        const [x, y] = posOf(4);
+        marker.setAttribute("cx", x); marker.setAttribute("cy", y);
+        select(4);
+        log("redeployed: the targeted data closed the gap", "iter");
+        running = false;
+      };
+      fastStep();
+    }, 900);
+  });
+
+  document.getElementById("reset").addEventListener("click", () => {
+    running = false; atDeploy = false; iteration = 0;
+    document.getElementById("inject").disabled = true;
+    document.getElementById("log").replaceChildren();
+    build();
+    select(0);
+  });
+
+  build();
+  select(0);
+})();
+</script>
+</body>
+</html>

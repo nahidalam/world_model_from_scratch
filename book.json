@@ -1,0 +1,20 @@
+{
+  "title": "World Models from Scratch",
+  "structure": {
+    "readme": "README.md",
+    "summary": "SUMMARY.md"
+  },
+  "ignores": [
+    "CLAUDE.md",
+    "OPEN_ITEMS.md",
+    ".claude",
+    ".venv",
+    "wm_env",
+    "outputs",
+    "node_modules",
+    "src",
+    "tests",
+    "notebooks",
+    "interactive"
+  ]
+}

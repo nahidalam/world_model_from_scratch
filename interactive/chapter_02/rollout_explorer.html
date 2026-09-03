@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 2 rollout explorer</title>
+<style>
+  :root {
+    --surface: #fcfcfb;
+    --panel: #ffffff;
+    --ink: #0b0b0b;
+    --soft: #52514e;
+    --faint: #8f8e88;
+    --rule: #d6d5cf;
+    --blue: #2a78d6;
+    --blue-fill: #e6f0fc;
+    --orange: #eb6834;
+    --orange-fill: #fdece4;
+    --green: #1baf7a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px;
+    background: var(--surface);
+    color: var(--ink);
+    font: 15px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  main { max-width: 1120px; margin: 0 auto; }
+  h1 { margin: 0 0 6px; font-size: 24px; }
+  h2 { margin: 0 0 8px; font-size: 18px; }
+  h3 { margin: 0 0 8px; font-size: 15px; }
+  p { margin: 0 0 12px; }
+  .lede { color: var(--soft); max-width: 850px; }
+  .guide {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 20px 0 14px;
+  }
+  button {
+    border: 1.5px solid var(--rule);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--ink);
+    padding: 8px 12px;
+    font: inherit;
+    cursor: pointer;
+  }
+  button:hover { border-color: var(--blue); }
+  button.on {
+    border-color: var(--blue);
+    background: var(--blue);
+    color: #fff;
+  }
+  .view-section {
+    display: block;
+    color: var(--soft);
+    font-size: 12px;
+  }
+  button.on .view-section { color: #fff; }
+  .timeline {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    gap: 10px;
+    align-items: center;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    background: var(--panel);
+    padding: 10px 12px;
+    margin-bottom: 16px;
+  }
+  input[type="range"] { width: 100%; accent-color: var(--blue); }
+  .view { display: none; }
+  .view.active { display: block; }
+  .panel {
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    background: var(--panel);
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+  .two {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .four {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  figure { margin: 0; }
+  video {
+    display: block;
+    width: 100%;
+    border-radius: 8px;
+    background: #111;
+    aspect-ratio: 16 / 9;
+  }
+  figcaption { margin-top: 6px; color: var(--soft); font-size: 13px; }
+  .tag {
+    display: inline-block;
+    margin-bottom: 6px;
+    color: var(--blue);
+    font-size: 13px;
+  }
+  .picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin: 10px 0 14px;
+  }
+  .picker button { padding: 6px 10px; font-size: 13px; }
+  .note {
+    border-left: 3px solid var(--orange);
+    background: var(--orange-fill);
+    padding: 10px 12px;
+    color: var(--soft);
+  }
+  .question {
+    border-left: 3px solid var(--blue);
+    background: var(--blue-fill);
+    padding: 10px 12px;
+    margin-top: 12px;
+  }
+  .status { color: var(--soft); font-size: 13px; }
+  @media (max-width: 760px) {
+    body { padding: 14px; }
+    .guide, .two, .four { grid-template-columns: 1fr; }
+    .timeline { grid-template-columns: auto 1fr auto; }
+    .timeline .status { grid-column: 1 / -1; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Chapter 2 rollout explorer</h1>
+  <p class="lede">These views use the observation and generated videos included with the book. No model runs in the browser. Use the view linked from the section you are reading; later views rely on ideas introduced later in the chapter.</p>
+
+  <nav class="guide" aria-label="Explorer views">
+    <button data-view="observation">Observation<span class="view-section">Sections 2.1–2.4</span></button>
+    <button data-view="seeds">Sampled futures<span class="view-section">Section 2.5</span></button>
+    <button data-view="controls">Generation settings<span class="view-section">Section 2.6</span></button>
+    <button data-view="disagreement">Disagreement<span class="view-section">Section 2.6</span></button>
+  </nav>
+
+  <div class="timeline">
+    <button id="playPause">Play</button>
+    <input id="frame" type="range" min="0" max="28" value="0" step="1" aria-label="Rollout frame">
+    <span id="frameLabel">frame 0 / 28</span>
+    <span class="status">29 frames at 16 fps</span>
+  </div>
+
+  <section class="view" id="observation">
+    <div class="panel">
+      <h2>From observed context to generated future</h2>
+      <p>The left panel shows the final frame from the five-frame context. The right panel moves through a rollout generated from that context.</p>
+      <div class="two">
+        <figure>
+          <video id="observationVideo" muted playsinline preload="metadata"></video>
+          <figcaption>Final observed frame. This is the boundary between recorded input and generated output.</figcaption>
+        </figure>
+        <figure>
+          <video class="future-video" data-src="../../assets/chapter_02/seeds/rollout_seed0.mp4" muted playsinline preload="metadata"></video>
+          <figcaption>One sampled future. Move the frame control to inspect the continuation.</figcaption>
+        </figure>
+      </div>
+      <p class="question">Look at the first generated frame. Does the position and motion continue from the observation boundary?</p>
+    </div>
+  </section>
+
+  <section class="view" id="seeds">
+    <div class="panel">
+      <h2>Four samples from one observation</h2>
+      <p>Every video uses the same context, prompt, guidance, and inference steps. Only the random seed changes.</p>
+      <div class="four">
+        <figure><span class="tag">seed 0</span><video class="future-video" data-src="../../assets/chapter_02/seeds/rollout_seed0.mp4" muted playsinline preload="metadata"></video></figure>
+        <figure><span class="tag">seed 1</span><video class="future-video" data-src="../../assets/chapter_02/seeds/rollout_seed1.mp4" muted playsinline preload="metadata"></video></figure>
+        <figure><span class="tag">seed 2</span><video class="future-video" data-src="../../assets/chapter_02/seeds/rollout_seed2.mp4" muted playsinline preload="metadata"></video></figure>
+        <figure><span class="tag">seed 3</span><video class="future-video" data-src="../../assets/chapter_02/seeds/rollout_seed3.mp4" muted playsinline preload="metadata"></video></figure>
+      </div>
+      <p class="question">Scrub toward the end. Which parts remain similar across all four samples, and which parts move to different pixels?</p>
+    </div>
+  </section>
+
+  <section class="view" id="controls">
+    <div class="panel">
+      <h2>Compare one generation setting</h2>
+      <p>The left video keeps the chapter settings. The right video changes either guidance or inference steps. Both use seed 0.</p>
+
+      <h3>Guidance</h3>
+      <p>Guidance controls how strongly the text prompt influences sampling.</p>
+      <div class="picker" id="guidancePicker">
+        <button data-guidance="3">guidance 3</button>
+        <button class="on" data-guidance="7">guidance 7</button>
+        <button data-guidance="12">guidance 12</button>
+      </div>
+
+      <h3>Inference steps</h3>
+      <p>Inference steps control the number of sampling updates and therefore the amount of generation computation.</p>
+      <div class="picker" id="stepsPicker">
+        <button class="on" data-steps="15">steps 15</button>
+        <button data-steps="20">steps 20</button>
+        <button data-steps="36">steps 36</button>
+        <button data-steps="50">steps 50</button>
+      </div>
+
+      <div class="two">
+        <figure>
+          <video class="future-video" data-src="../../assets/chapter_02/seeds/rollout_seed0.mp4" muted playsinline preload="metadata"></video>
+          <figcaption>Baseline: seed 0, guidance 7, steps 15.</figcaption>
+        </figure>
+        <figure>
+          <video id="variantVideo" class="future-video" data-src="../../assets/chapter_02/seeds/rollout_seed0.mp4" muted playsinline preload="metadata"></video>
+          <figcaption id="variantCaption">Selected: seed 0, guidance 7, steps 15.</figcaption>
+        </figure>
+      </div>
+      <p class="question">Compare motion, continuity, and visible artifacts. Do not use one frame alone to judge the setting.</p>
+    </div>
+  </section>
+
+  <section class="view" id="disagreement">
+    <div class="panel">
+      <h2>Where four sampled futures differ</h2>
+      <p>At each frame, the heatmap measures how much each pixel varies across the four seed rollouts. It is synchronized with the source rollout.</p>
+      <div class="two">
+        <figure>
+          <video class="future-video" data-src="../../assets/chapter_02/seeds/rollout_seed0.mp4" muted playsinline preload="metadata"></video>
+          <figcaption>Seed 0 provides a reference frame. The map uses all four seeds.</figcaption>
+        </figure>
+        <figure>
+          <video id="heatmapVideo" class="future-video" data-src="../../assets/chapter_02/disagreement_map.mp4" muted playsinline preload="metadata"></video>
+          <figcaption>Brighter pixels vary more across the four samples.</figcaption>
+        </figure>
+      </div>
+      <p class="note">The map is not a probability or confidence score. Motion, spatial shifts, and sampling randomness can all increase pixel disagreement.</p>
+      <p class="question">Return to the sampled-futures view when a region becomes bright. What changed across the four source videos?</p>
+    </div>
+  </section>
+</main>
+
+<script>
+"use strict";
+(() => {
+  const FPS = 16;
+  const LAST_FRAME = 28;
+  const OBSERVATION_FINAL_FRAME = 92;
+
+  const frame = document.getElementById("frame");
+  const frameLabel = document.getElementById("frameLabel");
+  const playPause = document.getElementById("playPause");
+  const observationVideo = document.getElementById("observationVideo");
+  const futureVideos = [...document.querySelectorAll(".future-video")];
+  const viewButtons = [...document.querySelectorAll("[data-view]")];
+  const views = [...document.querySelectorAll(".view")];
+  const guidanceButtons = [...document.querySelectorAll("[data-guidance]")];
+  const stepsButtons = [...document.querySelectorAll("[data-steps]")];
+  const variantVideo = document.getElementById("variantVideo");
+  const variantCaption = document.getElementById("variantCaption");
+
+  let currentFrame = 0;
+  let timer = null;
+
+  observationVideo.src = "../../assets/chapter_02/sand_mining.mp4";
+  futureVideos.forEach(video => { video.src = video.dataset.src; });
+
+  function seekVideo(video, seconds) {
+    if (Number.isFinite(video.duration)) {
+      video.currentTime = Math.min(seconds, Math.max(0, video.duration - 0.01));
+    }
+  }
+
+  function setFrame(value) {
+    currentFrame = Math.max(0, Math.min(LAST_FRAME, value));
+    frame.value = String(currentFrame);
+    frameLabel.textContent = `frame ${currentFrame} / ${LAST_FRAME}`;
+    seekVideo(observationVideo, OBSERVATION_FINAL_FRAME / FPS);
+    futureVideos.forEach(video => seekVideo(video, currentFrame / FPS));
+  }
+
+  function stop() {
+    if (timer !== null) window.clearInterval(timer);
+    timer = null;
+    playPause.textContent = "Play";
+  }
+
+  function play() {
+    stop();
+    playPause.textContent = "Pause";
+    timer = window.setInterval(() => {
+      if (currentFrame >= LAST_FRAME) {
+        stop();
+        return;
+      }
+      setFrame(currentFrame + 1);
+    }, 1000 / FPS);
+  }
+
+  function activateView(id) {
+    const selected = views.some(view => view.id === id) ? id : "observation";
+    views.forEach(view => view.classList.toggle("active", view.id === selected));
+    viewButtons.forEach(button => button.classList.toggle("on", button.dataset.view === selected));
+    if (window.location.hash !== `#${selected}`) history.replaceState(null, "", `#${selected}`);
+    stop();
+    window.setTimeout(() => setFrame(currentFrame), 0);
+  }
+
+  function selectGuidance(value) {
+    const src = value === 7
+      ? "../../assets/chapter_02/seeds/rollout_seed0.mp4"
+      : `../../assets/chapter_02/guidance_sweep/guidance_${value}_seed0.mp4`;
+    variantVideo.src = src;
+    variantVideo.dataset.src = src;
+    variantCaption.textContent = `Selected: seed 0, guidance ${value}, steps 15.`;
+    guidanceButtons.forEach(button => button.classList.toggle("on", Number(button.dataset.guidance) === value));
+    stepsButtons.forEach(button => button.classList.toggle("on", Number(button.dataset.steps) === 15));
+    variantVideo.addEventListener("loadedmetadata", () => setFrame(currentFrame), { once: true });
+  }
+
+  function selectSteps(value) {
+    const src = value === 15
+      ? "../../assets/chapter_02/seeds/rollout_seed0.mp4"
+      : `../../assets/chapter_02/steps_sweep/steps_${value}_seed0.mp4`;
+    variantVideo.src = src;
+    variantVideo.dataset.src = src;
+    variantCaption.textContent = `Selected: seed 0, guidance 7, steps ${value}.`;
+    stepsButtons.forEach(button => button.classList.toggle("on", Number(button.dataset.steps) === value));
+    guidanceButtons.forEach(button => button.classList.toggle("on", Number(button.dataset.guidance) === 7));
+    variantVideo.addEventListener("loadedmetadata", () => setFrame(currentFrame), { once: true });
+  }
+
+  viewButtons.forEach(button => button.addEventListener("click", () => activateView(button.dataset.view)));
+  guidanceButtons.forEach(button => button.addEventListener("click", () => selectGuidance(Number(button.dataset.guidance))));
+  stepsButtons.forEach(button => button.addEventListener("click", () => selectSteps(Number(button.dataset.steps))));
+  frame.addEventListener("input", () => { stop(); setFrame(Number(frame.value)); });
+  playPause.addEventListener("click", () => timer === null ? play() : stop());
+  window.addEventListener("hashchange", () => activateView(window.location.hash.slice(1)));
+  [...futureVideos, observationVideo].forEach(video => video.addEventListener("loadedmetadata", () => setFrame(currentFrame)));
+
+  activateView(window.location.hash.slice(1));
+  setFrame(0);
+})();
+</script>
+</body>
+</html>

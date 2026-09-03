@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Action-selection gridworld</title>
+<style>
+  :root {
+    --surface: #fcfcfb; --ink: #0b0b0b; --soft: #52514e; --faint: #8f8e88;
+    --learned: #2a78d6; --given: #eb6834; --spread: #1baf7a; --rule: #d6d5cf;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 20px; background: var(--surface); color: var(--ink);
+         font: 15px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  main { max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 19px; margin: 0 0 4px; }
+  p.lede { margin: 0 0 14px; color: var(--soft); font-size: 14px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px; }
+  button, .seg { font: inherit; font-size: 13px; padding: 6px 12px; border: 1.5px solid var(--rule);
+           border-radius: 8px; background: #fff; cursor: pointer; }
+  button:hover { border-color: var(--soft); }
+  button.primary { border-color: var(--learned); color: var(--learned); font-weight: 600; }
+  .seg { display: inline-flex; padding: 0; overflow: hidden; }
+  .seg button { border: none; border-radius: 0; }
+  .seg button.on { background: var(--learned); color: #fff; }
+  canvas { display: block; width: 100%; border: 1.5px solid var(--rule); border-radius: 10px;
+           background: #fff; touch-action: none; cursor: grab; }
+  .status { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 10px; font-size: 13px; color: var(--soft); }
+  .status b { color: var(--ink); }
+  #result { font-weight: 700; }
+  .hint { margin-top: 10px; font-size: 12.5px; color: var(--faint); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Action-selection gridworld</h1>
+  <p class="lede">Compare two action rules on the same grid. The <b>distance
+  rule</b> selects the next cell closest to the goal. The <b>planner</b>
+  evaluates complete paths. Drag the trap or the goal to change the map.</p>
+
+  <div class="controls">
+    <span class="seg" id="policy">
+      <button data-v="reactive" class="on">Distance rule</button>
+      <button data-v="anticipatory">Planner</button>
+    </span>
+    <button class="primary" id="step">Step</button>
+    <button id="run">Run</button>
+    <button id="reset">Reset</button>
+  </div>
+
+  <canvas id="c" width="684" height="532"></canvas>
+
+  <div class="status">
+    <span>steps: <b id="sSteps">0</b></span>
+    <span id="result"></span>
+  </div>
+  <p class="hint">Place the trap on the shortest path. The distance rule uses
+  only the current distance to the goal, so it enters the trap. The planner
+  evaluates later cells and selects another path. Move the trap away from the
+  shortest path to compare the selected routes.</p>
+</main>
+
+<script>
+"use strict";
+(() => {
+  const cv = document.getElementById("c"), ctx = cv.getContext("2d");
+  const CO = 9, RO = 7, CELL = 76;
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const COL = { learned: css("--learned"), given: css("--given"), spread: css("--spread"),
+                ink: css("--ink"), soft: css("--soft"), rule: css("--rule") };
+
+  const START = { x: 0, y: 3 };
+  let goal, trap, agent, steps, done, policy = "reactive", trailCells, timer = null;
+
+  function reset(keepLayout = true) {
+    if (!keepLayout || !goal) { goal = { x: 8, y: 3 }; trap = { x: 4, y: 3 }; }
+    agent = { ...START };
+    steps = 0; done = null; trailCells = [{ ...agent }];
+    setStatus(); draw();
+  }
+
+  const same = (a, b) => a.x === b.x && a.y === b.y;
+  const inGrid = p => p.x >= 0 && p.x < CO && p.y >= 0 && p.y < RO;
+  const neighbors = p => [{x:p.x+1,y:p.y},{x:p.x-1,y:p.y},{x:p.x,y:p.y+1},{x:p.x,y:p.y-1}].filter(inGrid);
+  const dist = (a, b) => Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+
+  // Reactive: minimize current distance to the goal. The trap is invisible to it.
+  function reactiveMove() {
+    let best = null;
+    for (const n of neighbors(agent))
+      if (!best || dist(n, goal) < dist(best, goal)) best = n;
+    return best;
+  }
+
+  // Anticipatory: breadth-first search that refuses paths through the trap.
+  // Returns the full path and the explored tree (the imagined futures we draw).
+  function plan() {
+    const q = [agent], prev = new Map(), seen = new Set([k(agent)]), edges = [];
+    function k(p) { return p.x + "," + p.y; }
+    while (q.length) {
+      const cur = q.shift();
+      if (same(cur, goal)) {
+        const path = [cur];
+        let c = cur;
+        while (prev.has(k(c))) { c = prev.get(k(c)); path.unshift(c); }
+        return { path, edges };
+      }
+      for (const n of neighbors(cur)) {
+        if (seen.has(k(n)) || same(n, trap)) continue;
+        seen.add(k(n)); prev.set(k(n), cur);
+        edges.push([cur, n]);
+        q.push(n);
+      }
+    }
+    return { path: null, edges };
+  }
+
+  function step() {
+    if (done) return;
+    let next, imagined = null;
+    if (policy === "reactive") next = reactiveMove();
+    else {
+      imagined = plan();
+      next = imagined.path && imagined.path.length > 1 ? imagined.path[1] : null;
+    }
+    if (!next) { done = "stuck: no safe path"; setStatus(); draw(imagined); return; }
+    agent = next; steps++;
+    trailCells.push({ ...agent });
+    if (same(agent, trap)) done = "fell in the trap";
+    else if (same(agent, goal)) done = "reached the goal";
+    setStatus(); draw(imagined);
+    if (done && timer) stopRun();
+  }
+
+  const px = c => 30 + c * (cv.width - 60) / CO + (cv.width - 60) / CO / 2;
+  const py = r => 30 + r * (cv.height - 60) / RO + (cv.height - 60) / RO / 2;
+  const cw = (cv.width - 60) / CO, ch = (cv.height - 60) / RO;
+
+  function draw(imagined = null) {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    ctx.strokeStyle = COL.rule; ctx.lineWidth = 1;
+    for (let c = 0; c <= CO; c++) { ctx.beginPath();
+      ctx.moveTo(30 + c * cw, 30); ctx.lineTo(30 + c * cw, cv.height - 30); ctx.stroke(); }
+    for (let r = 0; r <= RO; r++) { ctx.beginPath();
+      ctx.moveTo(30, 30 + r * ch); ctx.lineTo(cv.width - 30, 30 + r * ch); ctx.stroke(); }
+    // imagined futures: the explored tree faint, the chosen path stronger
+    if (imagined) {
+      ctx.strokeStyle = COL.learned;
+      for (const [a, b] of imagined.edges) {
+        ctx.globalAlpha = 0.16; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.moveTo(px(a.x), py(a.y)); ctx.lineTo(px(b.x), py(b.y)); ctx.stroke();
+      }
+      if (imagined.path) {
+        ctx.globalAlpha = 0.5; ctx.lineWidth = 4; ctx.beginPath();
+        imagined.path.forEach((p, i) =>
+          i ? ctx.lineTo(px(p.x), py(p.y)) : ctx.moveTo(px(p.x), py(p.y)));
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+    }
+    // trail
+    ctx.strokeStyle = policy === "reactive" ? COL.given : COL.learned;
+    ctx.globalAlpha = 0.45; ctx.lineWidth = 5; ctx.beginPath();
+    trailCells.forEach((p, i) => i ? ctx.lineTo(px(p.x), py(p.y)) : ctx.moveTo(px(p.x), py(p.y)));
+    ctx.stroke(); ctx.globalAlpha = 1;
+    // trap, goal, agent
+    tile(trap, COL.given, "trap");
+    tile(goal, COL.spread, "goal");
+    ctx.fillStyle = done === "fell in the trap" ? COL.given : COL.ink;
+    ctx.beginPath(); ctx.arc(px(agent.x), py(agent.y), 15, 0, 7); ctx.fill();
+  }
+
+  function tile(p, color, name) {
+    ctx.fillStyle = color; ctx.globalAlpha = 0.18;
+    ctx.fillRect(30 + p.x * cw + 2, 30 + p.y * ch + 2, cw - 4, ch - 4);
+    ctx.globalAlpha = 1; ctx.strokeStyle = color; ctx.lineWidth = 2;
+    ctx.strokeRect(30 + p.x * cw + 2, 30 + p.y * ch + 2, cw - 4, ch - 4);
+    ctx.fillStyle = color; ctx.font = "600 12px Helvetica, Arial, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(name, px(p.x), 30 + p.y * ch + 16);
+  }
+
+  function setStatus() {
+    document.getElementById("sSteps").textContent = steps;
+    const r = document.getElementById("result");
+    r.textContent = done || "";
+    r.style.color = done === "reached the goal" ? COL.spread : COL.given;
+  }
+
+  // dragging the trap or the goal
+  let dragging = null;
+  function cellAt(e) {
+    const rect = cv.getBoundingClientRect();
+    const sx = cv.width / rect.width, sy = cv.height / rect.height;
+    const x = Math.floor(((e.clientX - rect.left) * sx - 30) / cw);
+    const y = Math.floor(((e.clientY - rect.top) * sy - 30) / ch);
+    return inGrid({ x, y }) ? { x, y } : null;
+  }
+  cv.addEventListener("pointerdown", e => {
+    const c = cellAt(e); if (!c) return;
+    if (same(c, trap)) dragging = "trap";
+    else if (same(c, goal)) dragging = "goal";
+    if (dragging) cv.setPointerCapture(e.pointerId);
+  });
+  cv.addEventListener("pointermove", e => {
+    if (!dragging) return;
+    const c = cellAt(e); if (!c || same(c, START)) return;
+    if (dragging === "trap" && !same(c, goal)) trap = c;
+    if (dragging === "goal" && !same(c, trap)) goal = c;
+    reset();
+  });
+  cv.addEventListener("pointerup", () => dragging = null);
+
+  document.getElementById("policy").addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    document.querySelectorAll("#policy button").forEach(x => x.classList.toggle("on", x === b));
+    policy = b.dataset.v; reset();
+  });
+  document.getElementById("step").addEventListener("click", step);
+  document.getElementById("reset").addEventListener("click", () => reset());
+  function stopRun() { clearInterval(timer); timer = null; document.getElementById("run").textContent = "Run"; }
+  document.getElementById("run").addEventListener("click", function () {
+    if (timer) stopRun();
+    else { timer = setInterval(step, 300); this.textContent = "Stop"; }
+  });
+
+  reset(false);
+})();
+</script>
+</body>
+</html>

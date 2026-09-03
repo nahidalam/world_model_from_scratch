@@ -1,0 +1,7 @@
+# Core packages for reading the book, inspecting shipped artifacts, and tests.
+numpy
+imageio
+imageio-ffmpeg
+pillow
+matplotlib
+pytest
