@@ -290,7 +290,7 @@ def fig_1_10_blueprint() -> Path:
     stages = (
         (14, "Observation", "input from the environment", "given"),
         (42, "Representation", "state used for prediction", "learned"),
-        (70, "Dynamics", "update the state", "learned"),
+        (70, "Dynamics", "advance the state through time", "learned"),
         (100, "Prediction", "output about the future", "learned"),
     )
     for x, name, sub, acc in stages:

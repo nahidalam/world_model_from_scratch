@@ -50,8 +50,8 @@
 <main>
   <h1>World model pipeline walkthrough</h1>
   <p class="lede">A ball moves on a 12-cell line. Follow one observation
-  through representation, dynamics, and prediction. The action enters the
-  dynamics operation.</p>
+  through the pipeline. Dynamics is the middle operation: it advances the
+  internal state through time, using the action when one is present.</p>
 
   <div class="controls">
     <span class="seg" id="obsType">
@@ -81,7 +81,7 @@
       <div class="readout" id="ro-rep"></div>
     </div>
     <div class="stage learned" id="st-dyn">
-      <h2>Dynamics + Action</h2><p>update state using the action</p>
+      <h2>Dynamics + Action</h2><p>advance the state through time</p>
       <div class="readout" id="ro-dyn"></div>
     </div>
     <div class="stage learned" id="st-pred">
@@ -93,7 +93,8 @@
   <div id="narration"></div>
   <p class="hint">Select Step once for each operation. The fourth selection
   applies the prediction as the next observation. Repeat the cycle to build a
-  rollout. Change the action to see where it enters. Select Stochastic to
+  rollout: a sequence of predicted future observations. Change the action to
+  see where it enters. Select Stochastic to
   produce several possible next observations.</p>
 </main>
 
@@ -109,7 +110,7 @@
   const NARR = [
     "Observation: the system receives a frame or a state vector.",
     "Representation: the input becomes an internal state containing position and velocity.",
-    "Dynamics: the action updates the internal state.",
+    "Dynamics: the model advances the internal state through time, using the selected action.",
     "Prediction: the updated state produces the next observation.",
   ];
 
