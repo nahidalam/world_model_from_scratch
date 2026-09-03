@@ -1,6 +1,4 @@
 $schema: https://api.gitbook.com/gitbook-docs.yaml
-version: 1
-
 site:
   title: World Models from Scratch
   structure:
