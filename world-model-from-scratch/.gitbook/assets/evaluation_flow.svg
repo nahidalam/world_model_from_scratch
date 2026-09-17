@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="150" viewBox="0 0 1120 150" role="img" aria-labelledby="title desc">
+  <title id="title">From a saved rollout to an evaluation report</title>
+  <desc id="desc">A video and run manifest form an evaluation index. An official evaluator uses the video and a declared protocol. Its raw results are joined back to the index to produce scores connected to videos and human observations.</desc>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#53637a"/></marker></defs>
+  <rect width="1120" height="150" rx="16" fill="#f7f9fc"/>
+  <g font-family="system-ui, sans-serif" text-anchor="middle">
+    <g fill="#fff" stroke="#c2cedc" stroke-width="2">
+      <rect x="28" y="26" width="210" height="98" rx="10"/>
+      <rect x="298" y="26" width="220" height="98" rx="10"/>
+      <rect x="578" y="26" width="230" height="98" rx="10"/>
+      <rect x="868" y="26" width="224" height="98" rx="10"/>
+    </g>
+    <g fill="#14243b" font-size="18" font-weight="600">
+      <text x="133" y="61">Saved run</text><text x="408" y="61">Evaluation index</text><text x="693" y="61">Official evaluator</text><text x="980" y="61">Report and review</text>
+    </g>
+    <g fill="#42536a" font-size="15">
+      <text x="133" y="90">Video and manifest</text><text x="408" y="90">Run ID and checksum</text><text x="693" y="90">Declared protocol</text><text x="980" y="90">Scores and observations</text>
+    </g>
+  </g>
+  <g stroke="#53637a" stroke-width="2" marker-end="url(#arrow)"><path d="M242 75H289"/><path d="M522 75H569"/><path d="M812 75H859"/></g>
+</svg>
