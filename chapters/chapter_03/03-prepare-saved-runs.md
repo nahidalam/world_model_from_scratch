@@ -1,21 +1,20 @@
-# 3.3 Prepare Saved Runs for Evaluation
+# 3.3 Prepare Videos for Evaluation
 
-When we compare scores, we need to know which video each score belongs to and
-how that video was generated. Before running VBench, we will organize the
-saved Chapter 2 videos into an index. The index links each video to its seed,
-guidance value, inference steps, and saved run manifest, so we can trace every
-score back to the settings that produced the video.
+We will evaluate four videos from Chapter 2. First, we will create an index
+that links each video to its generation settings. This lets us connect each
+evaluation score to the seed, guidance value, and inference steps used to
+generate the video.
 
 ![](../../figures/chapter_03/evaluation_flow.svg)
 
-*Figure 3.1: We organize the saved videos and their generation settings in an
+*Figure 3.1: We organize the Chapter 2 videos and their generation settings in an
 index, run VBench on the videos, and collect the scores into a report for
 comparing runs.*
 
 ## Manifest for Video Generation
 
-Chapter 2 saved a `RunManifest` beside each generated video. The manifest for
-the seed-0 rollout looks like this:
+Each video generated in Chapter 2 has a `RunManifest` beside it. The manifest
+for the seed-0 rollout looks like this:
 
 ```json
 {
@@ -62,7 +61,7 @@ This lets us verify that VBench evaluates the exact video we prepared.
 ## Prepare the Videos for VBench
 
 We will evaluate the four Chapter 2 rollouts generated with seeds 0, 1, 2, and
-3. To prepare these saved videos for VBench, run the following command from
+3. To prepare these videos for VBench, run the following command from
 the repository root:
 
 ```bash

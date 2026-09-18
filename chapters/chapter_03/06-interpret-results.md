@@ -1,112 +1,68 @@
-# 3.6 Interpret Results
+# 3.6 Check the Scores Against the Videos
 
-We now have scores for our videos. Let's see whether those scores match what
-we notice when we watch them.
+A low score can mean Cosmos generated the wrong event, or Qwen misread the
+video. We will watch the tennis-ball videos to check what happened.
 
-* **For the Chapter 2 sand-mining videos,** open the
-  [evaluation explorer](https://nahidalam.github.io/world_model_from_scratch/interactive/chapter_03/evaluation_explorer.html#review)
-  to compare the videos with their VBench scores.
-* **For the 14 PAI-Bench-G scenarios from Section 3.5,** check Qwen's
-  answers against what happens in the Cosmos videos.
+## Check Qwen's Answer
 
-## Watch the Video Behind the Score
+For the tennis-ball example, `physics_002`, PAI-Bench-G asks:
 
-Start with a result you want to understand:
+> Does the tennis ball bounce off the coffee table before rolling off-screen?
 
-* **High consistency, little movement:** does the movement requested in
-  the prompt happen?
-* **Smooth motion:** do objects keep their shape and appearance?
-* **One seed scores much higher:** does that video look better when you
-  watch both?
+The expected answer is **No**. Qwen answered **Yes** for both guidance-7
+seeds, so this question scored 0.0. The
+[evaluation results](../../assets/chapter_03/results/pai_guidance7_vqa_detailed.json)
+contain the question and both answers.
 
-Let's look at the tennis-ball scenario, `physics_002`, from PAI-Bench-G.
-For the videos generated with guidance 7:
+Here are frames from the seed-1 video. They show no clear bounce or exit.
+The ball remains on the tabletop in the last frame shown.
 
-* The question asks whether the ball bounces off the coffee table before
-  rolling out of view.
-* The expected answer is **no**, but Qwen answered **yes** for both seeds.
-* The seed-1 frames below show no clear bounce or exit. The ball remains
-  on the tabletop in the last frame shown.
+![Twelve frames from the guidance-7 seed-1 tennis-ball video, sampled every 0.5 seconds.](../../assets/chapter_03/results/physics_002_guidance7_seed1_contact_sheet.jpg)
 
 These frames are 0.5 seconds apart, so they may miss a brief event. Watch the
 [full seed-1 video](../../assets/chapter_03/pai/guidance7/videos/physics_002__1.mp4)
-before deciding whether Qwen's answer is wrong. The other seeds and guidance
-settings are in the
-[video gallery](../../assets/chapter_03/pai/README.md).
+and answer the same question. Record the time range you checked.
 
-![Twelve frames from the guidance-7 seed-1 physics video, sampled every 0.5 seconds.](../../assets/chapter_03/results/physics_002_guidance7_seed1_contact_sheet.jpg)
+* If the video shows the ball bouncing off the table before rolling out of
+  view, Qwen's answer is correct. Cosmos failed this benchmark check.
+* If the video clearly does not show that event, Qwen's answer is wrong.
+  The score penalizes the video because of an error by Qwen.
 
-Note what you see and include a timestamp so someone else can find it.
+If you cannot tell, record **Unclear**. The sampled frames alone are not
+enough to decide.
 
-## Compare the Same Cases
+## Compare Guidance 7 and Guidance 3
 
-Let's compare guidance 7 and guidance 3 for the same 14 PAI-Bench-G
-scenarios. We used seeds 0 and 1 at both settings. Only guidance changed;
-the starting images, prompts, and other generation settings stayed the same.
+Qwen's bounce answer changes for seed 1 when we change guidance. Open both
+videos:
 
-First, divide each video's imaging-quality score by 100. This converts it
-from 0–100 to the benchmark's overall 0–1 scale. The other seven quality
-measurements need no conversion. Keep the original JSON files unchanged.
+| Guidance | Seed-1 video | Qwen's answer |
+|---|---|---|
+| 7 | [Watch video](../../assets/chapter_03/pai/guidance7/videos/physics_002__1.mp4) | Yes |
+| 3 | [Watch video](../../assets/chapter_03/pai/guidance3/videos/physics_002__1.mp4) | No |
 
-Choose one quality measurement, such as imaging quality:
+The starting image, prompt, seed, and other generation settings are the
+same. Only guidance changed. The
+[guidance-3 results](../../assets/chapter_03/results/pai_guidance3_vqa_detailed.json)
+record Qwen's **No** answer, which matches the expected answer.
 
-1. For one scenario, average the scores for seeds 0 and 1 at guidance 7.
-   Do the same for guidance 3.
-2. Record how much higher or lower guidance 7 scored than guidance 3.
-3. Repeat for all 14 scenarios, then average those differences. This gives
-   each scenario equal weight.
+Watch both videos and check for the bounce. Does the changed answer reflect
+a change in the ball's motion? If both videos show the same behavior for
+this question, the different answers do not establish that one video is
+better. Record what you see in each video and the relevant timestamps.
 
-Repeat for each quality measurement. Check individual scenarios too: an
-overall improvement may hide worse results for some scenarios. Keep the
-benchmark's overall score, since it may combine the scores differently.
+## Explain the Result
 
-For these 14 scenarios, the average imaging-quality score is **0.7328 at
-guidance 7** and **0.7288 at guidance 3**. Guidance 7 scores slightly higher.
-Watch the videos to see whether you notice a difference.
+For each video, write down what happened, whether you agree with Qwen, and
+whether the event matches the benchmark's expected answer. Include the
+video name and timestamps so another reader can check your observation.
+Keep the evaluator's original scores and record any disagreement separately.
 
-We would need more scenarios to see whether this pattern holds more broadly.
-More seeds would show how much scores vary for the same image and prompt.
+Passing the bounce check does not tell us whether the ball completed the
+requested action. It could stay on the table without bouncing or leaving
+the frame. Check the questions about emerging from the pipe and rolling
+out of view too.
 
-## Record How the Evaluation Was Run
-
-To repeat the evaluation or investigate a score, keep these details:
-
-* **Evaluator version and settings.** For the
-  [question-answering evaluator](https://github.com/SHI-Labs/physical-ai-bench/blob/2f3b687410029b98397fbc51fa4de36bfd45627d/generation/evaluate_vqa.py),
-  also keep the questions and Qwen's answers.
-* **Videos evaluated or missing.** Record the expected and actual counts.
-  Include unreadable videos, evaluator errors, and failed or blocked
-  generation runs. Leaving out difficult examples can make the scores look
-  better.
-* **How videos were selected.** If you chose the best video from several
-  attempts, record how many, how you chose, and the generation cost.
-
-Use the benchmark's evaluation procedure when comparing with published
-results. Report any changes to the model, prompts, or score calculation.
-
-## What the Disagreement Map Shows
-
-Return to the Chapter 2 sand-mining videos. The
-[disagreement map](https://nahidalam.github.io/world_model_from_scratch/interactive/chapter_02/rollout_explorer.html#disagreement)
-shows where the four seed videos differ at the same frame.
-
-Bright areas look different; dark areas look similar. The video beside the
-map shows seed 0, while the map uses all four seeds.
-
-* **The videos start similarly, then differ.** The map starts mostly dark
-  because all four videos share the same starting image.
-* **Seed 2 shows blocky distortions.** At frame 20, about 1.25 seconds in,
-  bright areas appear across the foreground sand and machinery on the
-  right. In the
-  [four-video comparison](https://nahidalam.github.io/world_model_from_scratch/interactive/chapter_02/rollout_explorer.html#seeds)
-  at this frame, the distortions are most noticeable in seed 2.
-* **Similar motion scores, different appearance.** All four videos score
-  around 0.993 on motion smoothness. Seed 2's subject-consistency score is
-  lower: 0.9071, compared with 0.9555 for seed 0. This is why we need both
-  measurements.
-
-A bright area can also come from an object moving or a texture changing
-between seeds. Watch the videos to judge what those differences mean.
-
-Export your notes and timestamps from the explorer and save them with the
-scores. Use both to explain which settings you would choose and why.
+Use these observations in the [evaluation report](07-build-an-evaluation-report.md).
+They help explain which scores reflect the generated behavior and which
+answers need further review.

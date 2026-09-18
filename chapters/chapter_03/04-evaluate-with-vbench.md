@@ -161,8 +161,6 @@ Our run produced these scores:
 | 3 | 0.9422 | 0.9928 | 0 |
 | Aggregate | 0.9389 | 0.9929 | 0 |
 
-Note that seed 2 scores lower on subject consistency, while its motion-smoothness score is close to the other videos. This says why we can not rely on one measurement. Specifically in this case, motion can look smooth even when objects change shape or appearance.
-
 All four videos receive a dynamic-degree score of 0 because their movement falls below VBench’s threshold. Small movements may still be visible, so a zero score does not mean the video is frozen.
 
 Open the [evaluation explorer](https://nahidalam.github.io/world_model_from_scratch/interactive/chapter_03/evaluation_explorer.html#scores).
@@ -177,5 +175,27 @@ two rollouts.
 >
 > 1. Compare seeds 0 and 1 in the explorer before showing their scores. Does the score ordering match your visual notes?
 > 2. Compare seeds 2 and 3. Identify one visual event that a whole-video score might obscure.
+
+## Compare the Videos with the Disagreement Map
+
+The [disagreement map](https://nahidalam.github.io/world_model_from_scratch/interactive/chapter_02/rollout_explorer.html#disagreement)
+shows where the four seed videos differ at the same frame. Bright areas look
+different; dark areas look similar. The video beside the map shows seed 0,
+while the map uses all four seeds.
+
+The map starts mostly dark because all four videos share the same starting
+image. At frame 20, about 1.25 seconds in, bright areas appear across the
+foreground sand and machinery on the right. Open the
+[four-video comparison](https://nahidalam.github.io/world_model_from_scratch/interactive/chapter_02/rollout_explorer.html#seeds)
+at this frame. The blocky distortions are most noticeable in seed 2.
+
+All four videos score around 0.993 on motion smoothness. Seed 2's
+subject-consistency score is lower: 0.9071, compared with 0.9555 for seed 0.
+The videos can have similar motion scores while differing in appearance.
+
+A bright area can also come from an object moving or a texture changing
+between seeds. Watch the videos to judge what those differences mean.
+Export your notes and timestamps from the evaluation explorer and keep them
+with the scores so someone else can check your observations.
 
 Next, we will evaluate the supplied PAI-Bench-G videos.

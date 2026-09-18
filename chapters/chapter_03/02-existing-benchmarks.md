@@ -8,15 +8,13 @@ PAI-Bench-G to evaluate what happens in a generated video.
 | Does the subject keep the same appearance? | VBench | Subject consistency |
 | Does movement remain smooth? | VBench | Motion smoothness |
 | Does the video contain movement? | VBench | Dynamic degree |
-| Does the requested action occur? | PAI-Bench-G | Question-answer accuracy |
-| Do objects maintain the expected spatial relationship? | PAI-Bench-G | Question-answer accuracy |
-| Does the event show the expected physical behavior? | PAI-Bench-G | Question-answer accuracy |
+| Do the scene's relationships, actions, and physical behavior match expectations? | PAI-Bench-G | Domain Score |
 
-## Measure Consistency and Motion with VBench
+## Evaluate with VBench
 
-[VBench](https://arxiv.org/abs/2311.17982) divides video evaluation into 16
-dimensions, each measuring one property, such as subject consistency,
-motion smoothness, or how closely the video follows the prompt.
+[VBench](https://arxiv.org/abs/2311.17982) evaluates videos across 16 dimensions.
+Each dimension measures one property, such as subject consistency or motion
+smoothness.
 
 We will run three dimensions on four Chapter 2 seed rollouts:
 
@@ -27,30 +25,39 @@ We will run three dimensions on four Chapter 2 seed rollouts:
 * **Dynamic degree** checks whether the video contains enough movement to
   count as dynamic.
 
-We can apply these measurements to our saved sand-mining videos using VBench's
+We can apply these measurements to our generated sand-mining videos using VBench's
 [`custom_input` mode](https://github.com/Vchitect/VBench#new-evaluate-your-own-videos).
 We will report one result for each of the three dimensions. To run a full
 VBench evaluation, we would need its complete prompt set and all required
 dimensions.
 
-## Evaluate the Requested Event with PAI-Bench-G
+## Evaluate with PAI-Bench-G
 
-[PAI-Bench](https://arxiv.org/abs/2512.01989) has three tracks:
+[PAI-Bench](https://arxiv.org/abs/2512.01989) contains three subtasks:
 
 * **PAI-Bench-G** evaluates video generation.
 * **PAI-Bench-C** checks whether videos follow control signals such as depth
   maps, edges, and segmentation masks.
 * **PAI-Bench-U** evaluates how models understand physical scenes.
 
-We will use PAI-Bench-G with the included videos, which were generated from
-its case images and prompts.
+A video can show smooth motion but get the actions wrong. For example, a robot may open a door before grasping its handle. PAI-Bench-G uses questions about the scene to check for these problems.
 
-A physics case, for example, may ask whether an object keeps its shape while
-falling.
+Each example includes a starting image, a prompt, and questions with expected answers. We will evaluate the included videos generated from these images and prompts.
+
+The questions ask where objects are, how they interact, and whether actions happen in the expected order. For example, our selected sample asks about:
+
+* **Spatial relationships:** do the double yellow road lines remain on the
+  left side of the vehicle?
+* **Event order:** does the robotic arm grasp the handle before the cabinet
+  door begins to open?
+* **Physical behavior:** does the tennis ball deform or flatten as it rolls
+  across the table?
+
+We use Qwen2.5-VL-72B-Instruct to answer questions about each generated video. The **Domain Score** measures how often Qwen’s answers match the expected answers. Section 3.5 shows how we calculate this score.
 
 The [PAI-Bench-G evaluation workflow](https://github.com/SHI-Labs/physical-ai-bench/tree/2f3b687410029b98397fbc51fa4de36bfd45627d/generation)
-also measures video quality, including subject consistency, background
-consistency, motion smoothness, and alignment with the starting image.
+also measures video quality. We keep those measurements in the
+[Section 3.5 supplement](05-evaluate-with-pai-bench.md#supplement-measure-video-quality).
 
 ## Other Benchmarks
 
@@ -73,5 +80,3 @@ outputs and the questions we might ask about them.
 If you want to explore more benchmarks, [A Survey of AI-Generated Video Evaluation](https://arxiv.org/abs/2410.19884)
 and [A Comprehensive Survey on World Models for Embodied AI](https://arxiv.org/abs/2510.16732)
 are good starting points.
-
-Next, we will prepare the four seed rollouts for VBench.

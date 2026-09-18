@@ -54,8 +54,8 @@ results without generating new videos.
 
 * [3.1 What Are We Evaluating?](01-what-are-we-evaluating.md)
 * [3.2 Existing Evaluation Benchmarks](02-existing-benchmarks.md)
-* [3.3 Prepare Saved Runs for Evaluation](03-prepare-saved-runs.md)
+* [3.3 Prepare Videos for Evaluation](03-prepare-saved-runs.md)
 * [3.4 Evaluate Our Rollouts with VBench](04-evaluate-with-vbench.md)
 * [3.5 Evaluate with PAI-Bench-G](05-evaluate-with-pai-bench.md)
-* [3.6 Interpret Results](06-interpret-results.md)
+* [3.6 Check the Scores Against the Videos](06-interpret-results.md)
 * [3.7 Chapter Project: Build an Evaluation Report](07-build-an-evaluation-report.md)

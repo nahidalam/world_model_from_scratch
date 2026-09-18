@@ -17,8 +17,9 @@ checksums match the previously saved run indexes.
   processor, and tokenizer from that path.
 * VBench records the exact result path from each invocation, so older
   timestamped files cannot expand into extra collector arguments.
-* Section 3.6 reproduces imaging-quality normalization and the reported
-  guidance difference from the included per-video results.
+* The video-quality supplement in Section 3.5 reproduces imaging-quality
+  normalization and the reported guidance difference from the included
+  per-video results.
 * The gallery preserves 56 videos, 56 original manifests, and each run's
   evaluator environment, lockfile, revision records, and compatibility patch.
   Its `review_index.json` maps portable asset paths to run IDs and checksums.
