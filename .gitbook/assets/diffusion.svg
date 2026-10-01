@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="600" viewBox="0 0 1120 600" role="img" aria-labelledby="title desc">
+<title id="title">DIAMOND: denoise the next observation</title>
+<desc id="desc">Four previous RGB observations and their actions form the condition. A 15-channel diffusion U-Net removes noise from the next image in three Euler steps. A separate CNN-LSTM predicts reward and termination.</desc>
+<rect width="1120" height="600" rx="16" fill="#f7f9fc"/>
+<g font-family="system-ui, -apple-system, sans-serif">
+<text x="32" y="42" font-size="24" fill="#14243b" font-weight="650" text-anchor="start">DIAMOND: denoise the next observation</text>
+<text x="32" y="73" font-size="15" fill="#46566b" font-weight="400" text-anchor="start">The diffusion model predicts the next observation directly in pixel space.</text>
+<rect x="32" y="108" width="220" height="128" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="142.0" y="137" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Four RGB frames</text>
+<text x="142.0" y="164" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">flatten to 12 channels</text>
+<text x="142.0" y="186" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">four action embeddings</text>
+<rect x="32" y="286" width="220" height="112" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="142.0" y="315" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Noisy next RGB</text>
+<text x="142.0" y="342" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">3 more channels</text>
+<rect x="326" y="148" width="310" height="180" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="481.0" y="177" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">15-channel diffusion U-Net</text>
+<text x="481.0" y="204" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">64 / 32 / 16 / 8 grids</text>
+<text x="481.0" y="226" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">AdaGroupNorm: action + noise</text>
+<text x="481.0" y="248" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">mid-block attention</text>
+<text x="481.0" y="270" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">three Euler denoising calls</text>
+<rect x="710" y="108" width="230" height="128" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="825.0" y="137" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Next observation</text>
+<text x="825.0" y="164" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">sample x̂ₜ₊₁</text>
+<text x="825.0" y="186" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">feed back as history</text>
+<rect x="710" y="286" width="230" height="112" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="825.0" y="315" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">CNN-LSTM model</text>
+<text x="825.0" y="342" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">reward r̂ₜ</text>
+<text x="825.0" y="364" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">termination d̂ₜ</text>
+<rect x="972" y="198" width="116" height="112" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="1030.0" y="227" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Actor</text>
+<text x="1030.0" y="254" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">choose</text>
+<text x="1030.0" y="276" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">aₜ₊₁</text>
+<path d="M252 172L326 200" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="326,200 318.06270581510074,192.71993399601595 315.2315690357736,200.20222405566622" fill="#68778b"/>
+<path d="M252 342L326 282" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="326,282 315.71323467912003,285.19099658933413 320.75165034648984,291.4050425790902" fill="#68778b"/>
+<path d="M636 220L710 172" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="710,172 699.4336227093273,174.0860659028796 703.7871515501196,180.79775619910086" fill="#68778b"/>
+<path d="M636 268L710 342" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="710,342 705.7573593128808,332.1005050633883 700.1005050633884,337.75735931288074" fill="#68778b"/>
+<path d="M940 172L972 230" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="972,230 970.6715373069937,219.3119137880867 963.6669158347795,223.1765325313774" fill="#68778b"/>
+<path d="M940 342L972 280" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="972,280 963.859088174078,287.05163489146764 970.968053430517,290.7207782496297" fill="#68778b"/>
+<rect x="32" y="467" width="320" height="88" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="192.0" y="496" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Training pair</text>
+<text x="192.0" y="523" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">real history + real next frame</text>
+<rect x="400" y="467" width="320" height="88" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="560.0" y="496" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Diffusion objective</text>
+<text x="560.0" y="523" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">sample noise level and denoise</text>
+<rect x="768" y="467" width="320" height="88" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="928.0" y="496" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Agent objective</text>
+<text x="928.0" y="523" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">actor-critic in sampled rollouts</text>
+</g></svg>

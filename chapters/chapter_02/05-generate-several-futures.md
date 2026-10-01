@@ -1,7 +1,6 @@
 # 2.5 Generate Several Futures
 
-Section 2.4 generated one rollout. Now we will run the model four times with the
-same observation and prompt. Only the random seed changes.
+Section 2.4 generated one rollout. Now we will run the model four times with the same observation and prompt. Only the random seed changes.
 
 ## Generate Four Rollouts
 
@@ -39,14 +38,11 @@ future_frames = [
 
 ## Compare the Samples
 
-The rollouts begin from the same visual context but diverge as generation
-continues. In this example, differences appear in the machinery, water, and
-other changing parts of the scene.
+The rollouts begin from the same visual context but diverge as generation continues. In this example, differences appear in the machinery, water, and other changing parts of the scene.
 
-![](../../figures/chapter_02/futures_seed0_vs_seed1.png)
+![](../../.gitbook/assets/futures_seed0_vs_seed1.png)
 
-*Figure 2.2: Seed 0 (top) and seed 1 (bottom), generated from the same
-observation and prompt. The columns advance through each rollout.*
+_Figure 2.2: Seed 0 (top) and seed 1 (bottom), generated from the same observation and prompt. The columns advance through each rollout._
 
 The explorer synchronizes all four rollouts at the same frame index.
 
@@ -62,8 +58,6 @@ from world_models.visualize import disagreement_map
 disagreement = disagreement_map(future_frames)
 ```
 
-The function produces one map for each frame. Brighter pixels vary more across
-the four rollouts. This variation can come from motion, spatial shifts, or
-sampling randomness; it is not a probability or confidence score.
+The function produces one map for each frame. Brighter pixels vary more across the four rollouts. This variation can come from motion, spatial shifts, or sampling randomness; it is not a probability or confidence score.
 
 [Open the disagreement view in a new tab](https://nahidalam.github.io/world_model_from_scratch/interactive/chapter_02/rollout_explorer.html#disagreement).

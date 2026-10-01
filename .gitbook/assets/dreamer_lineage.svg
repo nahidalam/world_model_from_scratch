@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="930" viewBox="0 0 1120 930" role="img" aria-labelledby="title desc">
+<title id="title">From PlaNet to Dreamer 4</title>
+<desc id="desc">PlaNet supplies the recurrent state-space model. Dreamer 1 learns an actor and value function in imagination, Dreamer 2 introduces categorical latent states, Dreamer 3 stabilizes training across domains, and Dreamer 4 replaces the RSSM with a causal video Transformer while keeping imagination training.</desc>
+<rect width="1120" height="930" rx="16" fill="#f7f9fc"/>
+<g font-family="system-ui, -apple-system, sans-serif">
+<text x="32" y="42" font-size="24" fill="#14243b" font-weight="650" text-anchor="start">From PlaNet to Dreamer 4</text>
+<text x="32" y="73" font-size="15" fill="#46566b" font-weight="650" text-anchor="start">The shared Dreamer loop</text>
+<rect x="32" y="92" width="190" height="94" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="127.0" y="121" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Replay state</text>
+<text x="127.0" y="148" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">posterior or</text>
+<text x="127.0" y="170" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">recorded context</text>
+<rect x="270" y="92" width="210" height="94" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="375.0" y="121" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Imagine actions</text>
+<text x="375.0" y="148" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">predict state + reward</text>
+<text x="375.0" y="170" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">optional episode end</text>
+<rect x="528" y="92" width="190" height="94" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="623.0" y="121" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Build returns</text>
+<text x="623.0" y="148" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">bootstrap with value</text>
+<text x="623.0" y="170" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">λ-return recursion</text>
+<rect x="766" y="92" width="322" height="94" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="927.0" y="121" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Improve behavior</text>
+<text x="927.0" y="148" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">update policy and value</text>
+<text x="927.0" y="170" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">execute policy in the task</text>
+<path d="M222 139L270 139" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="270,139 260.0,135.0 260.0,143.0" fill="#68778b"/>
+<path d="M480 139L528 139" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="528,139 518.0,135.0 518.0,143.0" fill="#68778b"/>
+<path d="M718 139L766 139" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="766,139 756.0,135.0 756.0,143.0" fill="#68778b"/>
+<path d="M32 222L1088 222" stroke="#c3cfdd" stroke-width="1.5"/>
+<text x="32" y="255" font-size="15" fill="#46566b" font-weight="650" text-anchor="start">What changes in each generation</text>
+<rect x="24" y="282" width="196" height="62" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="122.0" y="311" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">PlaNet</text>
+<rect x="24" y="364" width="196" height="100" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="122.0" y="393" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">State</text>
+<text x="122.0" y="420" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">Gaussian RSSM</text>
+<text x="122.0" y="442" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">hₜ memory + zₜ sample</text>
+<rect x="24" y="484" width="196" height="100" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="122.0" y="513" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">World model</text>
+<text x="122.0" y="540" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">reconstruction + reward</text>
+<text x="122.0" y="562" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">KL with 3 free nats</text>
+<rect x="24" y="604" width="196" height="100" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="122.0" y="633" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Behavior</text>
+<text x="122.0" y="660" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">CEM refits actions</text>
+<text x="122.0" y="682" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">replan each real step</text>
+<rect x="24" y="728" width="196" height="54" rx="9" fill="#fff" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="122.0" y="761" font-size="12" fill="#d45b2d" font-weight="700" text-anchor="middle">SUPPLIES THE RSSM</text>
+<rect x="239" y="282" width="196" height="62" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="337.0" y="311" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Dreamer 1</text>
+<rect x="239" y="364" width="196" height="100" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="337.0" y="393" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">State</text>
+<text x="337.0" y="420" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">Gaussian RSSM</text>
+<text x="337.0" y="442" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">posterior → prior</text>
+<rect x="239" y="484" width="196" height="100" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="337.0" y="513" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">World model</text>
+<text x="337.0" y="540" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">same latent model</text>
+<text x="337.0" y="562" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">15-step imagination</text>
+<rect x="239" y="604" width="196" height="100" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="337.0" y="633" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Behavior</text>
+<text x="337.0" y="660" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">actor + scalar value</text>
+<text x="337.0" y="682" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">dynamics gradients + λ</text>
+<rect x="239" y="728" width="196" height="54" rx="9" fill="#fff" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="337.0" y="761" font-size="12" fill="#d45b2d" font-weight="700" text-anchor="middle">ADDS ACTOR + VALUE</text>
+<rect x="454" y="282" width="196" height="62" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="552.0" y="311" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Dreamer 2</text>
+<rect x="454" y="364" width="196" height="100" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="552.0" y="393" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">State</text>
+<text x="552.0" y="420" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">32 × 32 categories</text>
+<text x="552.0" y="442" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">straight-through sample</text>
+<rect x="454" y="484" width="196" height="100" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="552.0" y="513" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">World model</text>
+<text x="552.0" y="540" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">KL balance 0.8 / 0.2</text>
+<text x="552.0" y="562" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">reward + discount heads</text>
+<rect x="454" y="604" width="196" height="100" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="552.0" y="633" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Behavior</text>
+<text x="552.0" y="660" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">Atari: REINFORCE</text>
+<text x="552.0" y="682" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">entropy + target critic</text>
+<rect x="454" y="728" width="196" height="54" rx="9" fill="#fff" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="552.0" y="761" font-size="12" fill="#d45b2d" font-weight="700" text-anchor="middle">DISCRETIZES THE STATE</text>
+<rect x="669" y="282" width="196" height="62" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="767.0" y="311" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Dreamer 3</text>
+<rect x="669" y="364" width="196" height="100" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="767.0" y="393" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">State</text>
+<text x="767.0" y="420" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">categorical RSSM</text>
+<text x="767.0" y="442" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">scaled block GRU</text>
+<rect x="669" y="484" width="196" height="100" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="767.0" y="513" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">World model</text>
+<text x="767.0" y="540" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">1-nat KL floor + mix</text>
+<text x="767.0" y="562" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">symlog + two-hot</text>
+<rect x="669" y="604" width="196" height="100" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="767.0" y="633" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Behavior</text>
+<text x="767.0" y="660" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">normalized REINFORCE</text>
+<text x="767.0" y="682" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">distributional value</text>
+<rect x="669" y="728" width="196" height="54" rx="9" fill="#fff" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="767.0" y="761" font-size="12" fill="#d45b2d" font-weight="700" text-anchor="middle">STABILIZES THE LOOP</text>
+<rect x="884" y="282" width="196" height="62" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="982.0" y="311" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Dreamer 4</text>
+<rect x="884" y="364" width="196" height="100" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="982.0" y="393" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">State</text>
+<text x="982.0" y="420" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">causal video tokens</text>
+<text x="982.0" y="442" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">Transformer context</text>
+<rect x="884" y="484" width="196" height="100" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="982.0" y="513" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">World model</text>
+<text x="982.0" y="540" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">masked tokenizer</text>
+<text x="982.0" y="562" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">shortcut forcing</text>
+<rect x="884" y="604" width="196" height="100" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="982.0" y="633" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Behavior</text>
+<text x="982.0" y="660" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">PMPO + policy prior</text>
+<text x="982.0" y="682" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">two-hot value + λ</text>
+<rect x="884" y="728" width="196" height="54" rx="9" fill="#fff" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="982.0" y="761" font-size="12" fill="#d45b2d" font-weight="700" text-anchor="middle">REPLACES THE RSSM</text>
+<path d="M220 313L239 313" stroke="#d45b2d" stroke-width="2" fill="none"/>
+<polygon points="239,313 229.0,309.0 229.0,317.0" fill="#d45b2d"/>
+<path d="M435 313L454 313" stroke="#d45b2d" stroke-width="2" fill="none"/>
+<polygon points="454,313 444.0,309.0 444.0,317.0" fill="#d45b2d"/>
+<path d="M650 313L669 313" stroke="#d45b2d" stroke-width="2" fill="none"/>
+<polygon points="669,313 659.0,309.0 659.0,317.0" fill="#d45b2d"/>
+<path d="M874 270L874 797" stroke="#7654c4" stroke-width="2" stroke-dasharray="7 7"/>
+<text x="874" y="817" font-size="13" fill="#7654c4" font-weight="650" text-anchor="middle">architecture reset</text>
+<path d="M865 313L884 313" stroke="#7654c4" stroke-width="2" fill="none"/>
+<polygon points="884,313 874.0,309.0 874.0,317.0" fill="#7654c4"/>
+<rect x="32" y="836" width="1056" height="74" rx="11" fill="#fff" stroke="#328554" stroke-width="1.6"/>
+<text x="560.0" y="865" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Invariant across Dreamer 1 through 4</text>
+<text x="560.0" y="892" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">predicted trajectories → rewards and values → λ returns → policy and value learning</text>
+</g></svg>

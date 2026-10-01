@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="590" viewBox="0 0 1120 590" role="img" aria-labelledby="title desc">
+<title id="title">DINO-WM: plan in frozen visual features</title>
+<desc id="desc">A frozen DINOv2 encoder turns observation and goal images into patch features. An action-conditioned Transformer predicts future patch features. A planner optimizes actions to minimize feature distance to the goal.</desc>
+<rect width="1120" height="590" rx="16" fill="#f7f9fc"/>
+<g font-family="system-ui, -apple-system, sans-serif">
+<text x="32" y="42" font-size="24" fill="#14243b" font-weight="650" text-anchor="start">DINO-WM: plan in frozen visual features</text>
+<text x="32" y="73" font-size="15" fill="#46566b" font-weight="400" text-anchor="start">Training predicts features. Planning compares predicted features with the encoded goal.</text>
+<rect x="32" y="112" width="210" height="112" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="137.0" y="141" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Observation images</text>
+<text x="137.0" y="168" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">224 × 224 input</text>
+<text x="137.0" y="190" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">resize to 196 × 196</text>
+<rect x="32" y="304" width="210" height="112" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="137.0" y="333" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Goal image</text>
+<text x="137.0" y="360" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">desired observation</text>
+<rect x="296" y="98" width="240" height="140" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="416.0" y="127" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Frozen DINOv2-S/14</text>
+<text x="416.0" y="154" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">14 × 14 patch grid</text>
+<text x="416.0" y="176" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">384 values per patch</text>
+<rect x="296" y="290" width="240" height="140" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="416.0" y="319" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Same frozen encoder</text>
+<text x="416.0" y="346" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">goal patch features</text>
+<text x="416.0" y="368" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">decoder is optional</text>
+<rect x="596" y="98" width="270" height="140" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="731.0" y="127" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Dynamics Transformer</text>
+<text x="731.0" y="154" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">6 blocks · 16 heads</text>
+<text x="731.0" y="176" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">features + repeated action/state</text>
+<text x="731.0" y="198" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">predict 196 patches in parallel</text>
+<rect x="926" y="187" width="162" height="142" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="1007.0" y="216" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Planner</text>
+<text x="1007.0" y="243" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">sample / update</text>
+<text x="1007.0" y="265" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">action sequences</text>
+<text x="1007.0" y="287" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">keep best cost</text>
+<path d="M242 168L296 168" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="296,168 286.0,164.0 286.0,172.0" fill="#68778b"/>
+<path d="M536 168L596 168" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="596,168 586.0,164.0 586.0,172.0" fill="#68778b"/>
+<text x="566.0" y="159.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">features</text>
+<path d="M242 360L296 360" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="296,360 286.0,356.0 286.0,364.0" fill="#68778b"/>
+<path d="M536 360L926 296" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="926,296 915.4842419554554,293.6721613568381 916.779734765563,301.56657066843064" fill="#68778b"/>
+<text x="731.0" y="319.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">goal features</text>
+<path d="M866 168L926 220" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="926,220 921.0628313257731,210.42793828466233 915.8233870184305,216.47345094698085" fill="#68778b"/>
+<text x="896.0" y="185.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">predicted features</text>
+<path d="M1007 187 L1007 78 L731 78 L731 98" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="731,98 735.0,88.0 727.0,88.0" fill="#68778b"/>
+<text x="870" y="69" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">candidate actions</text>
+<rect x="32" y="479" width="320" height="75" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="192.0" y="508" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Offline training</text>
+<text x="192.0" y="535" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">feature prediction loss</text>
+<rect x="400" y="479" width="320" height="75" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="560.0" y="508" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Test-time objective</text>
+<text x="560.0" y="535" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">predicted goal-feature distance</text>
+<rect x="768" y="479" width="320" height="75" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="928.0" y="508" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Execution</text>
+<text x="928.0" y="535" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">apply first action, observe, replan</text>
+</g></svg>

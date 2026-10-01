@@ -1,26 +1,18 @@
 # 4.10 The Complete Model in One File
 
-Sections 4.1 to 4.8 built the world model one piece at a time. This section
-puts every piece in one file, in the order data flows through it, so we can
-read the whole model at once. Each function and class below appears, word
-for word, in the section that built it.
+Sections 4.1 to 4.8 built the world model one piece at a time. This section puts every piece in one file, in the order data flows through it, so we can read the whole model at once. Each function and class below appears, word for word, in the section that built it.
 
-[`tests/test_complete_small_world.py`](../../tests/test_complete_small_world.py)
-checks three things: each piece appears in exactly one section, each
-section's code runs and prints what the book shows, and this file computes
-exactly what the library computes. The library adds input checks, mixed
-precision, checkpoint saving, and loading of the released checkpoint. Rows
-in the table follow the file's order:
+[`tests/test_complete_small_world.py`](https://github.com/nahidalam/world_model_from_scratch_private/tree/main/tests/test_complete_small_world.py) checks three things: each piece appears in exactly one section, each section's code runs and prints what the book shows, and this file computes exactly what the library computes. The library adds input checks, mixed precision, checkpoint saving, and loading of the released checkpoint. Rows in the table follow the file's order:
 
-| Part of the file | What it does | Section |
-|---|---|---|
-| `Config`, `PRESETS` | Model sizes | 4.1 |
-| `patchify`, `unpatchify` | Turn the latent into tokens and back | 4.2 |
-| `RMSNorm`, `rotary_angles`, `rotate`, `Attention` | Attention with token positions | 4.3 |
-| `timestep_features`, `TimeEmbedding`, `AdaptiveNorm`, `Block`, `WorldModel` | Predict velocity at any noise level | 4.5 |
-| `prefix_mask`, `training_loss` | Flow-matching loss on the frames to generate | 4.6 |
-| `sample` | Generate the future from noise | 4.7 |
-| `train` | Optimizer updates with gradient accumulation | 4.8 |
+| Part of the file                                                            | What it does                                 | Section |
+| --------------------------------------------------------------------------- | -------------------------------------------- | ------- |
+| `Config`, `PRESETS`                                                         | Model sizes                                  | 4.1     |
+| `patchify`, `unpatchify`                                                    | Turn the latent into tokens and back         | 4.2     |
+| `RMSNorm`, `rotary_angles`, `rotate`, `Attention`                           | Attention with token positions               | 4.3     |
+| `timestep_features`, `TimeEmbedding`, `AdaptiveNorm`, `Block`, `WorldModel` | Predict velocity at any noise level          | 4.5     |
+| `prefix_mask`, `training_loss`                                              | Flow-matching loss on the frames to generate | 4.6     |
+| `sample`                                                                    | Generate the future from noise               | 4.7     |
+| `train`                                                                     | Optimizer updates with gradient accumulation | 4.8     |
 
 Train the small preset on the latent cache from Section 4.8:
 
@@ -31,12 +23,9 @@ python -m world_models.complete_small_world \
   --steps 200
 ```
 
-The command prints the loss of the first and last update and the shape of
-one generated latent, `(1, 16, 5, 16, 16)`. The latent is normalized; the
-chapter's evaluation command decodes latents into frames with the frozen
-VAE.
+The command prints the loss of the first and last update and the shape of one generated latent, `(1, 16, 5, 16, 16)`. The latent is normalized; the chapter's evaluation command decodes latents into frames with the frozen VAE.
 
-[`src/world_models/complete_small_world.py`](../../src/world_models/complete_small_world.py):
+[`src/world_models/complete_small_world.py`](https://github.com/nahidalam/world_model_from_scratch_private/tree/main/src/world_models/complete_small_world.py):
 
 ```python
 """Chapter 4's small world model in one file.

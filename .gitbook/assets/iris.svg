@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="600" viewBox="0 0 1120 600" role="img" aria-labelledby="title desc">
+<title id="title">IRIS: make an environment sequence from discrete tokens</title>
+<desc id="desc">A discrete autoencoder maps a frame to image-token IDs. A causal Transformer consumes frame tokens and actions, then predicts next-frame tokens, reward, and termination. A decoder reconstructs frames for an actor.</desc>
+<rect width="1120" height="600" rx="16" fill="#f7f9fc"/>
+<g font-family="system-ui, -apple-system, sans-serif">
+<text x="32" y="42" font-size="24" fill="#14243b" font-weight="650" text-anchor="start">IRIS: make an environment sequence from discrete tokens</text>
+<text x="32" y="73" font-size="15" fill="#46566b" font-weight="400" text-anchor="start">One environment transition requires K token predictions for the next frame.</text>
+<rect x="32" y="116" width="208" height="112" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="136.0" y="145" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Frame xₜ</text>
+<text x="136.0" y="172" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">Atari pixels</text>
+<rect x="290" y="104" width="240" height="136" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="410.0" y="133" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Discrete autoencoder</text>
+<text x="410.0" y="160" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">64 × 64 → 4 × 4 token grid</text>
+<text x="410.0" y="182" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">16 IDs from a 512-word codebook</text>
+<rect x="590" y="92" width="300" height="160" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="740.0" y="121" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">GPT-like Transformer G</text>
+<text x="740.0" y="148" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">[16 frame tokens, action]</text>
+<text x="740.0" y="170" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">predict next 16 IDs in order</text>
+<text x="740.0" y="192" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">after action: reward and done</text>
+<rect x="938" y="116" width="150" height="112" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="1013.0" y="145" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Actor π</text>
+<text x="1013.0" y="172" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">reads decoded</text>
+<text x="1013.0" y="194" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">imagined frame</text>
+<path d="M240 172L290 172" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="290,172 280.0,168.0 280.0,176.0" fill="#68778b"/>
+<path d="M530 172L590 172" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="590,172 580.0,168.0 580.0,176.0" fill="#68778b"/>
+<text x="560.0" y="163.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">zₜ</text>
+<path d="M890 172L938 172" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="938,172 928.0,168.0 928.0,176.0" fill="#68778b"/>
+<text x="914.0" y="163.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">zₜ₊₁</text>
+<path d="M1013 228L1013 286" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="1013,286 1017.0,276.0 1009.0,276.0" fill="#68778b"/>
+<text x="1013.0" y="248.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">aₜ₊₁</text>
+<path d="M938 306L738 306" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="738,306 748.0,310.0 748.0,302.0" fill="#68778b"/>
+<path d="M738 306L738 263" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="738,263 734.0,273.0 742.0,273.0" fill="#68778b"/>
+<text x="32" y="310" font-size="16" fill="#14243b" font-weight="650" text-anchor="start">Transformer context</text>
+<rect x="32" y="334" width="210" height="76" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="137.0" y="363" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">z₀¹…z₀¹⁶</text>
+<rect x="256" y="334" width="100" height="76" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="306.0" y="363" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">a₀</text>
+<rect x="370" y="334" width="210" height="76" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="475.0" y="363" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">z₁¹…z₁¹⁶</text>
+<rect x="594" y="334" width="100" height="76" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="644.0" y="363" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">a₁</text>
+<rect x="708" y="334" width="210" height="76" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="813.0" y="363" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">z₂¹…</text>
+<rect x="32" y="466" width="320" height="90" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="192.0" y="495" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Token loss</text>
+<text x="192.0" y="522" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">cross-entropy for each next token</text>
+<rect x="400" y="466" width="320" height="90" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="560.0" y="495" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Transition outputs</text>
+<text x="560.0" y="522" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">reward class + termination bit</text>
+<rect x="768" y="466" width="320" height="90" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="928.0" y="495" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Behavior learning</text>
+<text x="928.0" y="522" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">actor-critic on imagined episodes</text>
+</g></svg>

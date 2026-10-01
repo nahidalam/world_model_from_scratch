@@ -1,7 +1,6 @@
 # 2.4 Load the Model and Generate a Rollout
 
-Readers with the GPU setup can generate the rollout below. The included figure
-and explorer show the result without requiring local generation.
+Readers with the GPU setup can generate the rollout below. The included figure and explorer show the result without requiring local generation.
 
 ## Load the Pipeline
 
@@ -30,8 +29,7 @@ pipeline = Cosmos2_5_PredictBasePipeline.from_pretrained(
 engine = RolloutEngine(CosmosBackend(pipeline, spec))
 ```
 
-`CosmosBackend` adapts the Diffusers pipeline to the frame format used in this
-chapter. `RolloutEngine` provides the generation interface used below.
+`CosmosBackend` adapts the Diffusers pipeline to the frame format used in this chapter. `RolloutEngine` provides the generation interface used below.
 
 ## Generate One Future
 
@@ -57,15 +55,14 @@ print(future.frames.shape)
 
 The output is:
 
-```text
+```
 (29, 704, 1280, 3)
 ```
 
 This rollout took about two minutes on the NVIDIA A40.
 
-![](../../figures/chapter_02/filmstrip_seed0.png)
+![](../../.gitbook/assets/filmstrip_seed0.png)
 
-*Figure 2.1: Six generated frames sampled in temporal order from the first
-rollout.*
+_Figure 2.1: Six generated frames sampled in temporal order from the first rollout._
 
 [Open the first rollout in a new tab](https://nahidalam.github.io/world_model_from_scratch/interactive/chapter_02/rollout_explorer.html#observation).

@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="690" viewBox="0 0 1120 690" role="img" aria-labelledby="title desc">
+<title id="title">Dreamer 4: continuous video tokens and shortcut dynamics</title>
+<desc id="desc">A causal masked-autoencoder tokenizer compresses video. A block-causal Transformer consumes representations, actions, register tokens, and shortcut controls, predicts clean future representations, and supplies agent heads.</desc>
+<rect width="1120" height="690" rx="16" fill="#f7f9fc"/>
+<g font-family="system-ui, -apple-system, sans-serif">
+<text x="32" y="42" font-size="24" fill="#14243b" font-weight="650" text-anchor="start">Dreamer 4: continuous video tokens and shortcut dynamics</text>
+<text x="32" y="73" font-size="15" fill="#46566b" font-weight="400" text-anchor="start">Both the tokenizer and dynamics model use block-causal Transformers.</text>
+<rect x="32" y="105" width="235" height="142" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="149.5" y="134" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Causal tokenizer</text>
+<text x="149.5" y="161" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">image patches + latent tokens</text>
+<text x="149.5" y="183" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">masked-autoencoder training</text>
+<text x="149.5" y="205" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">continuous tanh bottleneck</text>
+<rect x="326" y="91" width="460" height="170" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="556.0" y="120" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Interactive dynamics Transformer</text>
+<text x="556.0" y="147" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">spatial attention every layer</text>
+<text x="556.0" y="169" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">temporal attention every fourth layer</text>
+<text x="556.0" y="191" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">grouped-query attention</text>
+<text x="556.0" y="213" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">predict clean representation z₁</text>
+<rect x="846" y="105" width="242" height="142" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="967.0" y="134" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Causal decoder</text>
+<text x="967.0" y="161" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">latent → image patches</text>
+<text x="967.0" y="183" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">one frame at a time</text>
+<path d="M267 176L326 176" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="326,176 316.0,172.0 316.0,180.0" fill="#68778b"/>
+<text x="296.5" y="167.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">zₜ</text>
+<path d="M786 176L846 176" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="846,176 836.0,172.0 836.0,180.0" fill="#68778b"/>
+<text x="816.0" y="167.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">ẑₜ₊₁</text>
+<rect x="32" y="310" width="235" height="122" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="149.5" y="339" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Action tokens</text>
+<text x="149.5" y="366" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">keyboard / mouse / control</text>
+<text x="149.5" y="388" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">one encoder per component</text>
+<rect x="326" y="297" width="220" height="148" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="436.0" y="326" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Shortcut controls</text>
+<text x="436.0" y="353" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">signal level τ</text>
+<text x="436.0" y="375" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">step size d</text>
+<text x="436.0" y="397" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">4 network calls per frame</text>
+<rect x="606" y="297" width="180" height="148" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="696.0" y="326" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Registers</text>
+<text x="696.0" y="353" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">learned tokens</text>
+<text x="696.0" y="375" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">extra capacity</text>
+<path d="M267 371L316 240" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="316,240 308.7501114942876,247.96486764828762 316.24309290847555,250.76758588718235" fill="#68778b"/>
+<path d="M436 297L500 270" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="500,270 489.2315563687995,270.2015484102096 492.3411604120339,277.5724616978763" fill="#68778b"/>
+<path d="M696 297L650 270" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="650,270 656.5993555631484,278.5116688229243 660.6489601132622,271.61234255236013" fill="#68778b"/>
+<rect x="846" y="297" width="242" height="148" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="967.0" y="326" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Task / agent tokens</text>
+<text x="967.0" y="353" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">read world-model tokens</text>
+<text x="967.0" y="375" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">policy, reward, value heads</text>
+<text x="967.0" y="397" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">one-way attention</text>
+<path d="M786 240L846 340" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="846,340 844.2850141485749,329.3670877211644 837.4250707428746,333.48305376458467" fill="#68778b"/>
+<text x="967" y="472" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">world-model tokens cannot read task tokens</text>
+<rect x="32" y="505" width="320" height="108" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="192.0" y="534" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Tokenizer phase</text>
+<text x="192.0" y="561" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">pixels → compact continuous z</text>
+<text x="192.0" y="583" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">MSE + 0.2 LPIPS</text>
+<rect x="400" y="505" width="320" height="108" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="560.0" y="534" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Dynamics phase</text>
+<text x="560.0" y="561" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">x-prediction + shortcut bootstrap</text>
+<text x="560.0" y="583" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">action-conditioned future z</text>
+<rect x="768" y="505" width="320" height="108" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="928.0" y="534" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Agent phases</text>
+<text x="928.0" y="561" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">behavior cloning + reward</text>
+<text x="928.0" y="583" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">RL in imagined trajectories</text>
+<text x="32" y="660" font-size="15" fill="#46566b" font-weight="400" text-anchor="start">Causal direction: earlier frames → later frames. Control direction: task → policy → action → dynamics.</text>
+</g></svg>

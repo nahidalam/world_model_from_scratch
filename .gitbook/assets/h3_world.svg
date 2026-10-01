@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="960" viewBox="0 0 1120 960" role="img" aria-labelledby="title desc">
+<title id="title">H3-World: route one language action to each video interval</title>
+<desc id="desc">H3-World pools keyboard controls into 37 latent-level states, converts each state into character and camera text, packs those action spans with an initial-frame condition and noisy video latents, and uses single-egress attention routing plus LoRA to adapt the frozen 33B MiniMax-H3 backbone.</desc>
+<rect width="1120" height="960" rx="16" fill="#f7f9fc"/>
+<g font-family="system-ui, -apple-system, sans-serif">
+<text x="32" y="42" font-size="24" fill="#14243b" font-weight="650" text-anchor="start">H3-World: route one language action to each video interval</text>
+<text x="32" y="73" font-size="14" fill="#d45b2d" font-weight="700" text-anchor="start">ACTION TEXT · Convert recorded controls into one instruction for each H3 video-latent interval.</text>
+<rect x="32" y="96" width="172" height="138" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="118.0" y="125" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Latent control</text>
+<text x="118.0" y="152" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">eight recorded keys</text>
+<text x="118.0" y="174" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">+ F from yaw rate</text>
+<text x="118.0" y="196" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">37 interval states</text>
+<rect x="236" y="96" width="184" height="138" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="328.0" y="125" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Latent action aₖ</text>
+<text x="328.0" y="152" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">pool each interval</text>
+<text x="328.0" y="174" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">cancel opposing keys</text>
+<text x="328.0" y="196" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">character uₖ + camera cₖ</text>
+<rect x="452" y="96" width="276" height="138" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="590.0" y="125" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Text template pₖ</text>
+<text x="590.0" y="152" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">the man walks forward,</text>
+<text x="590.0" y="174" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">camera pans right slowly</text>
+<text x="590.0" y="196" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">9 character × 16 camera clauses</text>
+<rect x="760" y="96" width="328" height="138" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="924.0" y="125" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Action span Aₖ</text>
+<text x="924.0" y="152" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">shared H3 encoder E</text>
+<text x="924.0" y="174" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">two-layer token refiner R</text>
+<text x="924.0" y="196" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">Aₖ = R(E(pₖ))</text>
+<path d="M204 165L236 165" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="236,165 226.0,161.0 226.0,169.0" fill="#68778b"/>
+<path d="M420 165L452 165" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="452,165 442.0,161.0 442.0,169.0" fill="#68778b"/>
+<path d="M728 165L760 165" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="760,165 750.0,161.0 750.0,169.0" fill="#68778b"/>
+<path d="M32 274L1088 274" stroke="#c3cfdd" stroke-width="1.5"/>
+<text x="32" y="310" font-size="14" fill="#7654c4" font-weight="700" text-anchor="start">PACK AND ROUTE · released layout = [S; A₁; …; A₃₇; C₀; U; V₁; …; V₃₇; P]</text>
+<rect x="32" y="334" width="176" height="112" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="120.0" y="363" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Static S</text>
+<text x="120.0" y="390" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">scene text + I₀</text>
+<text x="120.0" y="412" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">H3 multimodal encoder</text>
+<rect x="226" y="322" width="292" height="136" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="372.0" y="351" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Action spans A₁ … A₃₇</text>
+<text x="372.0" y="378" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">encoded independently</text>
+<text x="372.0" y="400" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">block-diagonal refiner</text>
+<text x="372.0" y="422" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">τ(Aₖ) = τ(Vₖ) − Δ</text>
+<rect x="536" y="334" width="176" height="112" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="624.0" y="363" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">C₀ + audio U</text>
+<text x="624.0" y="390" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">first-frame VAE rows</text>
+<text x="624.0" y="412" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">native H3 audio rows</text>
+<rect x="730" y="322" width="278" height="136" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="869.0" y="351" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Noisy video V₁ … V₃₇</text>
+<text x="869.0" y="378" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">124 target frames</text>
+<text x="869.0" y="400" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">joint full-horizon denoising</text>
+<text x="869.0" y="422" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">bidirectional video attention</text>
+<rect x="1026" y="334" width="62" height="112" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="1057.0" y="363" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">P</text>
+<text x="1057.0" y="390" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">pad</text>
+<rect x="32" y="500" width="650" height="142" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="357.0" y="529" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Single-egress attention mask</text>
+<text x="357.0" y="556" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">only Aₖ and its matched Vₖ can read Aₖ</text>
+<text x="357.0" y="578" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">Aₖ reads S, C₀, native audio, itself, and Vₖ</text>
+<text x="357.0" y="600" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">unmatched Aⱼ and Vⱼ stay outside Aₖ&#x27;s routes</text>
+<text x="357.0" y="622" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">every Vᵢ ↔ Vⱼ route remains bidirectional</text>
+<rect x="730" y="500" width="358" height="142" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="909.0" y="529" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Frozen MiniMax-H3</text>
+<text x="909.0" y="556" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">33B packed single-stream Transformer</text>
+<text x="909.0" y="578" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">process S, A, C₀, V, audio, and padding</text>
+<text x="909.0" y="600" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">retain native full-horizon attention</text>
+<text x="909.0" y="622" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">predict the native H3 denoising target</text>
+<path d="M372 458 L372 480 L357 500" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="357,500 366.2,494.4 359.8,489.6" fill="#68778b"/>
+<path d="M869 458 L869 500" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="869,500 873.0,490.0 865.0,490.0" fill="#68778b"/>
+<path d="M682 571L730 571" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="730,571 720.0,567.0 720.0,575.0" fill="#68778b"/>
+<text x="706.0" y="562.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">mask</text>
+<path d="M32 682L1088 682" stroke="#c3cfdd" stroke-width="1.5"/>
+<text x="32" y="718" font-size="14" fill="#328554" font-weight="700" text-anchor="start">ADAPT AND GENERATE · Train a small control interface and preserve the pretrained generator.</text>
+<rect x="32" y="744" width="230" height="148" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="147.0" y="773" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Gameplay clips</text>
+<text x="147.0" y="800" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">7,872 train + 128 held out</text>
+<text x="147.0" y="822" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">832 × 480</text>
+<text x="147.0" y="844" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">124 frames at 24 fps</text>
+<text x="147.0" y="866" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">37 action prompts</text>
+<rect x="294" y="744" width="250" height="148" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="419.0" y="773" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Trainable control</text>
+<text x="419.0" y="800" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">rank-32 LoRA</text>
+<text x="419.0" y="822" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">QKV + output projections</text>
+<text x="419.0" y="844" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">50 main + 2 refiner blocks</text>
+<text x="419.0" y="866" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">65.6M = 0.199%</text>
+<rect x="576" y="744" width="220" height="148" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="686.0" y="773" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Training</text>
+<text x="686.0" y="800" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">native H3 denoising loss</text>
+<text x="686.0" y="822" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">10,000 updates</text>
+<text x="686.0" y="844" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">all base weights frozen</text>
+<rect x="828" y="744" width="260" height="148" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="958.0" y="773" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Generated segment</text>
+<text x="958.0" y="800" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">frozen VAE decoder</text>
+<text x="958.0" y="822" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">124 frames · 5.2 seconds</text>
+<text x="958.0" y="844" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">50 denoising steps</text>
+<text x="958.0" y="866" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">fixed action schedule</text>
+<path d="M262 818L294 818" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="294,818 284.0,814.0 284.0,822.0" fill="#68778b"/>
+<path d="M544 818L576 818" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="576,818 566.0,814.0 566.0,822.0" fill="#68778b"/>
+<path d="M796 818L828 818" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="828,818 818.0,814.0 818.0,822.0" fill="#68778b"/>
+<text x="32" y="934" font-size="14" fill="#46566b" font-weight="400" text-anchor="start">Reported experiment: 124 frames conditioned on one complete 37-action schedule.</text>
+</g></svg>

@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="694" viewBox="0 0 1120 694" role="img" aria-labelledby="title desc">
+<title id="title">Cosmos-Predict2.5 architecture</title>
+<desc id="desc">An optional image or video is encoded by the Wan2.1 VAE into observed latents. A prompt is encoded by Cosmos-Reason1 for text cross-attention. Noisy video latents, the observed prefix, and a condition mask pass through patch embedding and the released 2B model&#x27;s 28-block diffusion Transformer. The Transformer uses video self-attention, text cross-attention, and noise-level conditioning to predict latent velocity. A sampler repeatedly updates the latents before the VAE decoder produces the video.</desc>
+<rect width="1120" height="694" rx="16" fill="#f7f9fc"/>
+<g font-family="system-ui, -apple-system, sans-serif">
+<rect x="32" y="32" width="180" height="100" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="122.0" y="61" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Observation</text>
+<text x="122.0" y="88" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">optional image or video</text>
+<rect x="260" y="32" width="210" height="100" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="365.0" y="61" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Wan2.1 VAE encoder</text>
+<text x="365.0" y="88" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">compress video frames</text>
+<rect x="518" y="32" width="210" height="100" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="623.0" y="61" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Observed latents</text>
+<text x="623.0" y="88" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">condition the continuation</text>
+<path d="M212 82L260 82" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="260,82 250.0,78.0 250.0,86.0" fill="#68778b"/>
+<path d="M470 82L518 82" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="518,82 508.0,78.0 508.0,86.0" fill="#68778b"/>
+<rect x="826" y="32" width="262" height="70" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="957.0" y="61" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Prompt</text>
+<text x="957.0" y="88" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">describe the scene and motion</text>
+<rect x="826" y="150" width="262" height="105" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="957.0" y="179" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Cosmos-Reason1</text>
+<text x="957.0" y="206" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">text encoder</text>
+<text x="957.0" y="228" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">provides text features</text>
+<path d="M957 102L957 150" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="957,150 961.0,140.0 953.0,140.0" fill="#68778b"/>
+<rect x="32" y="340" width="225" height="135" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="144.5" y="369" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Video latents</text>
+<text x="144.5" y="396" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">sampled noise</text>
+<text x="144.5" y="418" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">observed prefix and mask</text>
+<rect x="300" y="350" width="215" height="115" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="407.5" y="379" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Patch embedding</text>
+<text x="407.5" y="406" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">small spatial patches</text>
+<text x="407.5" y="428" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">1 × 2 × 2</text>
+<rect x="558" y="325" width="296" height="180" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="706.0" y="354" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Diffusion Transformer</text>
+<text x="706.0" y="381" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">28 blocks in the released 2B</text>
+<text x="706.0" y="403" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">video self-attention</text>
+<text x="706.0" y="425" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">text cross-attention</text>
+<text x="706.0" y="447" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">feed-forward network</text>
+<rect x="900" y="350" width="188" height="115" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="994.0" y="379" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Predicted velocity</text>
+<text x="994.0" y="406" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">latent update direction</text>
+<rect x="518" y="220" width="210" height="66" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="623.0" y="249" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Noise level</text>
+<text x="623.0" y="276" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">conditions each block</text>
+<path d="M623 132 L623 190 L144 190 L144 340" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="144,340 148.0,330.0 140.0,330.0" fill="#68778b"/>
+<path d="M957 255 L957 300 L795 300 L795 325" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="795,325 799.0,315.0 791.0,315.0" fill="#68778b"/>
+<path d="M623 286L623 325" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="623,325 627.0,315.0 619.0,315.0" fill="#68778b"/>
+<path d="M257 407L300 407" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="300,407 290.0,403.0 290.0,411.0" fill="#68778b"/>
+<path d="M515 407L558 407" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="558,407 548.0,403.0 548.0,411.0" fill="#68778b"/>
+<path d="M854 407L900 407" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="900,407 890.0,403.0 890.0,411.0" fill="#68778b"/>
+<rect x="370" y="550" width="258" height="108" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="499.0" y="579" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Flow sampler</text>
+<text x="499.0" y="606" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">update the noisy latents</text>
+<text x="499.0" y="628" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">repeat at the next noise level</text>
+<rect x="684" y="550" width="216" height="108" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="792.0" y="579" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Wan2.1 VAE decoder</text>
+<text x="792.0" y="606" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">decode the final latents</text>
+<rect x="952" y="568" width="136" height="74" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="1020.0" y="597" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Video</text>
+<text x="1020.0" y="624" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">RGB frames</text>
+<path d="M994 465 L994 530 L499 530 L499 550" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="499,550 503.0,540.0 495.0,540.0" fill="#68778b"/>
+<path d="M370 604 L144 604 L144 475" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="144,475 140.0,485.0 148.0,485.0" fill="#68778b"/>
+<text x="254" y="596" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">updated latents</text>
+<path d="M628 604L684 604" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="684,604 674.0,600.0 674.0,608.0" fill="#68778b"/>
+<text x="656.0" y="595.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">final</text>
+<path d="M900 604L952 604" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="952,604 942.0,600.0 942.0,608.0" fill="#68778b"/>
+</g></svg>

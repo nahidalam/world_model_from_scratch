@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="900" viewBox="0 0 1120 900" role="img" aria-labelledby="title desc">
+<title id="title">V-JEPA 2 and V-JEPA 2-AC: two training stages</title>
+<desc id="desc">Stage one trains a video encoder by matching masked predictions to an EMA target encoder. Stage two freezes the encoder and trains an action-conditioned predictor. CEM selects robot actions by comparing predicted and goal features.</desc>
+<rect width="1120" height="900" rx="16" fill="#f7f9fc"/>
+<g font-family="system-ui, -apple-system, sans-serif">
+<text x="32" y="42" font-size="24" fill="#14243b" font-weight="650" text-anchor="start">V-JEPA 2 and V-JEPA 2-AC: two training stages</text>
+<text x="32" y="73" font-size="15" fill="#46566b" font-weight="400" text-anchor="start">Stage 1 learns visual state from video. Stage 2 learns how robot actions change that state.</text>
+<text x="32" y="111" font-size="14" fill="#2677d4" font-weight="700" text-anchor="start">STAGE 1 · ACTION-FREE VIDEO PRETRAINING</text>
+<rect x="32" y="132" width="174" height="102" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="119.0" y="161" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Masked clip</text>
+<text x="119.0" y="188" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">visible tubelets</text>
+<text x="119.0" y="210" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">2 × 16 × 16</text>
+<rect x="32" y="278" width="174" height="102" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="119.0" y="307" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Full clip</text>
+<text x="119.0" y="334" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">all tubelets</text>
+<rect x="252" y="125" width="220" height="116" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="362.0" y="154" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Context ViT-g/16</text>
+<text x="362.0" y="181" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">visible representations</text>
+<text x="362.0" y="203" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">updated by gradient</text>
+<rect x="252" y="271" width="220" height="116" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="362.0" y="300" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">EMA target ViT-g/16</text>
+<text x="362.0" y="327" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">hidden target features</text>
+<text x="362.0" y="349" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">updated by moving average</text>
+<rect x="536" y="125" width="244" height="126" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="658.0" y="154" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Small predictor</text>
+<text x="658.0" y="181" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">context + mask tokens</text>
+<text x="658.0" y="203" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">predict hidden features</text>
+<text x="658.0" y="225" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">12 blocks · width 384</text>
+<rect x="850" y="196" width="226" height="112" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="963.0" y="225" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Masked L1 loss</text>
+<text x="963.0" y="252" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">prediction ↔ target</text>
+<text x="963.0" y="274" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">train context + predictor</text>
+<path d="M206 183L252 183" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="252,183 242.0,179.0 242.0,187.0" fill="#68778b"/>
+<path d="M206 329L252 329" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="252,329 242.0,325.0 242.0,333.0" fill="#68778b"/>
+<path d="M472 183L536 183" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="536,183 526.0,179.0 526.0,187.0" fill="#68778b"/>
+<path d="M780 188L850 232" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="850,232 843.6623206887633,223.2917383509725 839.4049483270165,230.06483074466055" fill="#68778b"/>
+<text x="815.0" y="201.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">prediction</text>
+<path d="M472 329L850 275" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="850,275 839.5348196384391,272.4544155877284 840.6661904883376,280.3740115370178" fill="#68778b"/>
+<text x="661.0" y="293.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">EMA target</text>
+<path d="M362 241L362 271" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="362,271 366.0,261.0 358.0,261.0" fill="#68778b"/>
+<text x="362.0" y="247.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">EMA</text>
+<path d="M32 428L1088 428" stroke="#c3cfdd" stroke-width="1.5"/>
+<text x="32" y="462" font-size="14" fill="#7654c4" font-weight="700" text-anchor="start">STAGE 2 · ACTION-CONDITIONED ROBOT POST-TRAINING</text>
+<rect x="32" y="493" width="174" height="96" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="119.0" y="522" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Current frame</text>
+<text x="119.0" y="549" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">robot camera image</text>
+<rect x="32" y="695" width="174" height="96" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="119.0" y="724" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Goal frame</text>
+<text x="119.0" y="751" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">desired final view</text>
+<rect x="250" y="482" width="216" height="118" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="358.0" y="511" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Frozen ViT-g/16</text>
+<text x="358.0" y="538" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">per-frame encoding</text>
+<text x="358.0" y="560" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">16 × 16 × 1,408</text>
+<rect x="250" y="684" width="216" height="118" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="358.0" y="713" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Same frozen encoder</text>
+<text x="358.0" y="740" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">goal feature map</text>
+<rect x="526" y="480" width="270" height="138" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="661.0" y="509" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">V-JEPA 2-AC predictor</text>
+<text x="661.0" y="536" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">24 blocks · width 1,024</text>
+<text x="661.0" y="558" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">256 visual + state + action</text>
+<text x="661.0" y="580" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">predict next feature map</text>
+<rect x="526" y="684" width="270" height="118" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="661.0" y="713" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Robot inputs</text>
+<text x="661.0" y="740" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">7D end-effector state</text>
+<text x="661.0" y="762" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">7D candidate actions</text>
+<rect x="856" y="528" width="220" height="126" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="966.0" y="557" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">L1 energy + CEM</text>
+<text x="966.0" y="584" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">compare terminal features</text>
+<text x="966.0" y="606" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">keep low-energy actions</text>
+<text x="966.0" y="628" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">execute one, then replan</text>
+<path d="M206 541L250 541" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="250,541 240.0,537.0 240.0,545.0" fill="#68778b"/>
+<path d="M466 541L526 541" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="526,541 516.0,537.0 516.0,545.0" fill="#68778b"/>
+<text x="496.0" y="532.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">current features</text>
+<path d="M206 743L250 743" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="250,743 240.0,739.0 240.0,747.0" fill="#68778b"/>
+<path d="M466 743 L492 743 L492 826 L830 826 L966 654" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="966,654 956.6599817933886,659.3632135795776 962.9353065259556,664.32509825184" fill="#68778b"/>
+<text x="650" y="821" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">goal features</text>
+<path d="M796 549L856 573" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="856,573 848.2007957965639,565.572186472918 845.229670385731,573.0" fill="#68778b"/>
+<text x="826.0" y="552.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">predicted future</text>
+<path d="M661 684L661 618" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="661,618 657.0,628.0 665.0,628.0" fill="#68778b"/>
+<text x="32" y="861" font-size="15" fill="#46566b" font-weight="400" text-anchor="start">The pretrained video encoder stays frozen during Stage 2; only the action-conditioned predictor learns from robot trajectories.</text>
+</g></svg>

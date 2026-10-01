@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="870" viewBox="0 0 1120 870" role="img" aria-labelledby="title desc">
+<title id="title">LeWM: learn one compact state, keep it spread out, then plan</title>
+<desc id="desc">LeWM trains a ViT encoder and an action-conditioned causal predictor together with next-state MSE and SIGReg, then freezes both and uses CEM to plan toward an encoded goal.</desc>
+<rect width="1120" height="870" rx="16" fill="#f7f9fc"/>
+<g font-family="system-ui, -apple-system, sans-serif">
+<text x="32" y="42" font-size="24" fill="#14243b" font-weight="650" text-anchor="start">LeWM: learn one compact state, keep it spread out, then plan</text>
+<text x="32" y="73" font-size="14" fill="#7654c4" font-weight="700" text-anchor="start">TRAINING · The loss backpropagates through both the context and target branches of the shared encoder.</text>
+<rect x="32" y="108" width="168" height="112" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="116.0" y="137" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">RGB frames</text>
+<text x="116.0" y="164" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">[B,T,3,224,224]</text>
+<rect x="246" y="96" width="210" height="136" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="351.0" y="125" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">ViT-Tiny encoder</text>
+<text x="351.0" y="152" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">16 × 16 patches</text>
+<text x="351.0" y="174" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">keep final CLS token</text>
+<text x="351.0" y="196" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">project to 192 values</text>
+<rect x="506" y="108" width="166" height="112" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="589.0" y="137" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">States z</text>
+<text x="589.0" y="164" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">[B,T,192]</text>
+<text x="589.0" y="186" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">learned from scratch</text>
+<rect x="730" y="96" width="224" height="136" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="842.0" y="125" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Causal predictor</text>
+<text x="842.0" y="152" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">6 Transformer layers</text>
+<text x="842.0" y="174" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">actions through AdaLN</text>
+<text x="842.0" y="196" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">prediction MLP head</text>
+<text x="842.0" y="218" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">predict ẑₜ₊₁</text>
+<rect x="994" y="108" width="94" height="112" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="1041.0" y="137" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Next ẑ</text>
+<text x="1041.0" y="164" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">192</text>
+<text x="1041.0" y="186" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">values</text>
+<path d="M200 164L246 164" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="246,164 236.0,160.0 236.0,168.0" fill="#68778b"/>
+<path d="M456 164L506 164" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="506,164 496.0,160.0 496.0,168.0" fill="#68778b"/>
+<path d="M672 164L730 164" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="730,164 720.0,160.0 720.0,168.0" fill="#68778b"/>
+<text x="701.0" y="155.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">history</text>
+<path d="M954 164L994 164" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="994,164 984.0,160.0 984.0,168.0" fill="#68778b"/>
+<rect x="506" y="288" width="166" height="100" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="589.0" y="317" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Actions</text>
+<text x="589.0" y="344" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">embed recorded controls</text>
+<path d="M672 338L790 232" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="790,232 779.8877209492932,235.70699506347606 785.2338634898165,241.6583612878322" fill="#68778b"/>
+<text x="731.0" y="276.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">AdaLN</text>
+<rect x="246" y="288" width="210" height="112" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="351.0" y="317" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">SIGReg (LeJEPA)</text>
+<text x="351.0" y="344" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">random 1D projections</text>
+<text x="351.0" y="366" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">match N(0,1)</text>
+<text x="351.0" y="388" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">penalizes constant states</text>
+<path d="M589 220 L589 260 L351 260 L351 288" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="351,288 355.0,278.0 347.0,278.0" fill="#68778b"/>
+<text x="464" y="253" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">all z</text>
+<rect x="730" y="288" width="358" height="112" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="909.0" y="317" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Two-term objective</text>
+<text x="909.0" y="344" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">MSE(ẑₜ₊₁, zₜ₊₁) + λ SIGReg(Z)</text>
+<text x="909.0" y="366" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">update encoder + predictor together</text>
+<path d="M351 400 L351 430 L710 430 L710 356 L730 356" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="730,356 720.0,352.0 720.0,360.0" fill="#68778b"/>
+<text x="530" y="424" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">regularizer</text>
+<path d="M640 220 L700 256 L805 288" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="805,288 796.6004616198517,281.25850498773343 794.2682687507432,288.91101283949547" fill="#68778b"/>
+<text x="727" y="251" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">live target zₜ₊₁</text>
+<path d="M1041 220 L1041 260 L990 288" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="990,288 1000.6908207565668,286.6937260811912 996.8407502590251,279.6810976749544" fill="#68778b"/>
+<text x="1025" y="252" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">prediction ẑₜ₊₁</text>
+<path d="M32 458L1088 458" stroke="#c3cfdd" stroke-width="1.5"/>
+<text x="32" y="494" font-size="14" fill="#328554" font-weight="700" text-anchor="start">PLANNING · Freeze the learned state and dynamics; optimize actions against a goal image.</text>
+<rect x="32" y="532" width="180" height="126" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="122.0" y="561" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Current + goal</text>
+<text x="122.0" y="588" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">camera image o₀</text>
+<text x="122.0" y="610" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">goal image oᵍ</text>
+<rect x="260" y="532" width="196" height="126" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="358.0" y="561" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Frozen encoder</text>
+<text x="358.0" y="588" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">z₀ and zᵍ</text>
+<text x="358.0" y="610" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">one projected token each</text>
+<rect x="504" y="522" width="196" height="146" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="602.0" y="551" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">CEM</text>
+<text x="602.0" y="578" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">sample 300 plans</text>
+<text x="602.0" y="600" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">keep 30 elites</text>
+<text x="602.0" y="622" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">refit action Gaussian</text>
+<rect x="748" y="522" width="196" height="146" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="846.0" y="551" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Latent rollout</text>
+<text x="846.0" y="578" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">causal predictor</text>
+<text x="846.0" y="600" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">five model steps</text>
+<text x="846.0" y="622" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">25 environment actions</text>
+<text x="846.0" y="644" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">terminal ẑH</text>
+<rect x="992" y="532" width="96" height="126" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="1040.0" y="561" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Cost</text>
+<text x="1040.0" y="588" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">||ẑH−zᵍ||²</text>
+<text x="1040.0" y="610" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">keep low</text>
+<path d="M212 595L260 595" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="260,595 250.0,591.0 250.0,599.0" fill="#68778b"/>
+<path d="M456 595L504 595" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="504,595 494.0,591.0 494.0,599.0" fill="#68778b"/>
+<text x="480.0" y="586.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">z₀, zᵍ</text>
+<path d="M700 595L748 595" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="748,595 738.0,591.0 738.0,599.0" fill="#68778b"/>
+<text x="724.0" y="586.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">actions</text>
+<path d="M944 595L992 595" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="992,595 982.0,591.0 982.0,599.0" fill="#68778b"/>
+<path d="M1040 658 L1040 726 L602 726 L602 668" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="602,668 598.0,678.0 606.0,678.0" fill="#68778b"/>
+<text x="822" y="748" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">update candidate distribution</text>
+<rect x="32" y="782" width="320" height="70" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="192.0" y="811" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">State</text>
+<text x="192.0" y="838" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">single projected 192D CLS embedding</text>
+<rect x="400" y="782" width="320" height="70" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="560.0" y="811" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Prediction</text>
+<text x="560.0" y="838" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">deterministic next embedding</text>
+<rect x="768" y="782" width="320" height="70" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="928.0" y="811" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Decision</text>
+<text x="928.0" y="838" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">execute 5 steps, observe, replan</text>
+</g></svg>

@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="600" viewBox="0 0 1120 600" role="img" aria-labelledby="title desc">
+<title id="title">MuZero: predict what tree search consumes</title>
+<desc id="desc">The representation network creates a hidden state. Recurrent dynamics consumes an action and predicts reward plus a next hidden state. A prediction network produces policy and value for tree search.</desc>
+<rect width="1120" height="600" rx="16" fill="#f7f9fc"/>
+<g font-family="system-ui, -apple-system, sans-serif">
+<text x="32" y="42" font-size="24" fill="#14243b" font-weight="650" text-anchor="start">MuZero: predict what tree search consumes</text>
+<text x="32" y="73" font-size="15" fill="#46566b" font-weight="400" text-anchor="start">The hidden state supports planning without a pixel decoder or a next-observation loss.</text>
+<rect x="32" y="115" width="218" height="118" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="141.0" y="144" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Observation history</text>
+<text x="141.0" y="171" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">latest stacked frames</text>
+<rect x="305" y="105" width="240" height="138" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="425.0" y="134" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Representation h</text>
+<text x="425.0" y="161" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">history → hidden state s⁰</text>
+<text x="425.0" y="183" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">root of search</text>
+<rect x="605" y="105" width="240" height="138" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="725.0" y="134" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Dynamics g</text>
+<text x="725.0" y="161" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">sᵏ, aᵏ → sᵏ⁺¹</text>
+<text x="725.0" y="183" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">predict reward rᵏ</text>
+<rect x="605" y="310" width="240" height="138" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="725.0" y="339" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Prediction f</text>
+<text x="725.0" y="366" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">sᵏ → policy pᵏ</text>
+<text x="725.0" y="388" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">sᵏ → value vᵏ</text>
+<rect x="900" y="270" width="188" height="116" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="994.0" y="299" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">MCTS</text>
+<text x="994.0" y="326" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">expand actions</text>
+<text x="994.0" y="348" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">back up values</text>
+<path d="M250 174L305 174" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="305,174 295.0,170.0 295.0,178.0" fill="#68778b"/>
+<path d="M545 174L605 174" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="605,174 595.0,170.0 595.0,178.0" fill="#68778b"/>
+<text x="575.0" y="165.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">s⁰</text>
+<path d="M725 243L725 310" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="725,310 729.0,300.0 721.0,300.0" fill="#68778b"/>
+<text x="725.0" y="267.5" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">sᵏ</text>
+<path d="M845 360L900 330" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="900,330 889.3056357481339,331.2769390151482 893.1364527935784,338.30010359846324" fill="#68778b"/>
+<text x="872.5" y="336.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">pᵏ, vᵏ</text>
+<path d="M994 270L994 174" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="994,174 990.0,184.0 998.0,184.0" fill="#68778b"/>
+<text x="994.0" y="213.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">choose aᵏ</text>
+<path d="M994 174L856 174" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="856,174 866.0,178.0 866.0,170.0" fill="#68778b"/>
+<path d="M725 105L725 82" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="725,82 721.0,92.0 729.0,92.0" fill="#68778b"/>
+<path d="M725 82L575 82" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="575,82 585.0,86.0 585.0,78.0" fill="#68778b"/>
+<text x="570" y="86" font-size="13" fill="#46566b" font-weight="400" text-anchor="end">repeat down a search branch</text>
+<rect x="32" y="475" width="320" height="80" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="192.0" y="504" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Targets from played games</text>
+<text x="192.0" y="531" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">rewards · search policy · returns</text>
+<rect x="400" y="475" width="320" height="80" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="560.0" y="504" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Unroll several actions</text>
+<text x="560.0" y="531" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">loss at every recurrent state</text>
+<rect x="768" y="475" width="320" height="80" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="928.0" y="504" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Use only the root action</text>
+<text x="928.0" y="531" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">replan after the next real observation</text>
+</g></svg>

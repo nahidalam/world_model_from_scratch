@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="560" viewBox="0 0 1120 560" role="img" aria-labelledby="title desc">
+<title id="title">World Models (2018): three separately trained modules</title>
+<desc id="desc">A VAE compresses each image, an MDN-RNN predicts a distribution over the next latent, and a controller maps the current latent and recurrent memory to an action.</desc>
+<rect width="1120" height="560" rx="16" fill="#f7f9fc"/>
+<g font-family="system-ui, -apple-system, sans-serif">
+<text x="32" y="42" font-size="24" fill="#14243b" font-weight="650" text-anchor="start">World Models (2018): three separately trained modules</text>
+<text x="32" y="73" font-size="15" fill="#46566b" font-weight="400" text-anchor="start">The controller never reads pixels. It acts from the VAE latent and the RNN memory.</text>
+<rect x="32" y="126" width="190" height="100" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="127.0" y="155" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">RGB frame xₜ</text>
+<text x="127.0" y="182" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">64 × 64 × 3</text>
+<rect x="274" y="112" width="220" height="128" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="384.0" y="141" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">VAE encoder</text>
+<text x="384.0" y="168" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">q(zₜ | xₜ)</text>
+<text x="384.0" y="190" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">32 latent values</text>
+<rect x="555" y="102" width="250" height="148" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="680.0" y="131" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">MDN-RNN</text>
+<text x="680.0" y="158" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">LSTM memory hₜ</text>
+<text x="680.0" y="180" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">p(zₜ₊₁ | zₜ, aₜ, hₜ)</text>
+<text x="680.0" y="202" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">Gaussian mixture</text>
+<rect x="866" y="126" width="222" height="100" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="977.0" y="155" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Controller</text>
+<text x="977.0" y="182" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">aₜ = C(zₜ, hₜ)</text>
+<path d="M222 176L274 176" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="274,176 264.0,172.0 264.0,180.0" fill="#68778b"/>
+<path d="M494 176L555 176" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="555,176 545.0,172.0 545.0,180.0" fill="#68778b"/>
+<text x="524.5" y="167.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">zₜ</text>
+<path d="M520 176 L520 88 L920 88 L920 126" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="920,126 924.0,116.0 916.0,116.0" fill="#68778b"/>
+<text x="730" y="82" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">zₜ</text>
+<path d="M805 176L866 176" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="866,176 856.0,172.0 856.0,180.0" fill="#68778b"/>
+<text x="835.5" y="167.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">hₜ</text>
+<path d="M977 226 L977 330 L681 330 L681 250" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="681,250 677.0,260.0 685.0,260.0" fill="#68778b"/>
+<text x="935" y="321" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">aₜ</text>
+<rect x="32" y="340" width="310" height="130" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="187.0" y="369" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Train VAE</text>
+<text x="187.0" y="396" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">reconstruction + KL</text>
+<text x="187.0" y="418" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">individual frames</text>
+<rect x="405" y="340" width="310" height="130" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="560.0" y="369" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Train dynamics</text>
+<text x="560.0" y="396" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">mixture likelihood of next z</text>
+<text x="560.0" y="418" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">recorded z, action sequences</text>
+<rect x="778" y="340" width="310" height="130" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="933.0" y="369" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Optimize controller</text>
+<text x="933.0" y="396" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">CMA-ES over linear weights</text>
+<text x="933.0" y="418" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">real CarRacing / RNN dream in VizDoom</text>
+<text x="32" y="526" font-size="15" fill="#46566b" font-weight="400" text-anchor="start">Information bottleneck: pixels → zₜ. Uncertainty: one Gaussian mixture per coordinate of zₜ₊₁.</text>
+</g></svg>

@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="1130" viewBox="0 0 1120 1130" role="img" aria-labelledby="title desc">
+<title id="title">Eleven ways to build a world model</title>
+<desc id="desc">Eleven rows compare the learned representation, transition model, prediction target, and use of predictions for the models covered in Chapter 10.</desc>
+<rect width="1120" height="1130" rx="16" fill="#f7f9fc"/>
+<g font-family="system-ui, -apple-system, sans-serif">
+<text x="32" y="42" font-size="24" fill="#14243b" font-weight="650" text-anchor="start">Eleven ways to build a world model</text>
+<text x="32" y="72" font-size="15" fill="#46566b" font-weight="400" text-anchor="start">Compare the representation, learned prediction, and use of predictions across each row.</text>
+<text x="32" y="112" font-size="15" fill="#14243b" font-weight="650" text-anchor="start">Model</text>
+<text x="200" y="112" font-size="15" fill="#14243b" font-weight="650" text-anchor="start">Representation</text>
+<text x="444" y="112" font-size="15" fill="#14243b" font-weight="650" text-anchor="start">Dynamics</text>
+<text x="704" y="112" font-size="15" fill="#14243b" font-weight="650" text-anchor="start">Predicts</text>
+<text x="914" y="112" font-size="15" fill="#14243b" font-weight="650" text-anchor="start">Prediction use</text>
+<rect x="24" y="130" width="1072" height="72" rx="9" fill="#e5f0fd" stroke="#2677d4"/>
+<text x="40" y="172" font-size="14" fill="#14243b" font-weight="600" text-anchor="start">World Models</text>
+<text x="208" y="172" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">VAE latent z</text>
+<text x="452" y="172" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">MDN-LSTM</text>
+<text x="712" y="172" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">next-z distribution</text>
+<text x="922" y="172" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">CMA-ES controller</text>
+<rect x="24" y="217" width="1072" height="72" rx="9" fill="#e8f5ec" stroke="#328554"/>
+<text x="40" y="259" font-size="14" fill="#14243b" font-weight="600" text-anchor="start">MuZero</text>
+<text x="208" y="259" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">learned state s</text>
+<text x="452" y="259" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">recurrent network</text>
+<text x="712" y="259" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">reward, policy, value</text>
+<text x="922" y="259" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">tree search</text>
+<rect x="24" y="304" width="1072" height="72" rx="9" fill="#f0eafd" stroke="#7654c4"/>
+<text x="40" y="346" font-size="14" fill="#14243b" font-weight="600" text-anchor="start">IRIS</text>
+<text x="208" y="346" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">VQ image tokens</text>
+<text x="452" y="346" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">causal Transformer</text>
+<text x="712" y="346" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">tokens, reward, done</text>
+<text x="922" y="346" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">imagined actor</text>
+<rect x="24" y="391" width="1072" height="72" rx="9" fill="#fdece4" stroke="#d45b2d"/>
+<text x="40" y="433" font-size="14" fill="#14243b" font-weight="600" text-anchor="start">DIAMOND</text>
+<text x="208" y="433" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">RGB frames</text>
+<text x="452" y="433" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">diffusion U-Net</text>
+<text x="712" y="433" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">next observation</text>
+<text x="922" y="433" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">imagined actor</text>
+<rect x="24" y="478" width="1072" height="72" rx="9" fill="#e5f0fd" stroke="#2677d4"/>
+<text x="40" y="520" font-size="14" fill="#14243b" font-weight="600" text-anchor="start">Dreamer 4</text>
+<text x="208" y="520" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">continuous tokens</text>
+<text x="452" y="520" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">causal Transformer</text>
+<text x="712" y="520" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">clean next latent</text>
+<text x="922" y="520" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">imagined policy</text>
+<rect x="24" y="565" width="1072" height="72" rx="9" fill="#fdece4" stroke="#d45b2d"/>
+<text x="40" y="607" font-size="14" fill="#14243b" font-weight="600" text-anchor="start">MIRA</text>
+<text x="208" y="607" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">tiled per-view codec latents</text>
+<text x="452" y="607" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">flow Transformer</text>
+<text x="712" y="607" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">joint latent velocity</text>
+<text x="922" y="607" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">external actions</text>
+<rect x="24" y="652" width="1072" height="72" rx="9" fill="#f0eafd" stroke="#7654c4"/>
+<text x="40" y="694" font-size="14" fill="#14243b" font-weight="600" text-anchor="start">H3-World</text>
+<text x="208" y="694" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">packed text + video tokens</text>
+<text x="452" y="694" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">routed H3 Transformer</text>
+<text x="712" y="694" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">full video horizon</text>
+<text x="922" y="694" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">external schedule</text>
+<rect x="24" y="739" width="1072" height="72" rx="9" fill="#e8f5ec" stroke="#328554"/>
+<text x="40" y="781" font-size="14" fill="#14243b" font-weight="600" text-anchor="start">DINO-WM</text>
+<text x="208" y="781" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">DINOv2 patches</text>
+<text x="452" y="781" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">action Transformer</text>
+<text x="712" y="781" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">future features</text>
+<text x="922" y="781" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">CEM planning</text>
+<rect x="24" y="826" width="1072" height="72" rx="9" fill="#f0eafd" stroke="#7654c4"/>
+<text x="40" y="868" font-size="14" fill="#14243b" font-weight="600" text-anchor="start">V-JEPA 2-AC</text>
+<text x="208" y="868" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">masked ViT features</text>
+<text x="452" y="868" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">action predictor</text>
+<text x="712" y="868" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">future features</text>
+<text x="922" y="868" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">CEM planning</text>
+<rect x="24" y="913" width="1072" height="72" rx="9" fill="#e5f0fd" stroke="#2677d4"/>
+<text x="40" y="955" font-size="14" fill="#14243b" font-weight="600" text-anchor="start">LeWM</text>
+<text x="208" y="955" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">projected CLS state</text>
+<text x="452" y="955" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">causal Transformer</text>
+<text x="712" y="955" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">next state</text>
+<text x="922" y="955" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">CEM planning</text>
+<rect x="24" y="1000" width="1072" height="72" rx="9" fill="#fdece4" stroke="#d45b2d"/>
+<text x="40" y="1042" font-size="14" fill="#14243b" font-weight="600" text-anchor="start">Cosmos 2.5</text>
+<text x="208" y="1042" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">WanVAE video latents</text>
+<text x="452" y="1042" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">flow Transformer</text>
+<text x="712" y="1042" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">clip latent velocity</text>
+<text x="922" y="1042" font-size="14" fill="#14243b" font-weight="400" text-anchor="start">video generation</text>
+<text x="32" y="1106" font-size="14" fill="#46566b" font-weight="400" text-anchor="start">Each row identifies the state representation, learned prediction, and how the system uses it.</text>
+</g></svg>

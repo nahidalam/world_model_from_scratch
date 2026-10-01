@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="930" viewBox="0 0 1120 930" role="img" aria-labelledby="title desc">
+<title id="title">MIRA: one shared future from four views and four action streams</title>
+<desc id="desc">MIRA encodes four synchronized player views, tiles their latent grids, combines ordered player actions, predicts joint latent velocity, integrates the next latent, and decodes all four views.</desc>
+<rect width="1120" height="930" rx="16" fill="#f7f9fc"/>
+<g font-family="system-ui, -apple-system, sans-serif">
+<text x="32" y="42" font-size="24" fill="#14243b" font-weight="650" text-anchor="start">MIRA: one shared future from four views and four action streams</text>
+<text x="32" y="73" font-size="14" fill="#7654c4" font-weight="700" text-anchor="start">TRAINING · Build one joint latent state before predicting its flow velocity.</text>
+<rect x="32" y="103" width="158" height="132" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="111.0" y="132" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Four views</text>
+<text x="111.0" y="159" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">[B·P,2T,3,</text>
+<text x="111.0" y="181" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">288,512]</text>
+<text x="111.0" y="203" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">P = 4 synchronized</text>
+<text x="111.0" y="225" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">20 frames/s</text>
+<rect x="220" y="92" width="210" height="154" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="325.0" y="121" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Shared frozen codec</text>
+<text x="325.0" y="148" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">DINOv3-L/16 features</text>
+<text x="325.0" y="170" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">learned 2×2×2 bottleneck</text>
+<text x="325.0" y="192" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">9 × 16 × 32 per view</text>
+<rect x="460" y="103" width="180" height="132" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="550.0" y="132" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Tile clean z₁</text>
+<text x="550.0" y="159" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">[B,T,P·H,W,C]</text>
+<text x="550.0" y="181" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">one 36 × 16 grid</text>
+<text x="550.0" y="203" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">fixed player order</text>
+<rect x="670" y="92" width="200" height="154" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="770.0" y="121" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Diffusion forcing</text>
+<text x="770.0" y="148" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">sample Gaussian z₀</text>
+<text x="770.0" y="170" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">independent τ per frame</text>
+<text x="770.0" y="192" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">zτ=(1−τ)z₀+τz₁</text>
+<text x="770.0" y="214" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">target: z₁−z₀</text>
+<rect x="900" y="92" width="188" height="154" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="994.0" y="121" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Flow Transformer</text>
+<text x="994.0" y="148" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">spatial attention</text>
+<text x="994.0" y="170" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">causal temporal attention</text>
+<text x="994.0" y="192" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">predict velocity vθ</text>
+<path d="M190 169L220 169" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="220,169 210.0,165.0 210.0,173.0" fill="#68778b"/>
+<path d="M430 169L460 169" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="460,169 450.0,165.0 450.0,173.0" fill="#68778b"/>
+<path d="M640 169L670 169" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="670,169 660.0,165.0 660.0,173.0" fill="#68778b"/>
+<path d="M870 169L900 169" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="900,169 890.0,165.0 890.0,173.0" fill="#68778b"/>
+<text x="885.0" y="160.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">zτ</text>
+<rect x="32" y="304" width="158" height="120" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="111.0" y="333" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Noise + time</text>
+<text x="111.0" y="360" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">Gaussian z₀</text>
+<text x="111.0" y="382" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">one τ per frame</text>
+<rect x="220" y="304" width="158" height="120" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="299.0" y="333" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Four actions</text>
+<text x="299.0" y="360" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">[B·P,2T,9]</text>
+<text x="299.0" y="382" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">keyboard controls</text>
+<rect x="408" y="292" width="210" height="144" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="513.0" y="321" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Identify each player</text>
+<text x="513.0" y="348" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">drop first + last rows</text>
+<text x="513.0" y="370" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">pool pairs + prepend</text>
+<text x="513.0" y="392" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">add learned player ID</text>
+<text x="513.0" y="414" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">keep view order</text>
+<rect x="648" y="292" width="222" height="144" rx="11" fill="#fdece4" stroke="#d45b2d" stroke-width="1.6"/>
+<text x="759.0" y="321" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Joint condition</text>
+<text x="759.0" y="348" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">concatenate P·D</text>
+<text x="759.0" y="370" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">SiLU + linear P·D → D</text>
+<text x="759.0" y="392" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">+ flow-time embedding</text>
+<rect x="900" y="292" width="188" height="144" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="994.0" y="321" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Flow loss</text>
+<text x="994.0" y="348" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">prediction: vθ</text>
+<text x="994.0" y="370" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">target: z₁ − z₀</text>
+<text x="994.0" y="392" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">mean squared error</text>
+<path d="M378 364L408 364" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="408,364 398.0,360.0 398.0,368.0" fill="#68778b"/>
+<path d="M618 364L648 364" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="648,364 638.0,360.0 638.0,368.0" fill="#68778b"/>
+<path d="M759 292 L759 264 L888 264 L888 222 L900 222" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="900,222 890.0,218.0 890.0,226.0" fill="#68778b"/>
+<text x="820" y="258" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">AdaLN</text>
+<path d="M111 304 L111 270 L650 270 L650 220 L670 220" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="670,220 660.0,216.0 660.0,224.0" fill="#68778b"/>
+<text x="385" y="264" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">z₀, τ</text>
+<path d="M994 246L994 292" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="994,292 998.0,282.0 990.0,282.0" fill="#68778b"/>
+<text x="994.0" y="260.0" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">vθ</text>
+<path d="M32 478L1088 478" stroke="#c3cfdd" stroke-width="1.5"/>
+<text x="32" y="514" font-size="14" fill="#328554" font-weight="700" text-anchor="start">ROLLOUT · Generate one 10 Hz latent, decode two video frames, then advance the window.</text>
+<rect x="32" y="548" width="190" height="126" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="127.0" y="577" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Real warmup</text>
+<text x="127.0" y="604" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">encode initial clips</text>
+<text x="127.0" y="626" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">cache starts empty</text>
+<text x="127.0" y="648" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">live demo: 20 latents</text>
+<rect x="270" y="538" width="218" height="146" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="379.0" y="567" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Few-step flow</text>
+<text x="379.0" y="594" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">append Gaussian noise</text>
+<text x="379.0" y="616" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">first call prefills cache</text>
+<text x="379.0" y="638" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">1–2 distilled updates</text>
+<text x="379.0" y="660" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">use all player actions</text>
+<rect x="536" y="548" width="196" height="126" rx="11" fill="#f0eafd" stroke="#7654c4" stroke-width="1.6"/>
+<text x="634.0" y="577" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Joint next latent</text>
+<text x="634.0" y="604" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">all four views</text>
+<text x="634.0" y="626" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">one shared future</text>
+<rect x="780" y="538" width="196" height="146" rx="11" fill="#e5f0fd" stroke="#2677d4" stroke-width="1.6"/>
+<text x="878.0" y="567" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Split + decode</text>
+<text x="878.0" y="594" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">four 9 × 16 grids</text>
+<text x="878.0" y="616" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">shared causal decoder</text>
+<text x="878.0" y="638" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">two frames per latent</text>
+<rect x="1010" y="548" width="78" height="126" rx="11" fill="#e8f5ec" stroke="#328554" stroke-width="1.6"/>
+<text x="1049.0" y="577" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">20 fps</text>
+<text x="1049.0" y="604" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">P1</text>
+<text x="1049.0" y="626" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">P2</text>
+<text x="1049.0" y="648" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">P3</text>
+<text x="1049.0" y="670" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">P4</text>
+<path d="M222 611L270 611" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="270,611 260.0,607.0 260.0,615.0" fill="#68778b"/>
+<path d="M488 611L536 611" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="536,611 526.0,607.0 526.0,615.0" fill="#68778b"/>
+<path d="M732 611L780 611" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="780,611 770.0,607.0 770.0,615.0" fill="#68778b"/>
+<path d="M976 611L1010 611" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="1010,611 1000.0,607.0 1000.0,615.0" fill="#68778b"/>
+<path d="M634 674 L634 736 L127 736 L127 674" stroke="#68778b" stroke-width="2" fill="none"/>
+<polygon points="127,674 123.0,684.0 131.0,684.0" fill="#68778b"/>
+<text x="380" y="757" font-size="13" fill="#46566b" font-weight="400" text-anchor="middle">re-noise for cache · append newest · drop oldest</text>
+<rect x="32" y="796" width="320" height="82" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="192.0" y="825" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Spatial attention</text>
+<text x="192.0" y="852" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">connects matching objects across views</text>
+<rect x="400" y="796" width="320" height="82" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="560.0" y="825" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">Temporal attention</text>
+<text x="560.0" y="852" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">reads the same grid position in the past</text>
+<rect x="768" y="796" width="320" height="82" rx="11" fill="#fff" stroke="#c3cfdd" stroke-width="1.6"/>
+<text x="928.0" y="825" font-size="17" fill="#14243b" font-weight="650" text-anchor="middle">External control</text>
+<text x="928.0" y="852" font-size="14" fill="#46566b" font-weight="400" text-anchor="middle">players supply actions; MIRA supplies the world</text>
+<text x="32" y="910" font-size="14" fill="#46566b" font-weight="400" text-anchor="start">A fixed player order binds each action stream to its view; the model learns the visual effect of that action.</text>
+</g></svg>

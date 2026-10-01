@@ -1,4 +1,4 @@
-# Summary
+# Table of contents
 
 * [World Models from Scratch](README.md)
 
@@ -37,3 +37,17 @@
   * [4.9 Evaluate the Trained Model](chapters/chapter_04/09-evaluate-the-trained-model.md)
   * [4.10 The Complete Model in One File](chapters/chapter_04/10-the-complete-model.md)
   * [Optional 4.A: Reproduce a Released Cosmos Checkpoint](chapters/chapter_04/a-reproduce-released-checkpoint.md)
+* [Chapter 10: Architectures of Modern World Models](chapters/chapter_10/README.md)
+  * [10.1 World Models: Separate Vision, Memory, and Control](chapters/chapter_10/01-world-models.md)
+  * [10.2 MuZero: Learn Only What Search Uses](chapters/chapter_10/02-muzero.md)
+  * [10.3 IRIS: Predict the World as Tokens](chapters/chapter_10/03-iris.md)
+  * [10.4 DIAMOND: Denoise the Next Frame](chapters/chapter_10/04-diamond.md)
+  * [10.5 Dreamer 1 to 4: Follow the Architecture Changes](chapters/chapter_10/05-dreamer-lineage.md)
+  * [10.6 Dreamer 4: Generate and Act in One Transformer](chapters/chapter_10/06-dreamer-4.md)
+  * [10.7 MIRA: Generate Four Player Views from Joint Actions](chapters/chapter_10/07-mira.md)
+  * [10.8 H3-World: Route Language Actions to Video Latents](chapters/chapter_10/08-h3-world.md)
+  * [10.9 DINO-WM: Predict DINOv2 Features and Plan](chapters/chapter_10/09-dino-wm.md)
+  * [10.10 V-JEPA 2 and V-JEPA 2-AC: Pretrain Perception, Then Learn Actions](chapters/chapter_10/10-v-jepa-2-ac.md)
+  * [10.11 LeWM: Train the Encoder and Dynamics Together](chapters/chapter_10/11-lewm.md)
+  * [10.12 NVIDIA Cosmos: Generate a Future Video in Latent Space](chapters/chapter_10/12-cosmos.md)
+  * [10.13 Compare the Architectures](chapters/chapter_10/13-compare-architectures.md)
