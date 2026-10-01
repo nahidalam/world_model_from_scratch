@@ -7,8 +7,8 @@ we train on 512 clips so the model learns motion it has not seen.
 ## Training Data
 
 Each clip belongs to one split: training, validation, or test. The model
-trains on the training split. Section 4.9 evaluates it on the test split,
-which holds clips the model has not seen. We generate 512 training, 64
+trains on the training split. We evaluate it on the test split, which holds
+clips the model has not seen. We generate 512 training, 64
 validation, and 64 test clips:
 
 ```bash
@@ -25,11 +25,57 @@ The VAE stays fixed, so we encode each clip once and cache its
 
 ## Training Step
 
-Each update computes the loss from Sections 4.4 and 4.6 on 32 clips and
-takes one AdamW step. The code is `training_loss` and `train` in Section
-4.10. The 32 clips arrive as eight microbatches of four
-(`--batch-size 4 --accumulation 8`), which keeps memory use low. `--steps`
-counts updates.
+Each update computes `training_loss` from Section 4.6 on 32 clips and
+takes one AdamW step. The 32 clips arrive as eight microbatches of four,
+which keeps memory use low. `train` runs the updates:
+
+```python
+import torch
+from torch import Tensor, nn
+
+from world_models.complete_small_world import Config, WorldModel, training_loss
+
+
+def train(model: WorldModel, latents: Tensor, *, steps: int, batch_size: int = 4,
+          accumulation: int = 8, learning_rate: float = 3e-4, seed: int = 17) -> list[float]:
+    """Run `steps` optimizer updates of `batch_size * accumulation` clips each."""
+    device = next(model.parameters()).device
+    optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=0.01, foreach=False)
+    generator = torch.Generator().manual_seed(seed + 1)
+    losses = []
+    for _ in range(steps):
+        optimizer.zero_grad(set_to_none=True)
+        total = 0.0
+        for _ in range(accumulation):
+            batch = latents[torch.randint(len(latents), (batch_size,), generator=generator)]
+            loss = training_loss(model, batch.to(device), generator)
+            (loss / accumulation).backward()
+            total += loss.item()
+        nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+        optimizer.step()
+        losses.append(total / accumulation)
+    return losses
+
+
+tiny = Config(channels=3, frames=5, height=4, width=4, heads=2, head_dim=16,
+              blocks=2, context_dim=16, lora_rank=8, mlp_ratio=2.0)
+torch.manual_seed(0)
+model = WorldModel(tiny)
+latents = torch.randn(4, 3, 5, 4, 4)
+losses = train(model, latents, steps=30, batch_size=2, accumulation=1, learning_rate=3e-3)
+print(losses[-1] < losses[0])
+```
+
+```text
+True
+```
+
+A tiny model on random latents shows the loss falling on a CPU. The
+commands below train on the excavator clips with
+[`chapter_04_train.py`](../../scripts/chapter_04_train.py). It computes the
+same loss and adds logging, checkpoints, and mixed precision.
+`--batch-size 4 --accumulation 8` sets the 32 clips per update, and
+`--steps` counts updates.
 
 ## Overfitting Test
 

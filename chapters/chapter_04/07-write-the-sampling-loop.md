@@ -1,40 +1,51 @@
 # 4.7 Write the Sampling Loop
 
-The model predicts one small step: the velocity at one noise level (Section
-4.5). To generate the future frames, we start from noise at `t = 1` and
-repeat the step until `t = 0`. Each step moves the latent by the velocity
-times the gap between noise levels:
+The model from Section 4.5 looks at a noisy latent and predicts its
+velocity. The velocity tells us how to remove a little noise: moving the
+latent against it brings the latent closer to a clean video. One prediction
+moves the latent one small step. To generate the three future latent frames, we start them as
+noise and take 30 steps toward a clean latent.
 
-$$
-z_{t_{\text{next}}}=z_t+(t_{\text{next}}-t)v_\theta(z_t,t,c).
-$$
+Each step does three things:
 
-The noise level falls at each step, so `t_next - t` is negative and the
-step moves toward the clean latent. Before each step, the loop restores the
-observed frames (Section 4.6). The loop runs 30 steps:
+1. Put the two observed latent frames back in place, using the mask from
+   Section 4.6.
+2. Ask the model for the velocity at the current noise level `t`.
+3. Move the latent a small distance against the velocity, and lower `t` by
+   1/30.
+
+The noise level starts at `t = 1`, pure noise, and reaches `t = 0` after 30
+steps. `sample` runs these three steps, numbered in the comments:
 
 ```python
 import torch
-from world_models.flow import euler_step
-from world_models.small_world import SmallWorldModel, prefix_mask, small_world_config
+from torch import Tensor
 
-model = SmallWorldModel(small_world_config("small"))
+from world_models.complete_small_world import PRESETS, WorldModel, prefix_mask
+
+
+@torch.no_grad()
+def sample(model: WorldModel, observed: Tensor, steps: int = 30, seed: int = 0) -> Tensor:
+    """Generate the future latent frames that follow `observed` [B, C, T_obs, H, W]."""
+    b, c, _, height, width = observed.shape
+    generator = torch.Generator().manual_seed(seed)
+    latent = torch.randn((b, c, model.cfg.frames, height, width), generator=generator).to(observed.device)
+    known = torch.zeros_like(latent)
+    known[:, :, :observed.shape[2]] = observed
+    mask = prefix_mask(latent, observed.shape[2])
+    for i in range(steps):
+        t, t_next = 1 - i / steps, 1 - (i + 1) / steps
+        latent = mask * known + (1 - mask) * latent  # 1. restore observed frames
+        velocity = model(latent, torch.full((b,), t, device=latent.device), mask)  # 2. predict
+        latent = latent + (t_next - t) * velocity  # 3. take one step
+    return mask * known + (1 - mask) * latent
+
+
+model = WorldModel(PRESETS["small"])
 observed = torch.randn(1, 16, 2, 16, 16)  # two observed latent frames
-latent = torch.randn(1, 16, 5, 16, 16)  # start from noise
-known = torch.zeros_like(latent)
-known[:, :, :2] = observed
-mask = prefix_mask(latent, observed_frames=2)
-levels = torch.linspace(1, 0, 31)  # 30 steps from t = 1 to t = 0
-
-with torch.no_grad():
-    for t, t_next in zip(levels[:-1], levels[1:]):
-        latent = mask * known + (1 - mask) * latent
-        velocity = model(latent, t.expand(1), mask)
-        latent = euler_step(latent, velocity, t, t_next)
-latent = mask * known + (1 - mask) * latent
-
-print(latent.shape)
-print(torch.equal(latent[:, :, :2], observed))
+future = sample(model, observed)
+print(future.shape)
+print(torch.equal(future[:, :, :2], observed))
 ```
 
 ```text
@@ -42,14 +53,12 @@ torch.Size([1, 16, 5, 16, 16])
 True
 ```
 
-The result has the latent's shape, and the observed frames stay as given.
-The model here is untrained, so the three future frames are still noise.
-Section 4.8 trains it.
+The output has the latent's shape, and the observed frames are unchanged.
+The model is still untrained, so the future frames are noise.
 
-[`sample_future`](../../src/world_models/small_world.py) runs the same loop
-and adds seeded noise, device placement, and mixed precision, so results can
-be reproduced. Decoding its output with the VAE gives 17 RGB frames
-(Section 4.9). More steps follow the velocity more closely and take longer.
-We use 30 steps and save the step count and seed with each result.
+`sample` takes a seed, so the same inputs always give the same video. The
+evaluation runs the library's
+[`sample_future`](../../src/world_models/small_world.py), which computes
+the same result, and decodes it into 17 video frames with the VAE.
 
-Next, we train the model.
+Next, we train the model so these steps produce real motion.

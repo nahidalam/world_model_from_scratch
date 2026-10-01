@@ -81,3 +81,41 @@ def test_chapter_listing_matches_source():
     chapter = (ROOT / "chapters/chapter_04/10-the-complete-model.md").read_text()
     listing = re.search(r"```python\n(.*?)```", chapter, re.S).group(1)
     assert listing == (ROOT / "src/world_models/complete_small_world.py").read_text()
+
+
+SECTIONS = sorted((ROOT / "chapters/chapter_04").glob("0[1-9]-*.md"))
+
+
+def definitions():
+    """Yield (name, source) for each top-level definition the chapter builds."""
+    import ast
+    source = (ROOT / "src/world_models/complete_small_world.py").read_text()
+    lines = source.splitlines(keepends=True)
+    for node in ast.parse(source).body:
+        name = getattr(node, "name", None)
+        if name is None and isinstance(node, ast.Assign):
+            name = node.targets[0].id
+        if name is None or name == "main":
+            continue
+        start = min([node.lineno] + [d.lineno for d in getattr(node, "decorator_list", [])])
+        yield name, "".join(lines[start - 1:node.end_lineno]).rstrip("\n")
+
+
+@pytest.mark.parametrize("name, source", list(definitions()), ids=lambda value: value if isinstance(value, str) and "\n" not in value else "")
+def test_each_definition_is_built_in_exactly_one_section(name, source):
+    homes = [path.name for path in SECTIONS if source in path.read_text()]
+    assert len(homes) == 1, f"{name} appears verbatim in {homes or 'no section'}"
+
+
+@pytest.mark.parametrize("path", SECTIONS, ids=lambda path: path.name)
+def test_section_code_runs_and_matches_printed_output(path):
+    import contextlib
+    import io
+    namespace = {}
+    blocks = re.findall(r"```python\n(.*?)```(\n\n```text\n(.*?)```)?", path.read_text(), re.S)
+    for code, _, expected in blocks:
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            exec(code, namespace)
+        if expected:
+            assert output.getvalue() == expected

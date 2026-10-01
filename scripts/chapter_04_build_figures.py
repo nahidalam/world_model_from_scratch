@@ -114,14 +114,14 @@ def build() -> None:
     # Every figure below follows the same rules as Figure 4.1: no text outside blocks,
     # and an arrow for every transition. The Markdown caption carries the explanation.
 
-    f = Figure("From frames to tokens", "The VAE encoder compresses 17 RGB frames at 128 by 128 into a latent with 16 channels, 5 frames, and a 16 by 16 grid. Grouping 1 by 2 by 2 latent cells gives 320 patches, and the input projection turns each patch into a 384-feature token.", 140, width=1160, show_title=False)
+    f = Figure("From frames to tokens", "The VAE encoder compresses 17 RGB frames at 128 by 128 into a latent with 16 channels at 5 by 16 by 16 positions. Grouping 1 by 2 by 2 latent positions gives 320 patches, and the input projection turns each patch into a 384-feature token.", 140, width=1160, show_title=False)
     f.box(20, 20, 196, 100, "Video frames", ("17 frames", "128 × 128 RGB"))
     f.arrow("M216 70H239")
     f.box(250, 20, 196, 100, "VAE encoder", ("time: 17 → 5", "space: 128 → 16"))
     f.arrow("M446 70H469")
     f.box(480, 20, 196, 100, "Latent", ("16 channels", "5 × 16 × 16"))
     f.arrow("M676 70H699")
-    f.box(710, 20, 196, 100, "Patches", ("1 × 2 × 2 cells each", "320 patches"))
+    f.box(710, 20, 196, 100, "Patches", ("1 × 2 × 2 positions each", "320 patches"))
     f.arrow("M906 70H929")
     f.box(940, 20, 196, 100, "Tokens", ("input projection", "384 features each"), "#fff", INK)
     f.write("latent_tokens.svg")

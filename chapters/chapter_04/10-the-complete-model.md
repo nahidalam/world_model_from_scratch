@@ -1,21 +1,24 @@
 # 4.10 The Complete Model in One File
 
-Sections 4.2 to 4.8 built the world model one piece at a time, with each
-piece in its own code block. This section puts every piece in one file, in
-the order data flows through it, so we can read the whole model at once.
+Sections 4.1 to 4.8 built the world model one piece at a time. This section
+puts every piece in one file, in the order data flows through it, so we can
+read the whole model at once. Each function and class below appears, word
+for word, in the section that built it.
 
-The file computes exactly what the library computes, and
 [`tests/test_complete_small_world.py`](../../tests/test_complete_small_world.py)
-checks this. The library adds input checks, mixed precision, checkpoint
-saving, and loading of the released checkpoint. Rows in the table follow the
-file's order:
+checks three things: each piece appears in exactly one section, each
+section's code runs and prints what the book shows, and this file computes
+exactly what the library computes. The library adds input checks, mixed
+precision, checkpoint saving, and loading of the released checkpoint. Rows
+in the table follow the file's order:
 
 | Part of the file | What it does | Section |
 |---|---|---|
-| `patchify`, `unpatchify` | Turn the latent grid into tokens and back | 4.2 |
-| `rotary_angles`, `rotate`, `Attention` | Attention with token positions | 4.3 |
+| `Config`, `PRESETS` | Model sizes | 4.1 |
+| `patchify`, `unpatchify` | Turn the latent into tokens and back | 4.2 |
+| `RMSNorm`, `rotary_angles`, `rotate`, `Attention` | Attention with token positions | 4.3 |
 | `timestep_features`, `TimeEmbedding`, `AdaptiveNorm`, `Block`, `WorldModel` | Predict velocity at any noise level | 4.5 |
-| `prefix_mask`, `training_loss` | Flow-matching loss on the frames to generate | 4.4, 4.6 |
+| `prefix_mask`, `training_loss` | Flow-matching loss on the frames to generate | 4.6 |
 | `sample` | Generate the future from noise | 4.7 |
 | `train` | Optimizer updates with gradient accumulation | 4.8 |
 
@@ -62,12 +65,14 @@ from torch import Tensor, nn
 from torch.nn import functional as F
 
 
+# 4.1 Choose the model and the world -------------------------------------------
+
 @dataclass(frozen=True)
 class Config:
     channels: int = 16        # VAE latent channels
     frames: int = 5           # latent frames per clip
-    height: int = 16          # latent grid height
-    width: int = 16           # latent grid width
+    height: int = 16          # latent height
+    width: int = 16           # latent width
     observed_frames: int = 2  # latent frames encoding the five observed video frames
     heads: int = 6
     head_dim: int = 64
@@ -256,7 +261,7 @@ class WorldModel(nn.Module):
         return unpatchify(self.proj_out(x), frames, height, width)
 
 
-# 4.4 and 4.6 Flow matching with an observed prefix -----------------------------
+# 4.6 Condition on observations (with the flow-matching target from 4.4) ------
 
 def prefix_mask(latents: Tensor, observed_frames: int) -> Tensor:
     """1 for observed frames, 0 for frames to generate, shaped [B, 1, T, H, W]."""
@@ -290,9 +295,9 @@ def sample(model: WorldModel, observed: Tensor, steps: int = 30, seed: int = 0) 
     mask = prefix_mask(latent, observed.shape[2])
     for i in range(steps):
         t, t_next = 1 - i / steps, 1 - (i + 1) / steps
-        latent = mask * known + (1 - mask) * latent
-        velocity = model(latent, torch.full((b,), t, device=latent.device), mask)
-        latent = latent + (t_next - t) * velocity
+        latent = mask * known + (1 - mask) * latent  # 1. restore observed frames
+        velocity = model(latent, torch.full((b,), t, device=latent.device), mask)  # 2. predict
+        latent = latent + (t_next - t) * velocity  # 3. take one step
     return mask * known + (1 - mask) * latent
 
 

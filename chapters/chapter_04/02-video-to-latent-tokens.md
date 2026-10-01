@@ -1,18 +1,17 @@
 # 4.2 Turn Video into Latent Tokens
 
-A Transformer reads a sequence of vectors called tokens. Our input video
-clip contains 278,528 pixel positions. Because attention compares every
-token with every other token, using one token per pixel would be far too
-expensive.
+A Transformer reads a sequence of tokens. Our input video clip contains
+278,528 pixel positions. Because attention compares every token with every
+other token, using one token per pixel would be far too expensive.
 
 Instead, a frozen VAE compresses the video into a much smaller latent
-representation. We then group nearby latent cells into patches, producing
+representation. We then group nearby latent positions into patches, producing
 320 tokens that the Transformer can process.
 
-![The VAE encoder compresses 17 frames into a 16-channel latent of 5 × 16 × 16; grouping 1 × 2 × 2 cells gives 320 patches, and the input projection turns each into a 384-feature token.](../../figures/chapter_04/latent_tokens.svg)
+![The VAE encoder compresses 17 frames into a 16-channel latent of 5 × 16 × 16; grouping 1 × 2 × 2 positions gives 320 patches, and the input projection turns each into a 384-feature token.](../../figures/chapter_04/latent_tokens.svg)
 
 *Figure 4.2: The VAE compresses the video in time and space. Grouping
-neighboring latent cells gives 320 patches, and the input projection turns
+neighboring latent positions gives 320 patches, and the input projection turns
 each patch into a token.*
 
 ## Compress the Video with the VAE
@@ -40,30 +39,36 @@ print(tokens)
 320
 ```
 
-The five observed frames become the first two latent frames, and the model
-generates the other three.
+The latent has shape `[16, 5, 16, 16]`: 5 × 16 × 16 = 1,280 positions, each
+holding a vector of 16 numbers. Each position describes an 8 × 8 pixel area
+of the video. The five observed frames become the first two latent frames,
+and the model generates the other three.
 
-## Group Latent Cells into Patches
+## Group Latent Positions into Patches
 
-The latent has 5 × 16 × 16 = 1,280 cells. Each cell could be a token, but
-we group them to cut the count further. We will make a patch of 2 × 2
-neighboring cells in one frame, so we get 320 tokens. Attention compares
+Each of the 1,280 positions could be a token, but we group them to cut the
+count further. We will make a patch of 2 × 2 neighboring positions in one
+frame, so we get 320 tokens. Attention compares
 every pair of tokens, so four times fewer tokens means sixteen times fewer
 comparisons.
 
 The model learns which value sits where in a patch, so the grouping order
-must stay fixed. A 4 × 4 grid numbered 0 to 15 shows where each value lands:
+must stay fixed. `patchify` does the grouping:
 
 ```python
 import torch
+from torch import Tensor
 
-x = torch.arange(16).reshape(1, 1, 1, 4, 4)
-b, c, f, h, w = x.shape
 
-patches = x.reshape(b, c, f, h // 2, 2, w // 2, 2)
-patches = patches.permute(0, 2, 3, 5, 1, 4, 6)
-patches = patches.reshape(b, f * (h // 2) * (w // 2), 4 * c)
-print(patches[0])
+def patchify(x: Tensor) -> Tensor:
+    """[B, C, T, H, W] -> [B, T * H/2 * W/2, 4C], one channel's 2 x 2 values at a time."""
+    b, c, t, h, w = x.shape
+    x = x.reshape(b, c, t, h // 2, 2, w // 2, 2)
+    return x.permute(0, 2, 3, 5, 1, 4, 6).reshape(b, t * (h // 2) * (w // 2), 4 * c)
+
+
+x = torch.arange(16).reshape(1, 1, 1, 4, 4)  # 4 × 4 positions numbered 0 to 15
+print(patchify(x)[0])
 ```
 
 ```text
@@ -78,16 +83,32 @@ Each row is one patch. The first row holds 0, 1, 4, and 5, the top-left
 frame. With more channels, each channel's four values come one after
 another.
 
-Each patch also carries a mask channel that marks the observed frames
-(Section 4.6). So a patch holds `4 × (16 + 1) = 68` values. A linear layer
-turns these 68 values into one token of 384 features.
+Each patch also carries a mask channel that marks the observed frames. So a
+patch holds `4 × (16 + 1) = 68` values. A linear layer turns these 68
+values into one token of 384 features.
 
 ## Ungroup Patches Back into the Latent
 
-The model predicts a change for every latent cell, so its output must have
-the latent's shape. The output layer gives each token 64 values: 4 cells ×
-16 channels. [`unpatchify_output`](../../src/world_models/models/cosmos_transformer.py)
-puts each value back in its cell. The output layer lists its values by cell
-first and channel last, so this function ungroups in that order.
+So far, `patchify` has turned the latent into patches. The Transformer
+reads one token for each patch. For each token, it predicts how that patch's
+latent values should change. That is one number per value: 4 positions ×
+16 channels = 64 numbers. Generation uses these numbers to update the latent.
+So we ungroup each token's 64 numbers back to their positions in the
+latent. `unpatchify` does this:
+
+```python
+def unpatchify(x: Tensor, frames: int, height: int, width: int) -> Tensor:
+    """[B, tokens, 4C] ordered (row, column, channel) -> [B, C, T, H, W]."""
+    x = x.reshape(x.shape[0], frames, height // 2, width // 2, 2, 2, -1)
+    return x.permute(0, 6, 1, 2, 4, 3, 5).reshape(x.shape[0], -1, frames, height, width)
+
+
+restored = unpatchify(patchify(x), frames=1, height=4, width=4)
+print(torch.equal(restored, x))
+```
+
+```text
+True
+```
 
 Next, we let the 320 tokens share information.

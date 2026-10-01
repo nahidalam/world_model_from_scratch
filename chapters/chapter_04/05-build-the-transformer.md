@@ -6,46 +6,73 @@ prediction.
 
 ## The Model
 
-The model predicts one step of generation. It takes three inputs: the noisy
-latent, the noise level `t`, and a mask that marks which frames are
-observed (Section 4.6 adds it). It returns a velocity with the latent's
-shape. The sampler in Section 4.7 repeats this step to generate the future
-frames that continue the observed video.
+The model takes three inputs and returns a velocity with the latent's shape:
+
+* the noisy latent,
+* the noise level `t`,
+* a mask that marks the observed latent frames with `1` and the frames to
+  generate with `0`.
 
 Inside the model, the inputs pass through three stages:
 
-1. The patch layer from Section 4.2 turns the latent and mask into 320
-   tokens.
-2. The Transformer updates the tokens. It is a stack of identical layers
-   called blocks: six in the small model and eight in the base model. Each
-   block takes the 320 tokens and returns 320 updated tokens.
-3. The output layer turns each token into 64 values, and ungrouping puts
-   them back on the latent grid.
+1. The patch layer turns the latent and mask into 320 tokens.
+2. A stack of identical layers, called blocks, updates the tokens: six
+   blocks in the small model and eight in the base model. Each block takes
+   the 320 tokens and returns 320 updated tokens.
+3. The output layer turns each token into 64 values, and `unpatchify` puts
+   them back in the latent's shape.
 
-In code, the whole model is `SmallWorldModel`. We run the small model once
-on a random latent and count its trainable parameters:
+`WorldModel` follows these stages. Observed frames hold no noise, so it
+gives them a noise level of `0.0001` and the other frames `t`. It also holds
+the learned context vector that cross-attention reads:
 
 ```python
+import math
+
 import torch
-from world_models.small_world import SmallWorldModel, small_world_config
+from torch import Tensor, nn
+from torch.nn import functional as F
 
-model = SmallWorldModel(small_world_config("small"))
-latents = torch.randn(1, 16, 5, 16, 16)
-mask = torch.zeros(1, 1, 5, 16, 16)
-mask[:, :, :2] = 1
-velocity = model(latents, torch.tensor([0.5]), mask)
-print(velocity.shape)
-print(sum(parameter.numel() for parameter in model.parameters()))
+from world_models.complete_small_world import (
+    PRESETS, Attention, Config, RMSNorm, patchify, rotary_angles, unpatchify,
+)
+
+
+class WorldModel(nn.Module):
+    """Predict the velocity of every latent value from a noisy latent and its mask."""
+
+    def __init__(self, cfg: Config = PRESETS["base"]) -> None:
+        super().__init__()
+        self.cfg = cfg
+        width = cfg.hidden
+        self.patch_embed = nn.Linear(4 * (cfg.channels + 1), width, bias=False)
+        self.time_embed = TimeEmbedding(width)
+        self.blocks = nn.ModuleList(Block(cfg) for _ in range(cfg.blocks))
+        self.norm_out = AdaptiveNorm(width, cfg.lora_rank, parts=2)
+        self.proj_out = nn.Linear(width, 4 * cfg.channels, bias=False)
+        nn.init.zeros_(self.proj_out.weight)  # start from zero velocity
+        self.context = nn.Parameter(torch.randn(1, 1, cfg.context_dim) * 0.02)
+
+    def forward(self, noisy: Tensor, t: Tensor, mask: Tensor) -> Tensor:
+        b, _, frames, height, width = noisy.shape
+        # 4.6: observed frames are clean, so they get a near-zero noise level.
+        observed = mask[:, 0, :, 0, 0]
+        frame_t = observed * 0.0001 + (1 - observed) * t[:, None]
+        x = self.patch_embed(patchify(torch.cat((noisy, mask), dim=1)))
+        tokens_per_frame = (height // 2) * (width // 2)
+        time_features, shared_time = (
+            y.view(b, frames, 1, -1).expand(-1, -1, tokens_per_frame, -1).flatten(1, 2)
+            for y in self.time_embed(frame_t.flatten()))
+        rotary = rotary_angles(self.cfg, noisy.device)
+        context = self.context.expand(b, -1, -1)
+        for block in self.blocks:
+            x = block(x, context, time_features, shared_time, rotary)
+        x, _ = self.norm_out(x, time_features, shared_time)
+        return unpatchify(self.proj_out(x), frames, height, width)
 ```
 
-```text
-torch.Size([1, 16, 5, 16, 16])
-7818240
-```
-
-The output has the latent's shape, so the model runs from input to output.
-It has 7,818,240 trainable parameters, and 96% of them are in the blocks.
-Next, we look inside one block.
+`WorldModel` uses three parts we have not built yet: `Block`,
+`TimeEmbedding`, and `AdaptiveNorm`. The rest of this section builds them.
 
 ## Inside a Block
 
@@ -64,43 +91,71 @@ Each block has three sublayers:
   to 384.
 
 Each sublayer normalizes the tokens using `t`, computes its output, and adds
-that output to the tokens through a gate. `CosmosTransformerBlock` in the
-[book implementation](../../src/world_models/models/cosmos_transformer.py)
-runs the three sublayers in order:
+that output to the tokens through a gate. `Block` runs the three sublayers
+in order:
 
 ```python
-def run_block(block, x, context, time_features, shared_time, rotary):
-    normalized, gate = block.norm1(x, time_features, shared_time)
-    x = x + gate * block.attn1(normalized, image_rotary_emb=rotary)
+class Block(nn.Module):
+    def __init__(self, cfg: Config) -> None:
+        super().__init__()
+        width, inner = cfg.hidden, int(cfg.hidden * cfg.mlp_ratio)
+        self.norm1 = AdaptiveNorm(width, cfg.lora_rank)
+        self.self_attention = Attention(width, cfg.heads)
+        self.norm2 = AdaptiveNorm(width, cfg.lora_rank)
+        self.cross_attention = Attention(width, cfg.heads, cfg.context_dim)
+        self.norm3 = AdaptiveNorm(width, cfg.lora_rank)
+        self.feed_forward = nn.Sequential(nn.Linear(width, inner, bias=False), nn.GELU(),
+                                          nn.Linear(inner, width, bias=False))
 
-    normalized, gate = block.norm2(x, time_features, shared_time)
-    x = x + gate * block.attn2(normalized, context)
-
-    normalized, gate = block.norm3(x, time_features, shared_time)
-    return x + gate * block.ff(normalized)
+    def forward(self, x: Tensor, context: Tensor, time_features: Tensor, shared_time: Tensor,
+                rotary: tuple[Tensor, Tensor]) -> Tensor:
+        normalized, gate = self.norm1(x, time_features, shared_time)
+        x = x + gate * self.self_attention(normalized, rotary=rotary)
+        normalized, gate = self.norm2(x, time_features, shared_time)
+        x = x + gate * self.cross_attention(normalized, context)
+        normalized, gate = self.norm3(x, time_features, shared_time)
+        return x + gate * self.feed_forward(normalized)
 ```
 
 `rotary` holds the position rotations from Section 4.3. `time_features` and
-`shared_time` carry the noise level. The next section shows how the block
-uses them.
+`shared_time` carry the noise level. The next section shows where they come
+from and how `norm1`, `norm2`, and `norm3` use them.
 
 ## How a Block Uses the Noise Level
 
 The model's input mixes the clean latent with noise. At `t = 0.1`, the input
 is mostly the clean latent. At `t = 0.9`, it is mostly noise. The model must
 know how much noise its input holds to predict the velocity. So every
-sublayer receives `t`.
+sublayer receives `t`. This takes two steps.
 
-In `run_block`, each sublayer starts with a line like
-`normalized, gate = block.norm1(x, time_features, shared_time)`. This
-section explains that line in two steps. First, we turn `t` into features.
-Second, the features set a scale, a shift, and a gate for the sublayer.
-
-First, the features. The noise level is one number. `timestep_embedding`
+First, the features. The noise level is one number. `timestep_features`
 turns it into sine and cosine values at several frequencies. Each frequency
 responds to `t` at its own rate, so together they give the network a vector
-that describes `t`. Learned layers then turn this vector into
-`time_features` and `shared_time`.
+that describes `t`. `TimeEmbedding` then turns this vector into
+`time_features` and `shared_time`:
+
+```python
+def timestep_features(t: Tensor, width: int) -> Tensor:
+    """Sine and cosine of the noise level at `width / 2` frequencies."""
+    half = width // 2
+    frequencies = torch.exp(-math.log(10000) * torch.arange(half, device=t.device).float() / half)
+    angles = t[:, None].float() * frequencies[None]
+    return torch.cat((angles.cos(), angles.sin()), dim=-1)
+
+
+class TimeEmbedding(nn.Module):
+    """Return per-sublayer time features and a shared time projection."""
+
+    def __init__(self, width: int) -> None:
+        super().__init__()
+        self.linear_1 = nn.Linear(width, width, bias=False)
+        self.linear_2 = nn.Linear(width, 3 * width, bias=False)
+        self.norm = RMSNorm(width, eps=1e-6)
+
+    def forward(self, t: Tensor) -> tuple[Tensor, Tensor]:
+        features = timestep_features(t, self.linear_1.in_features)
+        return self.norm(features), self.linear_2(F.silu(self.linear_1(features)))
+```
 
 Second, adaptive layer normalization. Layer normalization rescales the
 token's features. Then a scale and a shift computed from `t` adjust them:
@@ -115,37 +170,68 @@ $$
 x_{\text{next}}=x+g(t)\odot f(\widetilde{x}).
 $$
 
-The example below runs both steps on six tokens, using the features of
-`t = 0.9`:
+`AdaptiveNorm` computes the scale, shift, and gate from `time_features`
+and adds `shared_time` to them. Its middle layer is narrow, which keeps it
+small; Cosmos calls this AdaLN-LoRA:
 
 ```python
-import torch
-from torch import nn
-from world_models.models.cosmos_transformer import timestep_embedding
+class AdaptiveNorm(nn.Module):
+    """LayerNorm with a shift, scale, and (optionally) gate set by the noise level."""
+
+    def __init__(self, width: int, rank: int, parts: int = 3) -> None:
+        super().__init__()
+        self.parts = parts
+        self.linear_1 = nn.Linear(width, rank, bias=False)  # low rank: AdaLN-LoRA
+        self.linear_2 = nn.Linear(rank, parts * width, bias=False)
+
+    def forward(self, x: Tensor, time_features: Tensor, shared_time: Tensor) -> tuple[Tensor, Tensor | None]:
+        modulation = self.linear_2(self.linear_1(F.silu(time_features)))
+        modulation = modulation + shared_time[..., :modulation.shape[-1]]
+        shift, scale, *gate = modulation.chunk(self.parts, dim=-1)
+        normalized = F.layer_norm(x, x.shape[-1:], eps=1e-6) * (1 + scale) + shift
+        return normalized, (gate[0] if gate else None)
+
 
 torch.manual_seed(0)
-x = torch.randn(1, 6, 24)
-time_features = timestep_embedding(torch.tensor([0.9]), 24)
-modulation = nn.Sequential(
-    nn.SiLU(),
-    nn.Linear(24, 8, bias=False),
-    nn.Linear(8, 3 * 24, bias=False),
-)
-shift, scale, gate = modulation(time_features).chunk(3, dim=-1)
-normalized = nn.functional.layer_norm(x, (24,), eps=1e-6)
-normalized = normalized * (1 + scale[:, None]) + shift[:, None]
-
-sublayer = nn.Linear(24, 24, bias=False)
-y = x + gate[:, None] * sublayer(normalized)
-print(y.shape)
+x = torch.randn(1, 6, 24)  # six tokens with 24 features
+time_features, shared_time = TimeEmbedding(24)(torch.tensor([0.9]))
+norm = AdaptiveNorm(24, rank=8)
+normalized, gate = norm(x, time_features[:, None], shared_time[:, None])
+print(normalized.shape, gate.shape)
 ```
 
 ```text
-torch.Size([1, 6, 24])
+torch.Size([1, 6, 24]) torch.Size([1, 1, 24])
 ```
 
-In the model, `norm1`, `norm2`, and `norm3` each compute their own scale,
-shift, and gate this way.
+Each block has three of these, `norm1`, `norm2`, and `norm3`, one per
+sublayer.
+
+## Run the Model
+
+All the parts now exist. We run the small model once on a random latent,
+with the first two latent frames marked as observed:
+
+```python
+model = WorldModel(PRESETS["small"])
+latents = torch.randn(1, 16, 5, 16, 16)
+mask = torch.zeros(1, 1, 5, 16, 16)
+mask[:, :, :2] = 1
+velocity = model(latents, torch.tensor([0.5]), mask)
+print(velocity.shape)
+
+total = sum(parameter.numel() for parameter in model.parameters())
+in_blocks = sum(parameter.numel() for parameter in model.blocks.parameters())
+print(total, f"{in_blocks / total:.0%}")
+```
+
+```text
+torch.Size([1, 16, 5, 16, 16])
+7818240 96%
+```
+
+The velocity has the latent's shape. The small model has 7,818,240
+trainable parameters, and 96% of them are in the blocks.
 
 Next, we give the model the observed frames it must continue to generate a
 video.

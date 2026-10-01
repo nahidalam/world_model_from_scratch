@@ -24,12 +24,14 @@ from torch import Tensor, nn
 from torch.nn import functional as F
 
 
+# 4.1 Choose the model and the world -------------------------------------------
+
 @dataclass(frozen=True)
 class Config:
     channels: int = 16        # VAE latent channels
     frames: int = 5           # latent frames per clip
-    height: int = 16          # latent grid height
-    width: int = 16           # latent grid width
+    height: int = 16          # latent height
+    width: int = 16           # latent width
     observed_frames: int = 2  # latent frames encoding the five observed video frames
     heads: int = 6
     head_dim: int = 64
@@ -218,7 +220,7 @@ class WorldModel(nn.Module):
         return unpatchify(self.proj_out(x), frames, height, width)
 
 
-# 4.4 and 4.6 Flow matching with an observed prefix -----------------------------
+# 4.6 Condition on observations (with the flow-matching target from 4.4) ------
 
 def prefix_mask(latents: Tensor, observed_frames: int) -> Tensor:
     """1 for observed frames, 0 for frames to generate, shaped [B, 1, T, H, W]."""
@@ -252,9 +254,9 @@ def sample(model: WorldModel, observed: Tensor, steps: int = 30, seed: int = 0) 
     mask = prefix_mask(latent, observed.shape[2])
     for i in range(steps):
         t, t_next = 1 - i / steps, 1 - (i + 1) / steps
-        latent = mask * known + (1 - mask) * latent
-        velocity = model(latent, torch.full((b,), t, device=latent.device), mask)
-        latent = latent + (t_next - t) * velocity
+        latent = mask * known + (1 - mask) * latent  # 1. restore observed frames
+        velocity = model(latent, torch.full((b,), t, device=latent.device), mask)  # 2. predict
+        latent = latent + (t_next - t) * velocity  # 3. take one step
     return mask * known + (1 - mask) * latent
 
 
