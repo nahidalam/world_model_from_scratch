@@ -44,8 +44,8 @@ def sample(model: WorldModel, observed: Tensor, steps: int = 30, seed: int = 0) 
 model = WorldModel(PRESETS["small"])
 observed = torch.randn(1, 16, 2, 16, 16)  # two observed latent frames
 future = sample(model, observed)
-print(future.shape)
-print(torch.equal(future[:, :, :2], observed))
+print(future.shape)  # same shape as the latent
+print(torch.equal(future[:, :, :2], observed))  # observed frames unchanged
 ```
 
 ```text
@@ -53,12 +53,6 @@ torch.Size([1, 16, 5, 16, 16])
 True
 ```
 
-The output has the latent's shape, and the observed frames are unchanged.
-The model is still untrained, so the future frames are noise.
-
-`sample` takes a seed, so the same inputs always give the same video. The
-evaluation runs the library's
-[`sample_future`](../../src/world_models/small_world.py), which computes
-the same result, and decodes it into 17 video frames with the VAE.
+The model is still untrained, so the three future latent frames are noise.
 
 Next, we train the model so these steps produce real motion.

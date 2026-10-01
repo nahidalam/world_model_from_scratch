@@ -1,12 +1,16 @@
 # Optional 4.A: Reproduce a Released Cosmos Checkpoint
 
-Sections 4.2 to 4.7 rebuilt the Cosmos components. This optional section
-checks them against the released 2B model. We load the released weights
-into our Transformer and compare its outputs with the reference
-implementation. When they match exactly, every component matches Cosmos. We
-compare one forward pass layer by layer, then a full continuation of the
-Chapter 2 sand-mining video, using the
-[Chapter 2 GPU setup](../chapter_02/02-choose-a-setup.md).
+This optional section checks our code against the released 2B Cosmos model.
+If our implementation, loaded with the released weights, computes exactly
+what the reference computes, every component matches Cosmos. We test one
+forward pass layer by layer, then a full continuation of the Chapter 2
+sand-mining video, using the [Chapter 2 GPU setup](../chapter_02/02-choose-a-setup.md).
+
+The released weights need the parameter names and extra inputs of the full
+Cosmos model. The library class `ScratchCosmosTransformer` has them. At our
+model's sizes, it computes exactly what the `WorldModel` we built computes,
+as `tests/test_complete_small_world.py` checks. So matching the released
+model with `ScratchCosmosTransformer` also checks our code.
 
 ![The released Cosmos pipeline encodes observations and text, repeatedly predicts velocity, and decodes a video.](../../figures/chapter_04/cosmos_reference_architecture.svg)
 
@@ -19,20 +23,18 @@ until t = 0, and the VAE decoder produces the video.*
 Released weights fit only a model with the same shapes. The
 `diffusers/base/post-trained` release of
 [`nvidia/Cosmos-Predict2.5-2B`](https://huggingface.co/nvidia/Cosmos-Predict2.5-2B)
-uses these dimensions:
+uses 16 latent channels and `1 × 2 × 2` patches, like our model. The rest is
+larger:
 
-| Setting | Released checkpoint |
-|---|---:|
-| Latent channels | 16 |
-| Patch size, time × height × width | 1 × 2 × 2 |
-| Transformer blocks | 28 |
-| Hidden width | 2,048 |
-| Attention heads | 16 |
-| Features per head | 128 |
-| Feed-forward width | 8,192 |
-| AdaLN-LoRA width | 256 |
+| Setting | Released | Our base |
+|---|---:|---:|
+| Blocks | 28 | 8 |
+| Hidden width | 2,048 | 384 |
+| Heads × features per head | 16 × 128 | 6 × 64 |
+| Feed-forward width | 8,192 | 1,536 |
+| AdaLN-LoRA width | 256 | 64 |
 
-Three parts of the released model go beyond our small one, and
+Three parts of the released model go beyond ours, and
 `ScratchCosmosTransformer` supports each when it loads this
 [configuration](https://github.com/nvidia-cosmos/cosmos-predict2.5/blob/main/cosmos_predict2/_src/predict2/configs/video2world/defaults/net.py):
 
@@ -69,13 +71,9 @@ python scripts/chapter_04_experiments.py verify \
 ## Layer-by-Layer Comparison
 
 We give both implementations identical inputs and compare their
-intermediate results, or activations, at the first block, the last block,
-and the output. Comparing at three points locates a difference if one
-appears. For each tensor, we record the largest absolute difference. The
-[saved comparison](../../assets/chapter_04/results/verify.json) loads all
-569 parameter tensors (2,059,174,912 parameters) from revision
-`0d37c7498f54cee3c599d438d895a0a4a8608064` and runs in `bfloat16` on a
-`[1, 16, 3, 4, 6]` latent with eight synthetic text vectors of width 100,352:
+activations at the first block, the last block, and the output. Comparing at
+three points locates a difference if one appears. For each tensor, we record
+the largest absolute difference:
 
 | Noise level | Block 0 maximum error | Block 27 maximum error | Velocity maximum error |
 |---:|---:|---:|---:|
@@ -83,7 +81,14 @@ appears. For each tensor, we record the largest absolute difference. The
 | 0.50 | 0.0 | 0.0 | 0.0 |
 | 0.95 | 0.0 | 0.0 | 0.0 |
 
-The tensors match exactly at every noise level, through all 28 blocks.
+The tensors match exactly at every noise level, through all 28 blocks. The
+[saved comparison](../../assets/chapter_04/results/verify.json) used:
+
+* all 569 parameter tensors (2,059,174,912 parameters) from revision
+  `0d37c7498f54cee3c599d438d895a0a4a8608064`,
+* `bfloat16` precision,
+* a `[1, 16, 3, 4, 6]` latent and eight synthetic text vectors of width
+  100,352.
 
 ## Video Comparison
 
@@ -107,13 +112,11 @@ python scripts/chapter_04_experiments.py generate \
   --output outputs/chapter_04/scratch
 ```
 
-Both use the frozen VAE and text encoder; in the scratch run, our
+Both use the frozen VAE and text encoder. In the scratch run, our
 Transformer and sampler generate the latents. Each run saves its video, its
 latents after updates 1, 8, and 15, and a `manifest.json` with its
-`RunManifest`.
-
-Video encoding can change pixel values, so we compare latents and decoded
-frames before MP4 encoding:
+`RunManifest`. Video encoding can change pixel values, so we compare
+latents and decoded frames before MP4 encoding:
 
 ```bash
 python scripts/chapter_04_experiments.py compare \
@@ -140,13 +143,11 @@ Latents and frames match exactly, as the
 *Figure 4.A.2: Both implementations produce the same frames and the same
 changes in ground and water texture toward the end of this short run.*
 
-Compare the [reference video](../../assets/chapter_04/reference_rollout.mp4)
-with [ours](../../assets/chapter_04/scratch_rollout.mp4) in motion.
-
 From frame 20, the ground and water break into small texture patches that
 spread by frame 28. Both implementations produce the same patches, so they
-come from the checkpoint and sampling settings, not our code. Chapter 3's
-tools measure the continuation's quality.
+come from the checkpoint and sampling settings, not our code. Compare the
+[reference video](../../assets/chapter_04/reference_rollout.mp4) with
+[ours](../../assets/chapter_04/scratch_rollout.mp4) in motion.
 
 In both tests, every component we built matches the released model
 exactly. The same architecture, trained from random weights, is the model
