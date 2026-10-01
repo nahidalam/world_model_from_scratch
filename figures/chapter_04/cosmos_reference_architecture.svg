@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="290" viewBox="0 0 1160 290" role="img" aria-labelledby="title desc">
+<title id="title">Inside Cosmos-Predict2.5-2B</title><desc id="desc">The observed video passes through the pretrained VAE encoder into a latent with observed and noise frames. A pretrained text encoder turns the prompt into features that the 28-block Transformer reads. The Transformer and sampler repeat until t equals zero, and the pretrained VAE decoder produces the video.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#53637a"/></marker></defs>
+<rect width="1160" height="290" rx="16" fill="#f7f9fc"/>
+<g font-family="system-ui, sans-serif">
+<rect x="20" y="50" width="150" height="80" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="95.0" y="96.0" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Observed video</text>
+<path d="M170 90H193" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="193.0,90.0 184.0,86.0 184.0,94.0" fill="#53637a"/>
+<rect x="204" y="50" width="150" height="80" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="279.0" y="84.5" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">VAE encoder</text>
+<text x="279.0" y="109.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">pretrained</text>
+<path d="M354 90H377" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="377.0,90.0 368.0,86.0 368.0,94.0" fill="#53637a"/>
+<rect x="388" y="50" width="170" height="80" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="473.0" y="84.5" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Latent</text>
+<text x="473.0" y="109.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">observed + noise</text>
+<path d="M558 90H581" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="581.0,90.0 572.0,86.0 572.0,94.0" fill="#53637a"/>
+<rect x="592" y="50" width="170" height="80" rx="10" fill="#fff" stroke="#14243b" stroke-width="1.5"/>
+<text x="677.0" y="84.5" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Transformer</text>
+<text x="677.0" y="109.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">28 blocks</text>
+<path d="M762 90H785" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="785.0,90.0 776.0,86.0 776.0,94.0" fill="#53637a"/>
+<rect x="796" y="50" width="170" height="80" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="881.0" y="84.5" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Sampler</text>
+<text x="881.0" y="109.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">step toward t = 0</text>
+<path d="M881 50V30H677V39" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="677.0,39.0 681.0,30.0 673.0,30.0" fill="#53637a"/>
+<rect x="388" y="190" width="170" height="80" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="473.0" y="236.0" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Text prompt</text>
+<path d="M558 230H581" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="581.0,230.0 572.0,226.0 572.0,234.0" fill="#53637a"/>
+<rect x="592" y="190" width="170" height="80" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="677.0" y="224.5" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Text encoder</text>
+<text x="677.0" y="249.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">pretrained</text>
+<path d="M677 190V141" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="677.0,141.0 673.0,150.0 681.0,150.0" fill="#53637a"/>
+<path d="M881 130V179" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="881.0,179.0 885.0,170.0 877.0,170.0" fill="#53637a"/>
+<rect x="796" y="190" width="170" height="80" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="881.0" y="224.5" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">VAE decoder</text>
+<text x="881.0" y="249.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">after the last step</text>
+<path d="M966 230H989" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="989.0,230.0 980.0,226.0 980.0,234.0" fill="#53637a"/>
+<rect x="1000" y="190" width="140" height="80" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="1070.0" y="236.0" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Video</text>
+</g></svg>

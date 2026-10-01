@@ -127,7 +127,7 @@ media: {'num_frames': 29, 'fps': 16.0, 'height': 704, 'width': 1280, 'duration_s
 checksum: 9fa8dbd7482f7ddb9aa25b3b3e0e1e0a08cdc28fa0f6d64250d4889c697381dc
 ```
 
-> **Try it yourself**
+> Try it yourself
 >
 > 1. Find the entry for seed 1 and compare its run ID and checksum with seed 0.
 > 2. Check whether all four videos have the same frame count, frame rate, and

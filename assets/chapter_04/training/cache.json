@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "generator": "excavator-arm-v1",
+  "spec": {
+    "size": 128,
+    "frames": 17,
+    "observed_frames": 5,
+    "fps": 8
+  },
+  "source": {
+    "checkpoint": "nvidia/Cosmos-Predict2.5-2B",
+    "revision": "0d37c7498f54cee3c599d438d895a0a4a8608064",
+    "subfolder": "vae"
+  },
+  "normalization": {
+    "mean": [
+      -0.757099986076355,
+      -0.708899974822998,
+      -0.911300003528595,
+      0.10750000178813934,
+      -0.1745000034570694,
+      0.9653000235557556,
+      -0.1517000049352646,
+      1.5507999658584595,
+      0.41339999437332153,
+      -0.07150000333786011,
+      0.5516999959945679,
+      -0.36320000886917114,
+      -0.19220000505447388,
+      -0.9496999979019165,
+      0.25029999017715454,
+      -0.2921000123023987
+    ],
+    "std": [
+      2.8183999061584473,
+      1.4541000127792358,
+      2.327500104904175,
+      2.6558001041412354,
+      1.219599962234497,
+      1.770799994468689,
+      2.6052000522613525,
+      2.0743000507354736,
+      3.268699884414673,
+      2.152600049972534,
+      2.8652000427246094,
+      1.5578999519348145,
+      1.638200044631958,
+      1.1253000497817993,
+      2.8250999450683594,
+      1.9160000085830688
+    ],
+    "formula": "(posterior_mode - mean) / std"
+  },
+  "source_sha256": {
+    "toy_video.py": "8925ff644c2b668d2cb556bf8e3391684fcc3de86c6c5f913b7acb457228ac61",
+    "latent_cache.py": "84c7621bbbdbd2e162fcc9df657fc8088539c650a80121b6faa06ae48fc53c00"
+  },
+  "latent_shape": [
+    16,
+    5,
+    16,
+    16
+  ],
+  "observed_latent_frames": 2,
+  "storage_dtype": "float32",
+  "splits": {
+    "train": {
+      "file": "train.pt",
+      "sha256": "2abb3885049bf4221990c86e61f94b6961ce5b879f559903a0f28e585c52b643",
+      "count": 512,
+      "seed_start": 0,
+      "seed_stop": 512
+    },
+    "val": {
+      "file": "val.pt",
+      "sha256": "b07b08f666be063f07589e5a095a72e2f27dc2e267afd8fc1b2823133ec5c760",
+      "count": 64,
+      "seed_start": 1000000,
+      "seed_stop": 1000064
+    },
+    "test": {
+      "file": "test.pt",
+      "sha256": "95f3bdcd283fc2cdaa275cd8b0ca769cc65aa64d5dd90b8e7a92aa3b6c91b15e",
+      "count": 64,
+      "seed_start": 2000000,
+      "seed_stop": 2000064
+    }
+  },
+  "causality": [
+    {
+      "split": "train",
+      "trajectory_id": "excavator-arm-v1-0000000000000000",
+      "max_abs": 0.0,
+      "atol": 0.002,
+      "rtol": 0.002,
+      "passed": true
+    },
+    {
+      "split": "val",
+      "trajectory_id": "excavator-arm-v1-00000000000f4240",
+      "max_abs": 0.0,
+      "atol": 0.002,
+      "rtol": 0.002,
+      "passed": true
+    },
+    {
+      "split": "test",
+      "trajectory_id": "excavator-arm-v1-00000000001e8480",
+      "max_abs": 0.0,
+      "atol": 0.002,
+      "rtol": 0.002,
+      "passed": true
+    }
+  ],
+  "reconstruction": {
+    "mae_0_1": 0.006550070829689503,
+    "rmse_0_1": 0.020432203707271494,
+    "psnr_db": 33.79369580362679,
+    "png": "reconstruction.png",
+    "video": "reconstruction.mp4",
+    "layout": "input left; reconstruction right"
+  },
+  "created_at": "2026-09-29T20:33:24.137935+00:00",
+  "device": "cuda:0",
+  "gpu": "NVIDIA A40",
+  "vae_dtype": "torch.bfloat16",
+  "versions": {
+    "torch": "2.6.0+cu124",
+    "diffusers": "0.39.0"
+  },
+  "seconds": 70.16225473675877,
+  "encoding_seconds": 67.13837136793882,
+  "peak_allocated_bytes": 447488512,
+  "peak_reserved_bytes": 557842432,
+  "artifacts": {
+    "reconstruction.png": "3a559bc64a2b3c60b812c2e1d56f3f6d595ea7db7c3c5563c7067a68d236c40b",
+    "reconstruction.mp4": "2785a07618260cb49023d727134f65718720b30798aeb1cccf4decf709541552"
+  },
+  "cache_id": "e79f6fd7bdd07a69b3b76fc8a19d4459d257a19c448cffced2bbcce8a07b39ac"
+}

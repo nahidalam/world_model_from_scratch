@@ -1,0 +1,24 @@
+{
+  "experiment": "optimizer_and_resume_smoke",
+  "steps": 40,
+  "parameters": 34864,
+  "initial_loss": 0.9628830850124359,
+  "final_loss": 0.20769363641738892,
+  "resume_parameter_max_error": 0.0,
+  "runtime": {
+    "torch": "2.6.0",
+    "python": "3.12.12",
+    "device": "cpu",
+    "gpu": null,
+    "gpu_total_bytes": null,
+    "cuda": null
+  },
+  "source": {
+    "training.py": "621c53faf777696d15a4e5eb2aeec6bc2b0fc078191c9929b8fe8f2c0c460fc2",
+    "small_world.py": "53deb99f13c2efd747ac4da60e10222940fcefbf8226832cf56827ddf88e0310",
+    "flow.py": "a8d15d568e6d3995a6f5ae208a092f5f3b56a3023fe4c39db189ddbd89d2c46d",
+    "models/cosmos_transformer.py": "b055b00fcb5156b2f7e2cdf50af01970bc7aa551fa74e34bd382aadd37cf63f9",
+    "scripts/chapter_04_train.py": "ed20ad83567a14910b2652b66e450ca2b484a5fc7b47e59be0d06195b8c6e5c0"
+  },
+  "scope": "Optimizer, loss, and exact resume on synthetic latent tensors. Video learning and consumer GPU memory are separate checks."
+}

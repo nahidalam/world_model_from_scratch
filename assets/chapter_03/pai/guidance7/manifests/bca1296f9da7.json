@@ -10,7 +10,7 @@
   "prompt": "A wide-angle shot of a modern industrial factory showcasing a large, curved conveyor belt system made of metallic frames and yellow plastic crates, which are moving in a continuous loop. The conveyor belt is situated centrally within the frame, with the crates evenly spaced and steadily progressing around the curve. To the left of the camera's frame, stacks of additional yellow crates are neatly arranged next to metal shelving units. The background features more shelving units and similar yellow crates lined down the conveyor belt, emphasizing the organized storage. The floor is a concrete surface, and the ceiling is equipped with fluorescent lighting that illuminates the area. Throughout the video, the conveyor belt's movement is consistent, with no noticeable changes in speed or direction, maintaining a smooth and efficient workflow. The conveyor belt and yellow crates are always in the camera's view throughout the video. The final frame captures this ongoing activity, highlighting the seamless operation of the conveyor system and the orderly arrangement of the storage areas. The camera movement moves forward throughout the video, providing a dynamic perspective of the industrial setting.",
   "observation": "outputs/chapter_03/pai/subset/condition_image/industry_001.jpg",
   "outputs": [
-    "/mnt/ssd-4/nahid/world_model_from_scratch_private/outputs/chapter_03/pai/guidance7/runs/bca1296f9da7/rollout.mp4"
+    "outputs/chapter_03/pai/guidance7/runs/bca1296f9da7/rollout.mp4"
   ],
   "versions": {
     "torch": "2.6.0+cu124",

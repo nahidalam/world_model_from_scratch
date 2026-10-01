@@ -10,7 +10,7 @@
   "prompt": "A minimalist indoor setting features a plain white wall as the backdrop. Centered on a wooden table is an open black fabric box with a textured pattern, standing upright. Suspended above the box by an orange grabber is a yellow rubber ducky, initially at rest. The scene remains static for several frames, building anticipation. The ducky is then released, falling freely towards the box. The ducky eventually lands inside the box, creating a satisfying conclusion to the sequence. A medium shot captures the entire action from a slightly elevated perspective.",
   "observation": "outputs/chapter_03/pai/subset/condition_image/physics_001.jpg",
   "outputs": [
-    "/mnt/ssd-4/nahid/world_model_from_scratch_private/outputs/chapter_03/pai/guidance7/runs/ee47604bd88c/rollout.mp4"
+    "outputs/chapter_03/pai/guidance7/runs/ee47604bd88c/rollout.mp4"
   ],
   "versions": {
     "torch": "2.6.0+cu124",

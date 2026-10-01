@@ -9,7 +9,7 @@ For the tennis-ball example, `physics_002`, PAI-Bench-G asks:
 
 > Does the tennis ball bounce off the coffee table before rolling off-screen?
 
-The expected answer is **No**. Qwen answered **Yes** for both guidance-7
+The expected answer is No. Qwen answered Yes for both guidance-7
 seeds, so this question scored 0.0. The
 [evaluation results](../../assets/chapter_03/results/pai_guidance7_vqa_detailed.json)
 contain the question and both answers.
@@ -28,7 +28,7 @@ and answer the same question. Record the time range you checked.
 * If the video clearly does not show that event, Qwen's answer is wrong.
   The score penalizes the video because of an error by Qwen.
 
-If you cannot tell, record **Unclear**. The sampled frames alone are not
+If you cannot tell, record Unclear. The sampled frames alone are not
 enough to decide.
 
 ## Compare Guidance 7 and Guidance 3
@@ -44,7 +44,7 @@ videos:
 The starting image, prompt, seed, and other generation settings are the
 same. Only guidance changed. The
 [guidance-3 results](../../assets/chapter_03/results/pai_guidance3_vqa_detailed.json)
-record Qwen's **No** answer, which matches the expected answer.
+record Qwen's No answer, which matches the expected answer.
 
 Watch both videos and check for the bounce. Does the changed answer reflect
 a change in the ball's motion? If both videos show the same behavior for

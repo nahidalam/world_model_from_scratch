@@ -18,11 +18,11 @@ smoothness.
 
 We will run three dimensions on four Chapter 2 seed rollouts:
 
-* **Subject consistency** measures whether the subject keeps a similar
+* Subject consistency measures whether the subject keeps a similar
   appearance across frames.
-* **Motion smoothness** measures whether movement continues without sudden
+* Motion smoothness measures whether movement continues without sudden
   jumps between frames.
-* **Dynamic degree** checks whether the video contains enough movement to
+* Dynamic degree checks whether the video contains enough movement to
   count as dynamic.
 
 We can apply these measurements to our generated sand-mining videos using VBench's
@@ -35,10 +35,10 @@ dimensions.
 
 [PAI-Bench](https://arxiv.org/abs/2512.01989) contains three subtasks:
 
-* **PAI-Bench-G** evaluates video generation.
-* **PAI-Bench-C** checks whether videos follow control signals such as depth
+* PAI-Bench-G evaluates video generation.
+* PAI-Bench-C checks whether videos follow control signals such as depth
   maps, edges, and segmentation masks.
-* **PAI-Bench-U** evaluates how models understand physical scenes.
+* PAI-Bench-U evaluates how models understand physical scenes.
 
 A video can show smooth motion but get the actions wrong. For example, a robot may open a door before grasping its handle. PAI-Bench-G uses questions about the scene to check for these problems.
 
@@ -46,14 +46,14 @@ Each example includes a starting image, a prompt, and questions with expected an
 
 The questions ask where objects are, how they interact, and whether actions happen in the expected order. For example, our selected sample asks about:
 
-* **Spatial relationships:** do the double yellow road lines remain on the
+* Spatial relationships: do the double yellow road lines remain on the
   left side of the vehicle?
-* **Event order:** does the robotic arm grasp the handle before the cabinet
+* Event order: does the robotic arm grasp the handle before the cabinet
   door begins to open?
-* **Physical behavior:** does the tennis ball deform or flatten as it rolls
+* Physical behavior: does the tennis ball deform or flatten as it rolls
   across the table?
 
-We use Qwen2.5-VL-72B-Instruct to answer questions about each generated video. The **Domain Score** measures how often Qwen’s answers match the expected answers. Section 3.5 shows how we calculate this score.
+We use Qwen2.5-VL-72B-Instruct to answer questions about each generated video. The Domain Score measures how often Qwen’s answers match the expected answers. Section 3.5 shows how we calculate this score.
 
 The [PAI-Bench-G evaluation workflow](https://github.com/SHI-Labs/physical-ai-bench/tree/2f3b687410029b98397fbc51fa4de36bfd45627d/generation)
 also measures video quality. We keep those measurements in the

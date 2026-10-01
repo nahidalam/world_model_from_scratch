@@ -60,20 +60,20 @@ rerun for these corrections.
 
 | Check | Evidence | Result |
 |---|---|---|
-| Local Python tests | `.venv/bin/python -m pytest -q`, Python 3.12.12 | **44 passed**. Includes manifest, conditioning, video preparation, evaluator-result parsing, and the Cosmos guardrail compatibility fix. |
-| VBench input preparation | Section 3.3 command using `assets/chapter_02/seeds` | **Passed**. The command staged four seed rollouts and recorded their settings, media metadata, and checksums in `index.json`. |
-| VBench evaluation | VBench `fd18b3d055cb0fc6f066ca90fe2c3c8cbb698490`; PyTorch 2.5.1+cu118 | **Passed**. All three dimensions returned one score for each of the four rollouts. The aggregate scores were 0.9389 subject consistency, 0.9929 motion smoothness, and 0 dynamic degree. |
-| PAI subset preparation | `python scripts/chapter_03_generate_pai.py prepare --per-category 2 --output <new-directory>/subset` | **14 cases downloaded**, two per category, from the pinned dataset revision. The cases contain 111 questions. |
-| Prepared-input validation | `load_prepared()` on the downloaded subset | **Passed**. The selected case IDs and all 29 recorded file checksums matched: 14 images, 14 question files, and `full_info.json`. |
-| Conditioning-image decoding | `load_image()` on every selected image using the local book environment | **14 passed** as single-frame RGB `uint8` observations. This checks loading, not Cosmos inference. |
-| Cosmos smoke generation | One case, seed 0, 29 frames, 15 steps, guidance 7 | **Passed**. The MP4 contains 29 frames and its manifest records the case, prompt, generation settings, checkpoint revision, and checksum. |
-| PAI generation | Cosmos-Predict2.5 `0d37c7498f54cee3c599d438d895a0a4a8608064`; guidance 7 and 3; 14 cases; seeds 0 and 1; 93 frames; 36 steps | **Passed**. Eight shards produced 28 videos for each setting. Each merge checked complete case/seed coverage and every SHA-256 checksum. |
-| PAI evaluator installation | PAI-Bench-G `2f3b687410029b98397fbc51fa4de36bfd45627d`; Detectron2 `a2f4a8771ab77e8411c26b27f24f9489a28a2453` | **Passed**. Each run preserves the evaluator commit, installed environment, lockfile, and Qwen checkpoint revision. |
-| PAI quality evaluation | Eight official dimensions, one process on one A40 | **Passed** for guidance 7 and guidance 3. Each dimension contains all 28 per-video results. Sections 3.5 and 3.7 report the aggregates and link both result files. |
-| PAI requested-event evaluation | Qwen2.5-VL-72B-Instruct `89c86200743eec961a297729e7990e8f2ddbc4c5`; tensor parallel size 8 | **Passed** for both settings. Each result contains 14 cases, 111 questions, and two answers per question. Guidance 7 scored 0.8824 overall; guidance 3 scored 0.8231. |
-| Final output validation | Run-index and SHA-256 comparison; `ffprobe` over every MP4; evaluator-result coverage checks | **Passed**. Both 28-video grids match their run indexes and checksums. All 56 MP4 files contain 93 frames at 1280×704 and 16 fps. Every quality dimension contains 28 filenames, and both VQA files contain the planned 14 cases, 111 questions, and two seeds. |
+| Local Python tests | `.venv/bin/python -m pytest -q`, Python 3.12.12 | 44 passed. Includes manifest, conditioning, video preparation, evaluator-result parsing, and the Cosmos guardrail compatibility fix. |
+| VBench input preparation | Section 3.3 command using `assets/chapter_02/seeds` | Passed. The command staged four seed rollouts and recorded their settings, media metadata, and checksums in `index.json`. |
+| VBench evaluation | VBench `fd18b3d055cb0fc6f066ca90fe2c3c8cbb698490`; PyTorch 2.5.1+cu118 | Passed. All three dimensions returned one score for each of the four rollouts. The aggregate scores were 0.9389 subject consistency, 0.9929 motion smoothness, and 0 dynamic degree. |
+| PAI subset preparation | `python scripts/chapter_03_generate_pai.py prepare --per-category 2 --output <new-directory>/subset` | 14 cases downloaded, two per category, from the pinned dataset revision. The cases contain 111 questions. |
+| Prepared-input validation | `load_prepared()` on the downloaded subset | Passed. The selected case IDs and all 29 recorded file checksums matched: 14 images, 14 question files, and `full_info.json`. |
+| Conditioning-image decoding | `load_image()` on every selected image using the local book environment | 14 passed as single-frame RGB `uint8` observations. This checks loading, not Cosmos inference. |
+| Cosmos smoke generation | One case, seed 0, 29 frames, 15 steps, guidance 7 | Passed. The MP4 contains 29 frames and its manifest records the case, prompt, generation settings, checkpoint revision, and checksum. |
+| PAI generation | Cosmos-Predict2.5 `0d37c7498f54cee3c599d438d895a0a4a8608064`; guidance 7 and 3; 14 cases; seeds 0 and 1; 93 frames; 36 steps | Passed. Eight shards produced 28 videos for each setting. Each merge checked complete case/seed coverage and every SHA-256 checksum. |
+| PAI evaluator installation | PAI-Bench-G `2f3b687410029b98397fbc51fa4de36bfd45627d`; Detectron2 `a2f4a8771ab77e8411c26b27f24f9489a28a2453` | Passed. Each run preserves the evaluator commit, installed environment, lockfile, and Qwen checkpoint revision. |
+| PAI quality evaluation | Eight official dimensions, one process on one A40 | Passed for guidance 7 and guidance 3. Each dimension contains all 28 per-video results. Sections 3.5 and 3.7 report the aggregates and link both result files. |
+| PAI requested-event evaluation | Qwen2.5-VL-72B-Instruct `89c86200743eec961a297729e7990e8f2ddbc4c5`; tensor parallel size 8 | Passed for both settings. Each result contains 14 cases, 111 questions, and two answers per question. Guidance 7 scored 0.8824 overall; guidance 3 scored 0.8231. |
+| Final output validation | Run-index and SHA-256 comparison; `ffprobe` over every MP4; evaluator-result coverage checks | Passed. Both 28-video grids match their run indexes and checksums. All 56 MP4 files contain 93 frames at 1280×704 and 16 fps. Every quality dimension contains 28 filenames, and both VQA files contain the planned 14 cases, 111 questions, and two seeds. |
 | PAI source review | Official generation README, dependency specification, quality CLI/indexing, and VQA CLI/implementation at commit `2f3b687410029b98397fbc51fa4de36bfd45627d` | Commands, filename conventions, judge defaults, and aggregation behavior checked against source. Citations appear in Section 3.5. |
-| Chapter navigation and example syntax | Local link targets in Chapter 3, `README.md`, and `SUMMARY.md`; `bash -n` and Python AST parsing of their examples | **Passed**: no missing local link targets, 20 Bash blocks and three Python blocks parsed. Syntax checking does not execute GPU commands. |
+| Chapter navigation and example syntax | Local link targets in Chapter 3, `README.md`, and `SUMMARY.md`; `bash -n` and Python AST parsing of their examples | Passed: no missing local link targets, 20 Bash blocks and three Python blocks parsed. Syntax checking does not execute GPU commands. |
 
 The prepared dataset revision is
 `c36b7beb69bd7c4adcedc1431407fce98f9dfe44`. The selected case IDs are:
@@ -147,7 +147,7 @@ minutes 22 seconds. The successful Qwen runs took 14 minutes 52 seconds and 9
 minutes 54 seconds, including model loading.
 
 For the manual result check, we sampled `physics_002` guidance-7 seed 1 every
-0.5 seconds. The benchmark expected **no** for the question about the ball
-bouncing off the table before rolling out of view; the judge answered **yes**.
+0.5 seconds. The benchmark expected no for the question about the ball
+bouncing off the table before rolling out of view; the judge answered yes.
 The sampled frames show no clear bounce or exit, so Section 3.6 records this as
 a judge disagreement that needs full-video review.

@@ -1,0 +1,139 @@
+{
+  "created_at": "2026-09-09T18:42:32.118249+00:00",
+  "checkpoint": "nvidia/Cosmos-Predict2.5-2B",
+  "checkpoint_revision": "0d37c7498f54cee3c599d438d895a0a4a8608064",
+  "python": "3.10.12",
+  "versions": {
+    "torch": "2.6.0+cu124",
+    "diffusers": "0.39.0",
+    "accelerate": "1.14.0",
+    "numpy": "2.2.6"
+  },
+  "source_sha256": {
+    "src/world_models/models/cosmos_transformer.py": "5719164fc314011cdc9f850eb0f68124f109aa73b2fb0fb1ea97e98003146023",
+    "src/world_models/flow.py": "214fe8d2adb9094217e017e70c53cfbcd0e9ec118e94e8d15037ce8ac8617a76",
+    "src/world_models/cosmos_generation.py": "1f95e11b1fe1c7af42360022b128ce7c265e4c87a4a5f8cf92a49549f440d5c1",
+    "scripts/chapter_04_experiments.py": "cfffa5b9c65353dd3f933fb57cc13c6d5392b7cfed6cf0aaaf03cda00aa9db84"
+  },
+  "implementation_sha256": "1436e842ee92a150f741931b231bc4857a3cbf3685aed579e011271889deac63",
+  "experiment": "released_checkpoint_numerical_parity",
+  "device": "cuda",
+  "gpu": "NVIDIA A40",
+  "dtype": "torch.bfloat16",
+  "parameters": 2059174912,
+  "state_dict_keys": 569,
+  "config": {
+    "in_channels": 17,
+    "out_channels": 16,
+    "num_attention_heads": 16,
+    "attention_head_dim": 128,
+    "num_layers": 28,
+    "mlp_ratio": 4.0,
+    "text_embed_dim": 1024,
+    "adaln_lora_dim": 256,
+    "max_size": [
+      128,
+      240,
+      240
+    ],
+    "patch_size": [
+      1,
+      2,
+      2
+    ],
+    "rope_scale": [
+      1.0,
+      3.0,
+      3.0
+    ],
+    "concat_padding_mask": true,
+    "extra_pos_embed_type": null,
+    "use_crossattn_projection": true,
+    "crossattn_proj_in_channels": 100352,
+    "encoder_hidden_states_channels": 1024,
+    "controlnet_block_every_n": null,
+    "img_context_dim_in": null,
+    "img_context_num_tokens": 256,
+    "img_context_dim_out": 2048,
+    "_use_default_values": [
+      "img_context_num_tokens",
+      "img_context_dim_in",
+      "img_context_dim_out",
+      "controlnet_block_every_n"
+    ],
+    "_class_name": "CosmosTransformer3DModel",
+    "_diffusers_version": "0.37.0.dev0",
+    "_name_or_path": "nvidia/Cosmos-Predict2.5-2B"
+  },
+  "reference_source_sha256": "2eebde6dcc3fe2564121c9b56eb5e35fb64a2bf532ae0296bbecaea58a79396f",
+  "tolerance": {
+    "rtol": 0.02,
+    "atol": 0.02
+  },
+  "results": [
+    {
+      "noise_level": 0.05,
+      "velocity": {
+        "max_abs": 0.0,
+        "rmse": 0.0,
+        "reference_rms": 0.8926606774330139
+      },
+      "blocks": {
+        "0": {
+          "max_abs": 0.0,
+          "rmse": 0.0,
+          "reference_rms": 0.9878809452056885
+        },
+        "27": {
+          "max_abs": 0.0,
+          "rmse": 0.0,
+          "reference_rms": 41.473934173583984
+        }
+      }
+    },
+    {
+      "noise_level": 0.5,
+      "velocity": {
+        "max_abs": 0.0,
+        "rmse": 0.0,
+        "reference_rms": 1.052711844444275
+      },
+      "blocks": {
+        "0": {
+          "max_abs": 0.0,
+          "rmse": 0.0,
+          "reference_rms": 0.8581699728965759
+        },
+        "27": {
+          "max_abs": 0.0,
+          "rmse": 0.0,
+          "reference_rms": 43.68220138549805
+        }
+      }
+    },
+    {
+      "noise_level": 0.95,
+      "velocity": {
+        "max_abs": 0.0,
+        "rmse": 0.0,
+        "reference_rms": 0.8985203504562378
+      },
+      "blocks": {
+        "0": {
+          "max_abs": 0.0,
+          "rmse": 0.0,
+          "reference_rms": 0.688310444355011
+        },
+        "27": {
+          "max_abs": 0.0,
+          "rmse": 0.0,
+          "reference_rms": 44.70125961303711
+        }
+      }
+    }
+  ],
+  "passed": true,
+  "seconds": 2.474146530032158,
+  "peak_allocated_bytes": 4182962176,
+  "scope": "All checkpoint weights, a small latent volume, synthetic text features, three noise levels. Video generation is a separate experiment."
+}

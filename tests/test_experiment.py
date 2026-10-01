@@ -50,3 +50,33 @@ def test_new_conditioning_fields_change_identifier() -> None:
     assert original.run_id != RunManifest(**BASE, conditioning_num_frames=1).run_id
     assert RunManifest(**BASE, conditioning_fps=8).run_id != RunManifest(
         **BASE, conditioning_fps=16).run_id
+
+
+def test_implementation_identity_survives_round_trip_and_distinguishes_runs(tmp_path) -> None:
+    """Reference and scratch rollouts must stay distinct under identical controls."""
+    reference = RunManifest(**BASE, implementation="chapter04/reference",
+                            implementation_sha256="a" * 64)
+    scratch = RunManifest(**BASE, implementation="chapter04/scratch",
+                          implementation_sha256="a" * 64)
+    changed_code = RunManifest(**BASE, implementation="chapter04/scratch",
+                               implementation_sha256="b" * 64)
+    assert len({reference.run_id, scratch.run_id, changed_code.run_id}) == 3
+    assert RunManifest.load(scratch.save(tmp_path)) == scratch
+    # Unspecified implementation fields preserve identifiers from earlier chapters.
+    assert RunManifest(**BASE).run_id == RunManifest(
+        **BASE, implementation=None, implementation_sha256=None).run_id
+
+
+@pytest.mark.parametrize("field,replacement", [
+    ("implementation", "chapter04/reference"),
+    ("implementation_sha256", "b" * 64),
+])
+def test_implementation_tampering_invalidates_saved_identifier(tmp_path, field, replacement) -> None:
+    manifest = RunManifest(**BASE, implementation="chapter04/scratch",
+                           implementation_sha256="a" * 64)
+    path = manifest.save(tmp_path)
+    record = json.loads(path.read_text())
+    record[field] = replacement
+    path.write_text(json.dumps(record))
+    with pytest.raises(ValueError, match="run_id mismatch"):
+        RunManifest.load(path)

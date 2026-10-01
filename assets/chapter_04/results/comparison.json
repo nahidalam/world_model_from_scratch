@@ -1,0 +1,86 @@
+{
+  "created_at": "2026-09-09T18:42:33.970341+00:00",
+  "checkpoint": "nvidia/Cosmos-Predict2.5-2B",
+  "checkpoint_revision": "0d37c7498f54cee3c599d438d895a0a4a8608064",
+  "python": "3.10.12",
+  "versions": {
+    "torch": "2.6.0+cu124",
+    "diffusers": "0.39.0",
+    "accelerate": "1.14.0",
+    "numpy": "2.2.6"
+  },
+  "source_sha256": {
+    "src/world_models/models/cosmos_transformer.py": "5719164fc314011cdc9f850eb0f68124f109aa73b2fb0fb1ea97e98003146023",
+    "src/world_models/flow.py": "214fe8d2adb9094217e017e70c53cfbcd0e9ec118e94e8d15037ce8ac8617a76",
+    "src/world_models/cosmos_generation.py": "1f95e11b1fe1c7af42360022b128ce7c265e4c87a4a5f8cf92a49549f440d5c1",
+    "scripts/chapter_04_experiments.py": "cfffa5b9c65353dd3f933fb57cc13c6d5392b7cfed6cf0aaaf03cda00aa9db84"
+  },
+  "implementation_sha256": "1436e842ee92a150f741931b231bc4857a3cbf3685aed579e011271889deac63",
+  "experiment": "paired_generation_comparison",
+  "reference_run_id": "f06ed3eddeb7",
+  "scratch_run_id": "648db6831993",
+  "reference_generation_sha256": "d985f684f5eef335ec760d125a7498638e916a692eb2f314ba00776534e2d745",
+  "scratch_generation_sha256": "bdb3418e0cc5643b5ac9eff0cc7356d6ccddb523a205fa05315b30ea89c0af5f",
+  "scheduler": {
+    "num_train_timesteps": 1000,
+    "beta_start": 0.0001,
+    "beta_end": 0.02,
+    "beta_schedule": "linear",
+    "trained_betas": null,
+    "solver_order": 2,
+    "prediction_type": "flow_prediction",
+    "thresholding": false,
+    "dynamic_thresholding_ratio": 0.995,
+    "sample_max_value": 1.0,
+    "predict_x0": true,
+    "solver_type": "bh2",
+    "lower_order_final": true,
+    "disable_corrector": [],
+    "solver_p": null,
+    "use_karras_sigmas": true,
+    "use_exponential_sigmas": false,
+    "use_beta_sigmas": false,
+    "use_flow_sigmas": true,
+    "flow_shift": 1.0,
+    "timestep_spacing": "linspace",
+    "steps_offset": 0,
+    "final_sigmas_type": "zero",
+    "rescale_betas_zero_snr": false,
+    "use_dynamic_shifting": false,
+    "time_shift_type": "exponential",
+    "sigma_min": 0.01,
+    "sigma_max": 200.0,
+    "shift_terminal": null,
+    "_use_default_values": [
+      "shift_terminal"
+    ],
+    "_class_name": "UniPCMultistepScheduler",
+    "_diffusers_version": "0.37.0.dev0"
+  },
+  "frames": [
+    29,
+    704,
+    1280,
+    3
+  ],
+  "decoded_uint8_max_abs": 0.0,
+  "decoded_uint8_mae": 0.0,
+  "decoded_uint8_rmse": 0.0,
+  "latent_comparison": {
+    "latents_step_00.pt": {
+      "max_abs": 0.0,
+      "rmse": 0.0,
+      "reference_rms": 0.9966854453086853
+    },
+    "latents_step_07.pt": {
+      "max_abs": 0.0,
+      "rmse": 0.0,
+      "reference_rms": 0.8044546246528625
+    },
+    "latents_step_14.pt": {
+      "max_abs": 0.0,
+      "rmse": 0.0,
+      "reference_rms": 0.6814863681793213
+    }
+  }
+}

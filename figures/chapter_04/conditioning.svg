@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="270" viewBox="0 0 1000 270" role="img" aria-labelledby="title desc">
+<title id="title">Condition on observed frames</title><desc id="desc">Five observed frames pass through the VAE encoder into two observed latent frames. Three frames to generate start as noise. A mask marks observed positions with 1 and positions to generate with 0, and is concatenated with the latent as a seventeenth channel before the Transformer.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#53637a"/></marker></defs>
+<rect width="1000" height="270" rx="16" fill="#f7f9fc"/>
+<g font-family="system-ui, sans-serif">
+<rect x="20" y="20" width="150" height="100" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="95.0" y="48" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Frames 0–4</text>
+<rect x="33" y="64" width="20" height="40" rx="3" fill="#e6f0fc" stroke="#2a78d6" stroke-width="1.5"/>
+<rect x="59" y="64" width="20" height="40" rx="3" fill="#e6f0fc" stroke="#2a78d6" stroke-width="1.5"/>
+<rect x="85" y="64" width="20" height="40" rx="3" fill="#e6f0fc" stroke="#2a78d6" stroke-width="1.5"/>
+<rect x="111" y="64" width="20" height="40" rx="3" fill="#e6f0fc" stroke="#2a78d6" stroke-width="1.5"/>
+<rect x="137" y="64" width="20" height="40" rx="3" fill="#e6f0fc" stroke="#2a78d6" stroke-width="1.5"/>
+<path d="M170 70H193" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="193.0,70.0 184.0,66.0 184.0,74.0" fill="#53637a"/>
+<rect x="204" y="20" width="130" height="100" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="269.0" y="76.0" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">VAE encoder</text>
+<path d="M334 70H357" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="357.0,70.0 348.0,66.0 348.0,74.0" fill="#53637a"/>
+<rect x="368" y="20" width="220" height="100" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="478.0" y="48" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Latent</text>
+<rect x="376" y="62" width="36" height="44" rx="4" fill="#e6f0fc" stroke="#2a78d6" stroke-width="1.5"/>
+<rect x="418" y="62" width="36" height="44" rx="4" fill="#e6f0fc" stroke="#2a78d6" stroke-width="1.5"/>
+<rect x="460" y="62" width="36" height="44" rx="4" fill="#fdece4" stroke="#d85c2c" stroke-width="1.5"/>
+<rect x="502" y="62" width="36" height="44" rx="4" fill="#fdece4" stroke="#d85c2c" stroke-width="1.5"/>
+<rect x="544" y="62" width="36" height="44" rx="4" fill="#fdece4" stroke="#d85c2c" stroke-width="1.5"/>
+<path d="M588 70H611" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="611.0,70.0 602.0,66.0 602.0,74.0" fill="#53637a"/>
+<rect x="622" y="20" width="170" height="100" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="707.0" y="64.5" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Concatenate</text>
+<text x="707.0" y="89.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">16 + 1 channels</text>
+<path d="M792 70H815" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="815.0,70.0 806.0,66.0 806.0,74.0" fill="#53637a"/>
+<rect x="826" y="20" width="150" height="100" rx="10" fill="#fff" stroke="#14243b" stroke-width="1.5"/>
+<text x="901.0" y="64.5" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Transformer</text>
+<text x="901.0" y="89.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">trained</text>
+<rect x="398" y="170" width="160" height="90" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="478.0" y="198" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Noise</text>
+<rect x="418" y="206" width="36" height="44" rx="4" fill="#fdece4" stroke="#d85c2c" stroke-width="1.5"/>
+<rect x="460" y="206" width="36" height="44" rx="4" fill="#fdece4" stroke="#d85c2c" stroke-width="1.5"/>
+<rect x="502" y="206" width="36" height="44" rx="4" fill="#fdece4" stroke="#d85c2c" stroke-width="1.5"/>
+<path d="M478 170V131" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="478.0,131.0 474.0,140.0 482.0,140.0" fill="#53637a"/>
+<rect x="622" y="170" width="170" height="90" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="707.0" y="198" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Mask</text>
+<rect x="632" y="206" width="26" height="44" rx="4" fill="#e6f0fc" stroke="#2a78d6" stroke-width="1.5"/>
+<text x="645" y="234" font-size="15" fill="#2a78d6" font-weight="600" text-anchor="middle">1</text>
+<rect x="663" y="206" width="26" height="44" rx="4" fill="#e6f0fc" stroke="#2a78d6" stroke-width="1.5"/>
+<text x="676" y="234" font-size="15" fill="#2a78d6" font-weight="600" text-anchor="middle">1</text>
+<rect x="694" y="206" width="26" height="44" rx="4" fill="#fff" stroke="#d85c2c" stroke-width="1.5"/>
+<text x="707" y="234" font-size="15" fill="#d85c2c" font-weight="600" text-anchor="middle">0</text>
+<rect x="725" y="206" width="26" height="44" rx="4" fill="#fff" stroke="#d85c2c" stroke-width="1.5"/>
+<text x="738" y="234" font-size="15" fill="#d85c2c" font-weight="600" text-anchor="middle">0</text>
+<rect x="756" y="206" width="26" height="44" rx="4" fill="#fff" stroke="#d85c2c" stroke-width="1.5"/>
+<text x="769" y="234" font-size="15" fill="#d85c2c" font-weight="600" text-anchor="middle">0</text>
+<path d="M707 170V131" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="707.0,131.0 703.0,140.0 711.0,140.0" fill="#53637a"/>
+</g></svg>

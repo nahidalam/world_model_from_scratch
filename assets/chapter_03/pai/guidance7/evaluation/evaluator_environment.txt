@@ -163,7 +163,7 @@ packaging==26.3
 pandas==2.3.3
 partial-json-parser==0.2.1.1.post7
 pathspec==1.1.1
--e file:///mnt/ssd-4/nahid/world_model_from_scratch_private/outputs/chapter_03/tools/physical-ai-bench/generation
+-e ./outputs/chapter_03/tools/physical-ai-bench/generation
 peft==0.20.0
 pillow==12.3.0
 platformdirs==4.11.8

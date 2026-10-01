@@ -10,7 +10,7 @@
   "prompt": "A minimalist living room scene begins with a static shot of a mustard-yellow velvet sofa with a tufted design, positioned against a plain white wall. The sofa's rich color contrasts beautifully with the stark background. In front of the sofa, a light wooden coffee table takes center stage, with a black cylindrical object resting on its left side. To the far right, a dark wooden side table holds a lamp with a black shade. The scene remains unchanged until a grey tennis ball emerges from a black pipe located at the edge of the coffee table. The ball rolls smoothly across the table's surface towards the right, eventually rolling off-screen. The final frame shows the coffee table empty again, with the black pipe still in place, and the tennis ball no longer visible. A medium shot captures the entire setup, emphasizing the contrast between the vibrant sofa and the neutral tones of the room.",
   "observation": "outputs/chapter_03/pai/subset/condition_image/physics_002.jpg",
   "outputs": [
-    "/mnt/ssd-4/nahid/world_model_from_scratch_private/outputs/chapter_03/pai/guidance7/runs/e2c193fe647e/rollout.mp4"
+    "outputs/chapter_03/pai/guidance7/runs/e2c193fe647e/rollout.mp4"
   ],
   "versions": {
     "torch": "2.6.0+cu124",

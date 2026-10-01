@@ -10,7 +10,7 @@
   "prompt": "The video opens with a view of an industrial setting, likely a manufacturing facility, characterized by a clean and sterile environment. The scene features a conveyor belt system transporting white bottles through a series of automated machinery. The machinery includes various mechanical arms, pipes, and tubes, predominantly metallic and transparent, with some components colored yellow and blue. The conveyor belt moves steadily, carrying the bottles towards the processing stations. The background reveals additional machinery and equipment, suggesting a complex production line. The lighting is bright and evenly distributed, remaining consistent throughout the video.  As the video progresses, the mechanical arms are seen lifting and positioning the bottles at different stages of the production process. The mechanical arm can be seen adding bottle caps on top of the bottles. The bottles move smoothly along the conveyor, indicating a continuous workflow. The camera angle shifts slightly, providing a closer view of the machinery and the bottles as they pass through the processing stations. The final frame captures the same scene, with the conveyor belt continuing its steady movement, the bottles being processed, and the machinery functioning seamlessly, maintaining the same level of activity and efficiency observed throughout the video.",
   "observation": "outputs/chapter_03/pai/subset/condition_image/industry_002.jpg",
   "outputs": [
-    "/mnt/ssd-4/nahid/world_model_from_scratch_private/outputs/chapter_03/pai/guidance7/runs/ee01137fa7c9/rollout.mp4"
+    "outputs/chapter_03/pai/guidance7/runs/ee01137fa7c9/rollout.mp4"
   ],
   "versions": {
     "torch": "2.6.0+cu124",

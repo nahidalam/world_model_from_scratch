@@ -1,0 +1,11 @@
+# Small-model training, VAE preparation, and checkpoint comparisons.
+# Install a GPU/driver-compatible PyTorch build before this file on CUDA hosts.
+# Local CPU verification used torch 2.6.0; GPU versions belong in each run report.
+-r requirements.txt
+torch>=2.6.0
+diffusers==0.39.0
+accelerate==1.14.0
+safetensors
+# The small training path does not import torchvision or the full Cosmos pipeline.
+# The optional reference comparison uses a matching torchvision build.
+# Full released-checkpoint generation also uses requirements-chapter-02-gpu.txt.

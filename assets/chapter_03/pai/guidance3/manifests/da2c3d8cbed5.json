@@ -10,7 +10,7 @@
   "prompt": "A man with short hair, dressed in a black long-sleeved shirt with white writing on its sleeves, orange writing on his right chest, and black gloves, is skillfully packing food at a bustling street food stall. He uses metal tongs to pick up bite-sized snacks from a tray filled with golden, bite-sized snacks and a silver cooking skimmer, placing them into a white paper cup with brown stripes and some writing. The man appears focused and deliberate in his movements, with a soft ambient light illuminating his face. In front of him, another tray holds food in a rich sauce, with two cutlery items visible on the lower side. The scene is set against a backdrop of a red-painted indoor space, filled with various items and papers with writings and drawings stuck on one side of the wall. The camera captures the man in a medium shot at eye level, tilting up to show his concentrated expression as he continues to pack the food. A large poster with a drawing and writing is partially visible on his left. The bright and inviting colors, along with the fast and adept movements of the vendor, create an appetizing and lively culinary experience.",
   "observation": "outputs/chapter_03/pai/subset/condition_image/common_sense_049c9292-db5f-490b-a72b-546775e8156c.jpg",
   "outputs": [
-    "/mnt/ssd-4/nahid/world_model_from_scratch_private/outputs/chapter_03/pai/guidance3/runs/da2c3d8cbed5/rollout.mp4"
+    "outputs/chapter_03/pai/guidance3/runs/da2c3d8cbed5/rollout.mp4"
   ],
   "versions": {
     "torch": "2.6.0+cu124",

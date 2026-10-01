@@ -20,6 +20,7 @@ REPRODUCIBILITY_FIELDS = (
 OPTIONAL_REPRODUCIBILITY_FIELDS = (
     "conditioning_frames_sha256", "conditioning_num_frames",
     "conditioning_fps", "output_fps",
+    "implementation", "implementation_sha256",
 )
 
 
@@ -64,6 +65,8 @@ class RunManifest:
     conditioning_num_frames: int | None = None
     conditioning_fps: float | None = None
     output_fps: float | None = None
+    implementation: str | None = None
+    implementation_sha256: str | None = None
 
     @property
     def run_id(self) -> str:

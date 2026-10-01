@@ -1,0 +1,72 @@
+{
+  "created_at": "2026-09-09T18:42:31.804840+00:00",
+  "checkpoint": "nvidia/Cosmos-Predict2.5-2B",
+  "checkpoint_revision": "0d37c7498f54cee3c599d438d895a0a4a8608064",
+  "python": "3.12.12",
+  "versions": {
+    "torch": "2.6.0",
+    "diffusers": "0.39.0",
+    "accelerate": "1.14.0",
+    "numpy": "2.5.2"
+  },
+  "source_sha256": {
+    "src/world_models/models/cosmos_transformer.py": "5719164fc314011cdc9f850eb0f68124f109aa73b2fb0fb1ea97e98003146023",
+    "src/world_models/flow.py": "214fe8d2adb9094217e017e70c53cfbcd0e9ec118e94e8d15037ce8ac8617a76",
+    "src/world_models/cosmos_generation.py": "1f95e11b1fe1c7af42360022b128ce7c265e4c87a4a5f8cf92a49549f440d5c1",
+    "scripts/chapter_04_experiments.py": "cfffa5b9c65353dd3f933fb57cc13c6d5392b7cfed6cf0aaaf03cda00aa9db84"
+  },
+  "implementation_sha256": "1436e842ee92a150f741931b231bc4857a3cbf3685aed579e011271889deac63",
+  "experiment": "random_initialization_component_check",
+  "device": "cpu",
+  "config": {
+    "num_attention_heads": 2,
+    "attention_head_dim": 16,
+    "in_channels": 5,
+    "out_channels": 4,
+    "num_layers": 2,
+    "mlp_ratio": 2.0,
+    "text_embed_dim": 16,
+    "adaln_lora_dim": 8,
+    "max_size": [
+      8,
+      8,
+      8
+    ],
+    "patch_size": [
+      1,
+      2,
+      2
+    ],
+    "rope_scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "concat_padding_mask": true,
+    "extra_pos_embed_type": null,
+    "use_crossattn_projection": true,
+    "crossattn_proj_in_channels": 24,
+    "encoder_hidden_states_channels": 16
+  },
+  "parameters": 35376,
+  "input_shape": [
+    1,
+    4,
+    3,
+    4,
+    6
+  ],
+  "output_shape": [
+    1,
+    4,
+    3,
+    4,
+    6
+  ],
+  "loss": 3.204773187637329,
+  "gradient_tensors": 49,
+  "gradient_norm": 3.8454649448394775,
+  "oracle_euler_max_error": 2.384185791015625e-07,
+  "observed_input_max_error": 0.0,
+  "scope": "Shape, objective and gradient check with random weights; not a trained video model."
+}

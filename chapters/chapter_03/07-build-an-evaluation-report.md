@@ -1,8 +1,8 @@
 # 3.7 Chapter Project: Build an Evaluation Report
 
 Now we will bring the scores and our observations together in a report. The
-goal is to answer one question: **would you choose guidance 7 or guidance 3
-for the examples you evaluated, and why?**
+goal is to answer one question: would you choose guidance 7 or guidance 3
+for the examples you evaluated, and why?
 
 ## Collect the Results
 
@@ -12,12 +12,12 @@ the same.
 
 Use your results from Section 3.5 or the files linked below.
 
-* **Videos:** open the [video gallery](../../assets/chapter_03/pai/README.md)
+* Videos: open the [video gallery](../../assets/chapter_03/pai/README.md)
   to find both guidance settings for each example and seed.
-* **Video quality scores:** [guidance 7](../../assets/chapter_03/results/pai_guidance7_quality.json)
+* Video quality scores: [guidance 7](../../assets/chapter_03/results/pai_guidance7_quality.json)
   and [guidance 3](../../assets/chapter_03/results/pai_guidance3_quality.json),
   from the [Section 3.5 supplement](05-evaluate-with-pai-bench.md#supplement-measure-video-quality).
-* **Benchmark questions and answers:** [guidance 7](../../assets/chapter_03/results/pai_guidance7_vqa_detailed.json)
+* Benchmark questions and answers: [guidance 7](../../assets/chapter_03/results/pai_guidance7_vqa_detailed.json)
   and [guidance 3](../../assets/chapter_03/results/pai_guidance3_vqa_detailed.json).
 
 ## Compare the Videos
@@ -45,13 +45,13 @@ explain a score, including moments where you disagree with the evaluator.
 
 Keep the report short. Answer these four questions:
 
-* **What did we compare?** Name the guidance settings and the examples and seeds
+* What did we compare? Name the guidance settings and the examples and seeds
   you reviewed.
-* **What did the scores show?** Include the measurements that matter for your
+* What did the scores show? Include the measurements that matter for your
   choice.
-* **What did we see?** Describe two or three examples from the videos, with
+* What did we see? Describe two or three examples from the videos, with
   timestamps so someone else can check them.
-* **Which setting would we choose, and why?** Explain what matters most for
+* Which setting would we choose, and why? Explain what matters most for
   your application and how the scores and observations support your choice.
   If you do not see a clear winner, explain why.
 
@@ -62,14 +62,14 @@ scores and video references so another reader can check your reasoning.
 
 Attach these details so someone else can repeat the evaluation:
 
-* **Versions and settings.** Record the generation model, judge, and
+* Versions and settings. Record the generation model, judge, and
   evaluator versions and settings. Keep the benchmark questions and Qwen's
   answers from the
   [question-answering evaluator](https://github.com/SHI-Labs/physical-ai-bench/blob/2f3b687410029b98397fbc51fa4de36bfd45627d/generation/evaluate_vqa.py).
-* **Video coverage.** Record the expected and actual video counts, plus
+* Video coverage. Record the expected and actual video counts, plus
   missing or unreadable videos, evaluator errors, and failed or blocked
   generation runs. Leaving out difficult examples can make scores look better.
-* **Video selection.** If you chose the best video from several attempts,
+* Video selection. If you chose the best video from several attempts,
   record how many attempts, how you chose, and the generation cost.
 
 When comparing with published results, follow the benchmark's evaluation

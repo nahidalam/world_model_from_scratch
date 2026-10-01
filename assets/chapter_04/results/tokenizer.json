@@ -1,0 +1,50 @@
+{
+  "created_at": "2026-09-09T18:34:33.503785+00:00",
+  "checkpoint": "nvidia/Cosmos-Predict2.5-2B",
+  "checkpoint_revision": "0d37c7498f54cee3c599d438d895a0a4a8608064",
+  "python": "3.10.12",
+  "versions": {
+    "torch": "2.6.0+cu124",
+    "diffusers": "0.39.0",
+    "accelerate": "1.14.0",
+    "numpy": "2.2.6"
+  },
+  "source_sha256": {
+    "src/world_models/models/cosmos_transformer.py": "5719164fc314011cdc9f850eb0f68124f109aa73b2fb0fb1ea97e98003146023",
+    "src/world_models/flow.py": "214fe8d2adb9094217e017e70c53cfbcd0e9ec118e94e8d15037ce8ac8617a76",
+    "src/world_models/cosmos_generation.py": "1f95e11b1fe1c7af42360022b128ce7c265e4c87a4a5f8cf92a49549f440d5c1",
+    "scripts/chapter_04_experiments.py": "08e989b8dbfd70aa9dbc0390518de25c0a063a0a36d76fa24c2713b805817253"
+  },
+  "implementation_sha256": "1ea6063fd84e8d53f6082075fbdfe9734acd6da79089c2a03541419ad45ad82b",
+  "experiment": "conditioning_tokenizer_reconstruction",
+  "device": "cuda",
+  "dtype": "torch.bfloat16",
+  "input_shape": [
+    1,
+    3,
+    5,
+    704,
+    1280
+  ],
+  "latent_shape": [
+    1,
+    16,
+    2,
+    88,
+    160
+  ],
+  "decoded_shape": [
+    1,
+    3,
+    5,
+    704,
+    1280
+  ],
+  "reconstruction": {
+    "max_abs": 1.0234375,
+    "rmse": 0.0463227815926075,
+    "reference_rms": 0.45494890213012695
+  },
+  "seconds": 8.587565741501749,
+  "peak_allocated_bytes": 10097740288
+}

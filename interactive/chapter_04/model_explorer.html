@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 4 · Inside a video diffusion Transformer</title>
+<style>
+  :root { --surface:#fcfcfb;--panel:#fff;--ink:#14243b;--soft:#42536a;--rule:#d6d5cf;--blue:#2a78d6;--blue-fill:#e6f0fc;--orange:#d85c2c;--orange-fill:#fdece4; }
+  * {box-sizing:border-box} body {margin:0;padding:24px;background:var(--surface);color:var(--ink);font:15px/1.5 "Helvetica Neue",Helvetica,Arial,sans-serif}
+  main {max-width:1120px;margin:auto} h1 {margin:0 0 8px;font-size:30px;line-height:1.2} h2 {margin:0 0 8px;font-size:22px} h3 {margin:0 0 8px;font-size:16px} p {margin:0 0 12px} a {color:#1f60ac}
+  .eyebrow {color:#a1421d;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px} .muted {color:var(--soft)} .small {font-size:13px} .lede {max-width:880px}
+  nav {display:flex;flex-wrap:wrap;gap:20px;margin:18px 0 24px} .panel {background:var(--panel);border:1px solid var(--rule);border-radius:12px;padding:22px;margin-bottom:20px;scroll-margin-top:16px}
+  .two {display:grid;grid-template-columns:1fr 1fr;gap:24px}.three {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.note {border-left:3px solid var(--orange);background:var(--orange-fill);padding:10px 12px}
+  label {display:block;font-weight:600;margin-bottom:6px} input,button,select {font:inherit} input[type=range] {width:100%;accent-color:var(--blue)} input[type=number],select {border:1px solid var(--rule);border-radius:6px;padding:7px 9px;background:white;color:var(--ink)} input[type=number] {width:110px}
+  button {border:1px solid var(--rule);border-radius:8px;padding:7px 11px;background:white;color:var(--ink);cursor:pointer} button:hover {border-color:var(--blue)} button[aria-pressed=true] {color:#16497f;border-color:var(--blue);background:var(--blue-fill)} :focus-visible {outline:3px solid var(--blue);outline-offset:3px}
+  .controls {display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin:16px 0} .controls label {margin:0}.range {flex:1;min-width:200px} output {font-variant-numeric:tabular-nums}.grid {display:grid;gap:4px}.pixels {grid-template-columns:repeat(4,1fr);max-width:264px;margin-bottom:10px}.pixel {height:45px;display:grid;place-items:center;border:1px solid transparent;border-radius:4px;font-variant-numeric:tabular-nums;font-size:13px}.pixel.selected {outline:2px solid var(--blue);outline-offset:0}
+  .tokens {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:14px 0}.token {text-align:left;padding:8px;font-size:13px}.token span {display:block;color:var(--soft);font-size:12px}.token strong {font-size:15px}.trace {font:13px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;background:#f3f6fa;border-radius:8px;padding:12px;overflow-wrap:anywhere;white-space:pre-wrap;margin:10px 0}
+  .equation {font:17px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--ink);margin:14px 0}.bar-row {display:grid;grid-template-columns:100px 1fr 54px;align-items:center;gap:8px;margin:8px 0;font-size:13px}.track {background:#eef2f7;border-radius:4px;height:24px;overflow:hidden}.bar {height:100%;background:var(--blue);min-width:1px;transition:width .15s}.bar.query {background:var(--orange)}
+  figure {margin:0} canvas {width:100%;height:auto;image-rendering:pixelated;display:block;border:1px solid var(--rule);border-radius:8px;background:#f3f6fa;aspect-ratio:1} figcaption {font-size:13px;color:var(--soft);margin-top:6px}.swatch {display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;background:var(--blue)}.swatch.orange {background:var(--orange)}.check {display:flex;align-items:center;gap:8px}.check label {font-weight:400}
+  .pass {color:#21633a}.fail {color:#a32719}.status {font-size:13px;min-height:20px;color:var(--soft)} details {margin-top:12px} summary {cursor:pointer;color:#1f60ac}.links {display:flex;flex-wrap:wrap;gap:12px;margin-top:10px}
+  @media(max-width:720px) {body {padding:14px}h1{font-size:25px}.panel{padding:16px}.two{grid-template-columns:1fr}.tokens{grid-template-columns:repeat(2,minmax(0,1fr))}.three{gap:8px}.bar-row{grid-template-columns:87px 1fr 48px}.pixel{height:42px}.equation{font-size:14px}.range{min-width:150px}}
+  @media(prefers-reduced-motion:reduce){.bar{transition:none}}
+</style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">World Models from Scratch · Chapter 4</p>
+  <h1>Inside a video diffusion Transformer</h1>
+  <p class="lede muted">Pack video patches into tokens, inspect one attention query, and mix a clean latent with noise. Change the controls to recalculate each operation.</p>
+  <p class="note small">These are live calculations on small, illustrative arrays. The chapter's Python lab trains a 21.2M-parameter video Transformer on cached latents and evaluates its generated futures.</p>
+  <nav aria-label="Explorer sections"><a href="#tokens">1. Pack patches</a><a href="#attention">2. Calculate attention</a><a href="#flow">3. Mix noise</a></nav>
+
+  <section class="panel" id="tokens" aria-labelledby="tokens-title">
+    <h2 id="tokens-title">1. A patch becomes a token</h2>
+    <p class="muted">Each frame below has one channel and 4 × 4 values. Select a token to find its 2 × 2 patch. The packing order is time, patch row, patch column.</p>
+    <div class="two">
+      <div><h3>Input frames</h3><div class="two"><div><p class="small">Video time 0</p><div class="grid pixels" id="frame0" aria-label="Input frame zero"></div></div><div><p class="small">Video time 1</p><div class="grid pixels" id="frame1" aria-label="Input frame one"></div></div></div></div>
+      <div><h3>Eight patches, four values each</h3><div class="tokens" id="tokenButtons" role="group" aria-label="Select a patch token"></div></div>
+    </div>
+    <pre class="trace" id="patchTrace" aria-live="polite"></pre>
+    <p class="status" id="roundtripStatus"></p>
+    <details><summary>Connect this example to the training model</summary><p class="small">The frozen WAN VAE produces 16 latent channels. Each 1 × 2 × 2 patch contains 64 latent values. One observation-mask channel adds four values, so the input projection maps 68 values to 384 features. The velocity output projection produces 64 values per patch. The training clip has 17 frames at 128 × 128 pixels, with the first five frames observed. This explorer uses one channel and four values per patch to make packing and unpacking easy to inspect.</p><pre class="trace">17 × 128 × 128 pixel video
+→ [16, 5, 16, 16] VAE latent
+→ append observation mask: 17 input channels
+→ 5 × 8 × 8 = 320 patch positions
+→ [320, 384] Transformer tokens</pre></details>
+  </section>
+
+  <section class="panel" id="attention" aria-labelledby="attention-title">
+    <h2 id="attention-title">2. One query reads every video token</h2>
+    <p class="muted">Use the same eight patches as keys and values. Choose a query and inspect its attention weights across both frames. Every key participates in this joint space-time attention.</p>
+    <div class="controls"><label for="query">Query token</label><select id="query"></select><div class="check"><input type="checkbox" id="rope" checked><label for="rope">Rotate Q and K by their (time, row, column) coordinates</label></div></div>
+    <div class="two"><div><h3>Attention weights</h3><div id="attentionBars"></div><p class="small muted"><span class="swatch"></span>Other tokens <span class="swatch orange"></span>Query's own token</p></div><div><h3>Follow the calculation</h3><pre class="trace" id="attentionTrace" aria-live="polite"></pre><p class="status" id="attentionStatus"></p></div></div>
+    <details><summary>Inspect the illustrative features</summary><p class="small">Each patch supplies six handcrafted features from its mean, top-to-bottom difference, and left-to-right difference. Q and K share those features, normalized by their root mean square. Three coordinate rotations act on three pairs of features. Values are the patch means. The training model learns its projections and uses 64 features per head across six attention heads.</p><pre class="trace">q, k = RMSNorm(handcrafted_patch_features)
+q, k = rotate_pairs(q, k, positions)  # optional in this demo
+weights = softmax(q @ all_keys.T / sqrt(6))
+output = sum(weights * patch_means)</pre></details>
+  </section>
+
+  <section class="panel" id="flow" aria-labelledby="flow-title">
+    <h2 id="flow-title">3. Move between a clean latent and noise</h2>
+    <p class="muted">Change flow time t to mix the two arrays. This 16 × 16 pattern stands in for one latent channel. The displayed colors clip values to [−2, 2]; the arithmetic uses the full values.</p>
+    <div class="controls"><div class="range"><label for="noiseTime">Flow time t = <output id="timeValue" for="noiseTime">0.50</output></label><input id="noiseTime" type="range" min="0" max="100" value="50" step="1"></div><div><label for="seed">Noise seed</label><input type="number" id="seed" value="0" min="0" max="999999" step="1"></div><div><label for="cell">Inspect cell</label><select id="cell"><option value="120">Row 7, column 8</option><option value="17">Row 1, column 1</option><option value="170">Row 10, column 10</option></select></div></div>
+    <div class="three"><figure><canvas id="cleanCanvas" width="256" height="256" role="img" aria-label="Illustrative clean latent pattern"></canvas><figcaption>Clean latent z · t = 0</figcaption></figure><figure><canvas id="mixedCanvas" width="256" height="256" role="img" aria-label="Mixture of clean latent and noise at selected time"></canvas><figcaption>Mixed latent zₜ · <span id="mixCaption">t = 0.50</span></figcaption></figure><figure><canvas id="noiseCanvas" width="256" height="256" role="img" aria-label="Seeded Gaussian noise array"></canvas><figcaption>Gaussian noise ε · t = 1</figcaption></figure></div>
+    <p class="equation">zₜ = (1 − t)z + tε &nbsp;&nbsp; v_target = ε − z</p>
+    <pre class="trace" id="flowTrace" aria-live="polite"></pre>
+    <p class="small muted">Training gives the network zₜ, t, and the conditions, then compares its output with v_target. Sampling starts at t = 1 and uses the learned velocity to step toward t = 0. This slider displays training interpolation.</p>
+    <p class="status" id="flowStatus"></p>
+  </section>
+  <p class="small muted">Read the <a href="../../chapters/chapter_04/README.md">chapter</a>, or open the <a href="../../figures/chapter_04/architecture.svg">architecture diagram</a>. All calculations run in this page without network access.</p>
+</main>
+<script>
+"use strict";
+const byId = (id) => document.getElementById(id);
+const fmt = (x, n = 4) => Number(x).toFixed(n);
+const frames = [
+  [0.0,0.1,0.2,0.3, 0.1,0.2,0.3,0.4, 0.2,0.3,0.8,0.9, 0.3,0.4,0.9,1.0],
+  [0.0,0.1,0.2,0.3, 0.1,0.2,0.3,0.4, 0.8,0.9,0.4,0.5, 0.9,1.0,0.5,0.6]
+];
+const tokens = [];
+for (let t = 0; t < 2; t++) for (let h = 0; h < 2; h++) for (let w = 0; w < 2; w++) {
+  const indices = [h * 8 + w * 2, h * 8 + w * 2 + 1, h * 8 + w * 2 + 4, h * 8 + w * 2 + 5];
+  tokens.push({position:[t,h,w], indices, values:indices.map((i)=>frames[t][i])});
+}
+function mean(xs) {return xs.reduce((s,x)=>s+x,0)/xs.length;}
+function unpack(patches) {
+  const restored = [Array(16).fill(0),Array(16).fill(0)];
+  patches.forEach((p)=>p.indices.forEach((cell,i)=>{restored[p.position[0]][cell]=p.values[i];}));
+  return restored;
+}
+function renderPatches(selected=0) {
+  frames.forEach((frame,t)=>{
+    byId(`frame${t}`).replaceChildren();
+    frame.forEach((value,i)=>{
+      const cell=document.createElement("div");
+      const active=tokens[selected].position[0]===t&&tokens[selected].indices.includes(i);
+      cell.className=`pixel${active?" selected":""}`;cell.textContent=fmt(value,1);
+      cell.style.background=`hsl(212 80% ${97-value*37}%)`;
+      cell.setAttribute("aria-label",`Frame ${t}, row ${Math.floor(i/4)}, column ${i%4}: ${value}`);
+      byId(`frame${t}`).append(cell);
+    });
+  });
+  byId("tokenButtons").replaceChildren();
+  tokens.forEach((p,i)=>{
+    const b=document.createElement("button");b.type="button";b.className="token";b.setAttribute("aria-pressed",String(i===selected));
+    const strong=document.createElement("strong");strong.textContent=`Token ${i}`;
+    const label=document.createElement("span");label.textContent=`(${p.position.join(", ")})`;
+    b.append(strong,label);b.addEventListener("click",()=>renderPatches(i));byId("tokenButtons").append(b);
+  });
+  const p=tokens[selected];
+  byId("patchTrace").textContent=`token index = time × 4 + patch_row × 2 + patch_column\n${selected} = ${p.position[0]} × 4 + ${p.position[1]} × 2 + ${p.position[2]}\npatch = [${p.values.map((v)=>fmt(v,1)).join(", ")}]\ninput [1, 1, 2, 4, 4] → patches [1, 8, 4] → unpack [1, 1, 2, 4, 4]`;
+  const exact=JSON.stringify(unpack(tokens))===JSON.stringify(frames);
+  byId("roundtripStatus").textContent=exact?"Pack → unpack check: all 32 values match the input.":"Pack → unpack check failed.";
+  byId("roundtripStatus").className=`status ${exact?"pass":"fail"}`;
+}
+function features(p) {
+  const [a,b,c,d]=p.values,m=mean(p.values),vertical=(c+d-a-b)/2,horizontal=(b+d-a-c)/2;
+  const x=[m,0.2,vertical,0.3,horizontal,0.4];
+  const rms=Math.sqrt(mean(x.map((v)=>v*v))+1e-6);
+  return x.map((v)=>v/rms);
+}
+function rotate(x,position) {
+  const y=x.slice();
+  position.forEach((angle,axis)=>{
+    const j=2*axis,c=Math.cos(angle),s=Math.sin(angle);
+    y[j]=c*x[j]-s*x[j+1];y[j+1]=s*x[j]+c*x[j+1];
+  });
+  return y;
+}
+function calculateAttention(selected,withRope) {
+  const keys=tokens.map((p)=>withRope?rotate(features(p),p.position):features(p));
+  const q=keys[selected],scores=keys.map((k)=>k.reduce((s,v,i)=>s+v*q[i],0)/Math.sqrt(6));
+  const peak=Math.max(...scores),exp=scores.map((s)=>Math.exp(s-peak)),total=exp.reduce((s,v)=>s+v,0);
+  const weights=exp.map((v)=>v/total),values=tokens.map((p)=>mean(p.values));
+  return {q,scores,weights,values,output:weights.reduce((s,w,i)=>s+w*values[i],0)};
+}
+function renderAttention() {
+  const selected=Number(byId("query").value),withRope=byId("rope").checked,result=calculateAttention(selected,withRope);
+  byId("attentionBars").replaceChildren();
+  result.weights.forEach((weight,i)=>{
+    const row=document.createElement("div");row.className="bar-row";
+    const label=document.createElement("span");label.textContent=`${i} · (${tokens[i].position.join(",")})`;
+    const track=document.createElement("div");track.className="track";const bar=document.createElement("div");bar.className=`bar${i===selected?" query":""}`;bar.style.width=`${weight*100}%`;track.append(bar);
+    const value=document.createElement("span");value.textContent=`${fmt(weight*100,1)}%`;row.append(label,track,value);byId("attentionBars").append(row);
+  });
+  byId("attentionTrace").textContent=`Query ${selected} at (t, h, w) = (${tokens[selected].position.join(", ")})\nQ = [${result.q.map((v)=>fmt(v,2)).join(", ")}]\n\nscores = QKᵀ / √6\n[${result.scores.map((v)=>fmt(v,2)).join(", ")}]\n\nsoftmax(scores) × values\nweighted patch mean = ${fmt(result.output)}\nquery patch mean    = ${fmt(result.values[selected])}`;
+  byId("attentionStatus").textContent=`Weight sum = ${fmt(result.weights.reduce((s,w)=>s+w,0),6)}. All ${tokens.length} keys participate.`;
+}
+function rng(seed) {
+  let state=seed>>>0;
+  return ()=>{state=(state+0x6D2B79F5)>>>0;let t=state;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return ((t^(t>>>14))>>>0)/4294967296;};
+}
+function gaussianNoise(seed,count) {
+  const random=rng(seed),noise=[];
+  while(noise.length<count) {const u=Math.max(random(),1e-12),v=random(),r=Math.sqrt(-2*Math.log(u));noise.push(r*Math.cos(2*Math.PI*v));if(noise.length<count)noise.push(r*Math.sin(2*Math.PI*v));}
+  return noise;
+}
+const clean=Array.from({length:256},(_,i)=>{
+  const row=Math.floor(i/16),column=i%16;
+  if(row>=5&&row<=10&&column>=5&&column<=10) return 1;
+  return -0.6+0.02*column;
+});
+function mix(cleanValues,noise,t) {return cleanValues.map((z,i)=>(1-t)*z+t*noise[i]);}
+function paint(id,values,selected) {
+  const context=byId(id).getContext("2d");
+  values.forEach((v,i)=>{
+    const u=Math.max(0,Math.min(1,(v+2)/4));context.fillStyle=`rgb(${Math.round(20+210*u)},${Math.round(37+193*u)},${Math.round(62+168*u)})`;
+    context.fillRect((i%16)*16,Math.floor(i/16)*16,16,16);
+  });
+  context.strokeStyle="#eb6834";context.lineWidth=2;context.strokeRect((selected%16)*16+1,Math.floor(selected/16)*16+1,14,14);
+}
+function renderFlow() {
+  const t=Number(byId("noiseTime").value)/100;
+  const seedInput=byId("seed"),rawSeed=Number(seedInput.value);
+  if(seedInput.value===""||!Number.isInteger(rawSeed)||rawSeed<0||rawSeed>999999) {
+    byId("flowStatus").textContent="Enter an integer seed from 0 to 999999.";return;
+  }
+  const seed=rawSeed,noise=gaussianNoise(seed,256),mixed=mix(clean,noise,t),cell=Number(byId("cell").value),z=clean[cell],e=noise[cell],target=e-z;
+  byId("timeValue").value=fmt(t,2);byId("mixCaption").textContent=`t = ${fmt(t,2)}`;
+  paint("cleanCanvas",clean,cell);paint("mixedCanvas",mixed,cell);paint("noiseCanvas",noise,cell);
+  byId("flowTrace").textContent=`Selected cell: row ${Math.floor(cell/16)}, column ${cell%16} · seed ${seed}\nz = ${fmt(z)}, ε = ${fmt(e)}\nzₜ = (1 − ${fmt(t,2)}) × ${fmt(z)} + ${fmt(t,2)} × ${fmt(e)} = ${fmt(mixed[cell])}\nv_target = ${fmt(e)} − ${fmt(z)} = ${fmt(target)}\n\nWith the known target and Δt = −0.01:\nzₜ + Δt × v_target = ${fmt(mixed[cell]-0.01*target)}${t<0.01?" (step extends past t = 0)":""}`;
+  const zero=mix(clean,noise,0),one=mix(clean,noise,1);
+  const endpoints=zero.every((v,i)=>v===clean[i])&&one.every((v,i)=>v===noise[i]);
+  byId("flowStatus").textContent=`Endpoint checks: t = 0 ${endpoints?"matches clean latent; t = 1 matches noise.":"failed."} Highlighted cell has an orange border.`;
+}
+tokens.forEach((p,i)=>{const option=document.createElement("option");option.value=i;option.textContent=`${i} · position (${p.position.join(", ")})`;byId("query").append(option);});
+byId("query").addEventListener("change",renderAttention);byId("rope").addEventListener("change",renderAttention);
+byId("noiseTime").addEventListener("input",renderFlow);byId("seed").addEventListener("input",renderFlow);byId("cell").addEventListener("change",renderFlow);
+renderPatches();renderAttention();renderFlow();
+</script>
+</body>
+</html>

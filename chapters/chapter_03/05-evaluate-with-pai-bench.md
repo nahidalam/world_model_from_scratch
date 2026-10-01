@@ -17,7 +17,7 @@ example, we used seeds 0 and 1 at guidance 7 and guidance 3. This gives us
 
 We will evaluate these Cosmos videos using Qwen2.5-VL-72B-Instruct. Qwen
 watches each video and answers the benchmark's questions. We compare its
-answers with the expected answers to calculate the **Domain Score**.
+answers with the expected answers to calculate the Domain Score.
 
 We will evaluate the 28 guidance-7 videos first, then repeat with guidance 3.
 If you do not have a GPU, use the results included with the book.
@@ -49,7 +49,7 @@ for readability. The expected answers come from the benchmark.
 | Physical behavior | Does the ball deform or flatten while rolling? | No |
 
 A correct answer can be Yes or No. For example, the ball should keep its
-shape, so the expected answer to the last question is **No**.
+shape, so the expected answer to the last question is No.
 
 Open the [guidance-7, seed-1 video](../../assets/chapter_03/pai/guidance7/videos/physics_002__1.mp4).
 Watch the ball and answer these questions before looking at Qwen's answers.
@@ -261,14 +261,14 @@ answers for the guidance-7 videos:
 | Does the ball bounce off the table before rolling out of view? | No | Yes | Yes | 0.0 |
 | Does the ball deform or flatten while rolling? | No | No | No | 1.0 |
 
-Each answer receives **1** if it matches the expected answer and **0**
+Each answer receives 1 if it matches the expected answer and 0
 otherwise. We average the two seed scores for each question. The shape
-question scores 1.0 because both answers match the expected **No**. The
-bounce question scores 0.0 because both answers are **Yes**.
+question scores 1.0 because both answers match the expected No. The
+bounce question scores 0.0 because both answers are Yes.
 
 The full tennis-ball example has 18 questions. For both seeds, Qwen matches
 14 of the 18 expected answers. The score for this example is
-**14 / 18 = 0.7778**. The four rows above show only part of that calculation.
+14 / 18 = 0.7778. The four rows above show only part of that calculation.
 
 We then calculate the Domain Score across all 14 examples. Together, they
 contain 111 questions. With two seeds, Qwen provides 222 answers. The
@@ -278,7 +278,7 @@ evaluator averages the scores in three steps:
 2. Average the question scores within each example.
 3. Average the 14 example scores to get the Domain Score.
 
-Each example gets equal weight. The guidance-7 Domain Score is **0.8824**
+Each example gets equal weight. The guidance-7 Domain Score is 0.8824
 on a 0–1 scale. This is the result for all 14 examples, including the
 tennis-ball example.
 
@@ -312,15 +312,15 @@ these paths.
 You can also use the guidance-3
 [Domain Score summary](../../assets/chapter_03/results/pai_guidance3_vqa_summary.json)
 and [individual answers](../../assets/chapter_03/results/pai_guidance3_vqa_detailed.json).
-The Domain Score across all 14 examples is **0.8231**, compared with
-**0.8824** at guidance 7.
+The Domain Score across all 14 examples is 0.8231, compared with
+0.8824 at guidance 7.
 
-For the tennis-ball bounce question, Qwen answers **Yes** for seed 0 and
-**No** for seed 1 at guidance 3. The expected answer is **No**, so one of the
-two answers matches. This question scores **(0 + 1) / 2 = 0.5**, compared
+For the tennis-ball bounce question, Qwen answers Yes for seed 0 and
+No for seed 1 at guidance 3. The expected answer is No, so one of the
+two answers matches. This question scores (0 + 1) / 2 = 0.5, compared
 with 0.0 at guidance 7.
 
-The tennis-ball example's score is **0.8056** at guidance 3 and **0.7778**
+The tennis-ball example's score is 0.8056 at guidance 3 and 0.7778
 at guidance 7. It scores higher at guidance 3 even though the average across
 all 14 examples is lower. We will inspect the videos in Section 3.6.
 
@@ -413,8 +413,8 @@ overall improvement may hide worse results for some examples. Keep the
 evaluator's aggregate scores alongside your calculations, since some
 measurements may combine results differently.
 
-For these 14 examples, the average imaging-quality score is **0.7328 at
-guidance 7** and **0.7288 at guidance 3**. Guidance 7 scores slightly higher.
+For these 14 examples, the average imaging-quality score is 0.7328 at
+guidance 7 and 0.7288 at guidance 3. Guidance 7 scores slightly higher.
 Watch the videos to see whether you notice a difference.
 
 We would need more examples to see whether this pattern holds more broadly.

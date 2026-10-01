@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="380" viewBox="0 0 1080 380" role="img" aria-labelledby="title desc">
+<title id="title">One Transformer block</title><desc id="desc">Tokens pass through self-attention, cross-attention, and a feed-forward network. Each sublayer applies adaptive normalization and a gated residual addition. The noise level t becomes a timestep embedding that sets each sublayer&#x27;s shift, scale, and gate. The learned context enters through cross-attention.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#53637a"/></marker></defs>
+<rect width="1080" height="380" rx="16" fill="#f7f9fc"/>
+<g font-family="system-ui, sans-serif">
+<rect x="204" y="20" width="200" height="70" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="304.0" y="61.0" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Noise level t</text>
+<path d="M404 55H427" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="427.0,55.0 418.0,51.0 418.0,59.0" fill="#53637a"/>
+<rect x="438" y="20" width="200" height="70" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="538.0" y="61.0" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Timestep embedding</text>
+<path d="M638 55H661" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="661.0,55.0 652.0,51.0 652.0,59.0" fill="#53637a"/>
+<rect x="672" y="20" width="200" height="70" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="772.0" y="49.5" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Shift, scale, gate</text>
+<text x="772.0" y="74.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">one set per sublayer</text>
+<path d="M772 90V115H304V129" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="304.0,129.0 308.0,120.0 300.0,120.0" fill="#53637a"/>
+<path d="M772 90V115H538V129" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="538.0,129.0 542.0,120.0 534.0,120.0" fill="#53637a"/>
+<path d="M772 90V129" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="772.0,129.0 776.0,120.0 768.0,120.0" fill="#53637a"/>
+<rect x="20" y="160" width="150" height="80" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="95.0" y="206.0" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Tokens in</text>
+<path d="M170 200H193" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="193.0,200.0 184.0,196.0 184.0,204.0" fill="#53637a"/>
+<rect x="204" y="140" width="200" height="120" rx="10" fill="#fff" stroke="#14243b" stroke-width="1.5"/>
+<text x="304.0" y="171.5" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Self-attention</text>
+<text x="304.0" y="196.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">adaptive norm</text>
+<text x="304.0" y="219.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">attend to all tokens</text>
+<text x="304.0" y="242.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">gated residual add</text>
+<path d="M404 200H427" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="427.0,200.0 418.0,196.0 418.0,204.0" fill="#53637a"/>
+<rect x="438" y="140" width="200" height="120" rx="10" fill="#fff" stroke="#14243b" stroke-width="1.5"/>
+<text x="538.0" y="171.5" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Cross-attention</text>
+<text x="538.0" y="196.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">adaptive norm</text>
+<text x="538.0" y="219.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">attend to context</text>
+<text x="538.0" y="242.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">gated residual add</text>
+<path d="M638 200H661" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="661.0,200.0 652.0,196.0 652.0,204.0" fill="#53637a"/>
+<rect x="672" y="140" width="200" height="120" rx="10" fill="#fff" stroke="#14243b" stroke-width="1.5"/>
+<text x="772.0" y="171.5" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Feed-forward</text>
+<text x="772.0" y="196.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">adaptive norm</text>
+<text x="772.0" y="219.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">per-token MLP</text>
+<text x="772.0" y="242.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">gated residual add</text>
+<path d="M872 200H895" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="895.0,200.0 886.0,196.0 886.0,204.0" fill="#53637a"/>
+<rect x="906" y="160" width="150" height="80" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="981.0" y="194.5" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Tokens out</text>
+<text x="981.0" y="219.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">to the next block</text>
+<rect x="438" y="300" width="200" height="60" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="538.0" y="336.0" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Learned context</text>
+<path d="M538 300V271" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="538.0,271.0 534.0,280.0 542.0,280.0" fill="#53637a"/>
+</g></svg>

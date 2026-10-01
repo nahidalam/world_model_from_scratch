@@ -1,0 +1,30 @@
+{
+  "checkpoint": "nvidia/Cosmos-Predict2.5-2B",
+  "revision": "0d37c7498f54cee3c599d438d895a0a4a8608064",
+  "seed": 0,
+  "num_frames": 29,
+  "guidance_scale": 7.0,
+  "num_inference_steps": 15,
+  "height": 704,
+  "width": 1280,
+  "prompt": "an aerial view of a sand mining operation; the machinery keeps moving and the water keeps flowing",
+  "observation": "assets/chapter_02/sand_mining.mp4",
+  "outputs": [
+    "outputs/chapter_04/scratch/rollout.mp4"
+  ],
+  "versions": {
+    "torch": "2.6.0+cu124",
+    "diffusers": "0.39.0",
+    "transformers": "5.14.1",
+    "cosmos_guardrail": "0.3.1",
+    "accelerate": "1.14.0"
+  },
+  "created_at": "2026-09-09T18:39:54.461758+00:00",
+  "conditioning_frames_sha256": "871640898415946112171fc4b6d88350134da75a3c2173496ea5a764486f0c13",
+  "conditioning_num_frames": 5,
+  "conditioning_fps": 16.0,
+  "output_fps": 16,
+  "implementation": "chapter04/scratch",
+  "implementation_sha256": "1ea6063fd84e8d53f6082075fbdfe9734acd6da79089c2a03541419ad45ad82b",
+  "run_id": "648db6831993"
+}

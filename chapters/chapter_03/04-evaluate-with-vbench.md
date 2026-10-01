@@ -164,14 +164,14 @@ Our run produced these scores:
 All four videos receive a dynamic-degree score of 0 because their movement falls below VBench’s threshold. Small movements may still be visible, so a zero score does not mean the video is frozen.
 
 Open the [evaluation explorer](https://nahidalam.github.io/world_model_from_scratch/interactive/chapter_03/evaluation_explorer.html#scores).
-Under **Inspect evaluator scores**, select
+Under Inspect evaluator scores, select
 `outputs/chapter_03/report/report.json`, or the included
 `assets/chapter_03/results/vbench_report.json` when reviewing without running
 the evaluator. Choose seeds 0 and 1 as Video A and
 Video B. The explorer shows their three scores side by side while you play the
 two rollouts.
 
-> **Try it yourself**
+> Try it yourself
 >
 > 1. Compare seeds 0 and 1 in the explorer before showing their scores. Does the score ordering match your visual notes?
 > 2. Compare seeds 2 and 3. Identify one visual event that a whole-video score might obscure.

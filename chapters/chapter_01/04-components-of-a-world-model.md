@@ -3,7 +3,7 @@
 A world model must connect information about the present to a prediction about
 the future. Conceptually, it does this in three operations: encode the present,
 advance an internal state through time, and decode the result. The middle
-operation is called **dynamics**.
+operation is called dynamics.
 
 ![](../../figures/chapter_01/fig_1_10_blueprint.png)
 
@@ -67,7 +67,7 @@ Return to the self-driving-car example from Section 1.1:
 
 The first future observation completes one predicted transition. Repeating the
 state update and prediction produces a sequence of future observations. As
-defined in Section 1.1, that predicted sequence is a **rollout**. A model may
+defined in Section 1.1, that predicted sequence is a rollout. A model may
 also generate all the observations in the rollout together rather than expose
 these repetitions one by one.
 

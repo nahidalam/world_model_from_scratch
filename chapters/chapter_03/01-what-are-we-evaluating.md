@@ -58,11 +58,11 @@ and compare two Chapter 2 videos:
    7 and 15 inference steps, so the seed is the only setting that changes.
 2. Play the videos together and follow the same machine or patch of water in
    both. Pause when you see a difference in its shape or motion.
-3. In **Record visible evidence**, choose one video and answer **Does motion
-   stay continuous?** Describe the object, its location, and what changes near
+3. In Record visible evidence, choose one video and answer Does motion
+   stay continuous? Describe the object, its location, and what changes near
    the selected frame. Save the annotation.
-4. Repeat the observation for the other video, then select **Export review
-   JSON**.
+4. Repeat the observation for the other video, then select Export review
+   JSON.
 
 Open the exported `chapter_03_human_review.json` file. Each annotation keeps
 your observation with the run ID, video and manifest, selected frame,

@@ -1,0 +1,165 @@
+{
+  "created_at": "2026-09-09T18:34:16.057659+00:00",
+  "checkpoint": "nvidia/Cosmos-Predict2.5-2B",
+  "checkpoint_revision": "0d37c7498f54cee3c599d438d895a0a4a8608064",
+  "python": "3.10.12",
+  "versions": {
+    "torch": "2.6.0+cu124",
+    "diffusers": "0.39.0",
+    "accelerate": "1.14.0",
+    "numpy": "2.2.6"
+  },
+  "source_sha256": {
+    "src/world_models/models/cosmos_transformer.py": "5719164fc314011cdc9f850eb0f68124f109aa73b2fb0fb1ea97e98003146023",
+    "src/world_models/flow.py": "214fe8d2adb9094217e017e70c53cfbcd0e9ec118e94e8d15037ce8ac8617a76",
+    "src/world_models/cosmos_generation.py": "1f95e11b1fe1c7af42360022b128ce7c265e4c87a4a5f8cf92a49549f440d5c1",
+    "scripts/chapter_04_experiments.py": "08e989b8dbfd70aa9dbc0390518de25c0a063a0a36d76fa24c2713b805817253"
+  },
+  "implementation_sha256": "1ea6063fd84e8d53f6082075fbdfe9734acd6da79089c2a03541419ad45ad82b",
+  "experiment": "sand_mining_generation",
+  "implementation": "reference",
+  "run_id": "f06ed3eddeb7",
+  "gpu": "NVIDIA A40",
+  "seed": 0,
+  "guidance": 7.0,
+  "steps": 15,
+  "frames": [
+    29,
+    704,
+    1280,
+    3
+  ],
+  "fps": 16,
+  "offload": true,
+  "scheduler": {
+    "num_train_timesteps": 1000,
+    "beta_start": 0.0001,
+    "beta_end": 0.02,
+    "beta_schedule": "linear",
+    "trained_betas": null,
+    "solver_order": 2,
+    "prediction_type": "flow_prediction",
+    "thresholding": false,
+    "dynamic_thresholding_ratio": 0.995,
+    "sample_max_value": 1.0,
+    "predict_x0": true,
+    "solver_type": "bh2",
+    "lower_order_final": true,
+    "disable_corrector": [],
+    "solver_p": null,
+    "use_karras_sigmas": true,
+    "use_exponential_sigmas": false,
+    "use_beta_sigmas": false,
+    "use_flow_sigmas": true,
+    "flow_shift": 1.0,
+    "timestep_spacing": "linspace",
+    "steps_offset": 0,
+    "final_sigmas_type": "zero",
+    "rescale_betas_zero_snr": false,
+    "use_dynamic_shifting": false,
+    "time_shift_type": "exponential",
+    "sigma_min": 0.01,
+    "sigma_max": 200.0,
+    "shift_terminal": null,
+    "_use_default_values": [
+      "shift_terminal"
+    ],
+    "_class_name": "UniPCMultistepScheduler",
+    "_diffusers_version": "0.37.0.dev0"
+  },
+  "seconds": 318.5767086511478,
+  "peak_allocated_bytes": 17244643328,
+  "video_sha256": "966eba9b2bea90ffdc38c465bf2a6bd3e4a768a71baea0745e8cf9c8d256f6e5",
+  "trajectory": [
+    {
+      "step": 0,
+      "timestep": 995.0,
+      "mean": -1.0326572009944357e-05,
+      "std": 0.9966856837272644
+    },
+    {
+      "step": 1,
+      "timestep": 992.0,
+      "mean": 0.00011533581709954888,
+      "std": 0.9929741024971008
+    },
+    {
+      "step": 2,
+      "timestep": 988.0,
+      "mean": 0.00028104556258767843,
+      "std": 0.9869894981384277
+    },
+    {
+      "step": 3,
+      "timestep": 983.0,
+      "mean": 0.00068278779508546,
+      "std": 0.9771676659584045
+    },
+    {
+      "step": 4,
+      "timestep": 973.0,
+      "mean": 0.001284214435145259,
+      "std": 0.9606429934501648
+    },
+    {
+      "step": 5,
+      "timestep": 956.0,
+      "mean": 0.002351800911128521,
+      "std": 0.9322729706764221
+    },
+    {
+      "step": 6,
+      "timestep": 927.0,
+      "mean": 0.0033633396960794926,
+      "std": 0.8823196887969971
+    },
+    {
+      "step": 7,
+      "timestep": 877.0,
+      "mean": 0.006839295383542776,
+      "std": 0.8044257760047913
+    },
+    {
+      "step": 8,
+      "timestep": 791.0,
+      "mean": 0.013149235397577286,
+      "std": 0.6959949731826782
+    },
+    {
+      "step": 9,
+      "timestep": 652.0,
+      "mean": 0.019815761595964432,
+      "std": 0.5922145247459412
+    },
+    {
+      "step": 10,
+      "timestep": 462.0,
+      "mean": 0.026206882670521736,
+      "std": 0.5676278471946716
+    },
+    {
+      "step": 11,
+      "timestep": 263.0,
+      "mean": 0.030680572614073753,
+      "std": 0.6120913028717041
+    },
+    {
+      "step": 12,
+      "timestep": 116.0,
+      "mean": 0.03342650085687637,
+      "std": 0.6550810933113098
+    },
+    {
+      "step": 13,
+      "timestep": 39.0,
+      "mean": 0.034494057297706604,
+      "std": 0.6744450330734253
+    },
+    {
+      "step": 14,
+      "timestep": 9.0,
+      "mean": 0.034832607954740524,
+      "std": 0.6805957555770874
+    }
+  ]
+}

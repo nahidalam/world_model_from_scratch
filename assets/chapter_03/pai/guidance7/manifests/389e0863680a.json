@@ -10,7 +10,7 @@
   "prompt": "The video begins with a close-up shot of a metallic cabinet door, characterized by a sleek silver handle and a rectangular compartment with four buttons above it. The cabinet is set against a backdrop of light-colored wooden shelving that holds various kitchen items. The floor is covered with a speckled white tile, and a black robotic arm is positioned above the cabinet door, indicating an impending interaction. As the robotic arm descends, it grasps the door handle, applying pressure to open the door. The arm then opens the door slightly, revealing the interior shelves below, which contain a green plate and a yellow object, possibly a fruit. The robotic arm releases the handle, adjusts its position, then opens the door further, exposing the contents of the shelves inside. The camera remains steady throughout, capturing the smooth motion of the robotic arm and the gradual opening of the cabinet door.",
   "observation": "outputs/chapter_03/pai/subset/condition_image/robot_000.jpg",
   "outputs": [
-    "/mnt/ssd-4/nahid/world_model_from_scratch_private/outputs/chapter_03/pai/guidance7/runs/389e0863680a/rollout.mp4"
+    "outputs/chapter_03/pai/guidance7/runs/389e0863680a/rollout.mp4"
   ],
   "versions": {
     "torch": "2.6.0+cu124",

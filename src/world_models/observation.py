@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import math
 from pathlib import Path
 
 import numpy as np
@@ -82,7 +83,13 @@ def load_video(path: str | Path) -> Observation:
     frames = np.asarray(iio.imread(path, index=...))
     if frames.ndim == 3:  # (T, H, W) grayscale video
         frames = frames[..., np.newaxis]
-    return Observation(_to_rgb_uint8(frames), source=path)
+    metadata = iio.immeta(path)
+    fps = metadata.get("fps")
+    if fps is not None:
+        fps = float(fps)
+        if not math.isfinite(fps) or fps <= 0:
+            raise ValueError(f"Video has invalid frame rate {fps}: {path}")
+    return Observation(_to_rgb_uint8(frames), fps=fps, source=path)
 
 
 def load_image(path: str | Path) -> Observation:

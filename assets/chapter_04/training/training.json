@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "experiment": "cached_latent_training",
+  "cache_id": "e79f6fd7bdd07a69b3b76fc8a19d4459d257a19c448cffced2bbcce8a07b39ac",
+  "config": {
+    "preset": "base",
+    "steps": 2000,
+    "batch_size": 4,
+    "accumulation": 8,
+    "learning_rate": 0.0003,
+    "seed": 17,
+    "precision": "bf16",
+    "overfit_clips": 0,
+    "checkpoint_blocks": false,
+    "evaluate_every": 100,
+    "save_every": 100
+  },
+  "model_config": {
+    "in_channels": 17,
+    "out_channels": 16,
+    "num_attention_heads": 6,
+    "attention_head_dim": 64,
+    "num_layers": 8,
+    "mlp_ratio": 4.0,
+    "text_embed_dim": 256,
+    "adaln_lora_dim": 64,
+    "max_size": [
+      5,
+      16,
+      16
+    ],
+    "patch_size": [
+      1,
+      2,
+      2
+    ],
+    "rope_scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "concat_padding_mask": false,
+    "extra_pos_embed_type": null,
+    "use_crossattn_projection": false,
+    "crossattn_proj_in_channels": 100352,
+    "encoder_hidden_states_channels": 256,
+    "controlnet_block_every_n": null,
+    "img_context_dim_in": null,
+    "img_context_num_tokens": 256,
+    "img_context_dim_out": 2048
+  },
+  "parameters": 21164160,
+  "parameter_state_estimate_bytes": 338626560,
+  "effective_batch_size": 32,
+  "train_examples": 512,
+  "validation_examples": 64,
+  "start_step": 0,
+  "end_step": 2000,
+  "skipped_updates_total": 0,
+  "initial_train_probe_loss": 2.385507106781006,
+  "final_train_probe_loss": 0.010176232550293207,
+  "initial_validation_loss": 2.371521517634392,
+  "final_validation_loss": 0.028622096666367725,
+  "segment_seconds": 927.3643992105499,
+  "cumulative_training_seconds": 927.3643992105499,
+  "mean_update_seconds_after_warmup": 0.45335624078778847,
+  "examples_per_second_after_warmup": 70.58466856967539,
+  "checkpoint_sha256": "68b291bdc786dbe6a757a4f14bea7f1a33838edd9c141a528def66c583e6da10",
+  "runtime": {
+    "torch": "2.6.0+cu124",
+    "python": "3.10.12",
+    "device": "cuda:0",
+    "gpu": "NVIDIA A40",
+    "gpu_total_bytes": 51043958784,
+    "cuda": "12.4"
+  },
+  "source": {
+    "training.py": "621c53faf777696d15a4e5eb2aeec6bc2b0fc078191c9929b8fe8f2c0c460fc2",
+    "small_world.py": "53deb99f13c2efd747ac4da60e10222940fcefbf8226832cf56827ddf88e0310",
+    "flow.py": "a8d15d568e6d3995a6f5ae208a092f5f3b56a3023fe4c39db189ddbd89d2c46d",
+    "models/cosmos_transformer.py": "b055b00fcb5156b2f7e2cdf50af01970bc7aa551fa74e34bd382aadd37cf63f9"
+  },
+  "peak_allocated_bytes": 984193024,
+  "peak_reserved_bytes": 1015021568,
+  "scope": "Velocity-loss and optimizer measurements. Decoded held-out rollouts are evaluated separately."
+}

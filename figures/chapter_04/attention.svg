@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="300" viewBox="0 0 1160 300" role="img" aria-labelledby="title desc">
+<title id="title">One attention head</title><desc id="desc">Video tokens are projected into queries, keys, and values. Queries and keys are normalized and rotated by position, compared to give scores, and passed through softmax to give weights. The weights combine the values into output tokens.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#53637a"/></marker></defs>
+<rect width="1160" height="300" rx="16" fill="#f7f9fc"/>
+<g font-family="system-ui, sans-serif">
+<rect x="20" y="110" width="150" height="100" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="95.0" y="154.5" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Video tokens</text>
+<text x="95.0" y="179.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">one per patch</text>
+<path d="M170 160H190V70H199" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="199.0,70.0 190.0,66.0 190.0,74.0" fill="#53637a"/>
+<path d="M170 160H190V150H199" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="199.0,150.0 190.0,146.0 190.0,154.0" fill="#53637a"/>
+<path d="M170 160H190V250H199" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="199.0,250.0 190.0,246.0 190.0,254.0" fill="#53637a"/>
+<rect x="210" y="40" width="110" height="60" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="265.0" y="76.0" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Query</text>
+<rect x="210" y="120" width="110" height="60" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="265.0" y="156.0" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Key</text>
+<rect x="210" y="220" width="110" height="60" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="265.0" y="256.0" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Value</text>
+<path d="M320 70H349" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="349.0,70.0 340.0,66.0 340.0,74.0" fill="#53637a"/>
+<path d="M320 150H349" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="349.0,150.0 340.0,146.0 340.0,154.0" fill="#53637a"/>
+<rect x="360" y="40" width="200" height="140" rx="10" fill="#fff" stroke="#14243b" stroke-width="1.5"/>
+<text x="460.0" y="81.5" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Prepare Q and K</text>
+<text x="460.0" y="106.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">RMS normalize</text>
+<text x="460.0" y="129.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">rotate by position</text>
+<text x="460.0" y="152.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">(RoPE)</text>
+<path d="M560 110H589" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="589.0,110.0 580.0,106.0 580.0,114.0" fill="#53637a"/>
+<rect x="600" y="70" width="170" height="80" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="685.0" y="104.5" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Scores</text>
+<text x="685.0" y="129.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">QKᵀ / √d</text>
+<path d="M770 110H799" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="799.0,110.0 790.0,106.0 790.0,114.0" fill="#53637a"/>
+<rect x="810" y="70" width="160" height="80" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="890.0" y="104.5" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Weights</text>
+<text x="890.0" y="129.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">softmax per row</text>
+<path d="M970 110H999" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="999.0,110.0 990.0,106.0 990.0,114.0" fill="#53637a"/>
+<path d="M320 250H999" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="999.0,250.0 990.0,246.0 990.0,254.0" fill="#53637a"/>
+<rect x="1010" y="70" width="130" height="210" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="1075.0" y="169.5" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Output</text>
+<text x="1075.0" y="194.5" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">weights × V</text>
+</g></svg>

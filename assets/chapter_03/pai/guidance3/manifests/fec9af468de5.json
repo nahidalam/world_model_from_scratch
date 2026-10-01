@@ -10,7 +10,7 @@
   "prompt": "A dashcam video captures a multi-lane urban street intersection under clear skies with the sun low on the horizon, casting long shadows. The scene is set in a commercial area, with several cars visible, including a white van directly ahead and others moving in both directions. The road is lined with trees on the right side, providing shade for the sidewalk, where a few parked cars are also visible. Traffic lights hang above the intersection, and in the distance, more buildings and signs can be seen. The overall atmosphere is calm, with no immediate signs of congestion or activity beyond the steady flow of traffic. The ego vehicle, positioned behind the white van, slows down as it approaches the intersection, with the white van's rear right-turn signal flashing. A few other vehicles are stopped in the ego vehicle's lane at red traffic lights. The camera angle provides a first-person perspective from within the ego vehicle, capturing the view through the windshield and hood, emphasizing the calm yet dynamic urban environment.",
   "observation": "outputs/chapter_03/pai/subset/condition_image/av_00d8e9d4-d669-42d9-8aa9-16a09a47b531.jpg",
   "outputs": [
-    "/mnt/ssd-4/nahid/world_model_from_scratch_private/outputs/chapter_03/pai/guidance3/runs/fec9af468de5/rollout.mp4"
+    "outputs/chapter_03/pai/guidance3/runs/fec9af468de5/rollout.mp4"
   ],
   "versions": {
     "torch": "2.6.0+cu124",

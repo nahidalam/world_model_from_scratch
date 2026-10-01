@@ -10,7 +10,7 @@
   "prompt": "The video opens with a vibrant scene of a pedestrian street in a European city, lined with tall, lush green trees providing ample shade over the cobblestone walkway. The street is bustling with people, many dressed in casual summer attire such as shorts, t-shirts, and light dresses, suggesting warm weather. Some individuals carry bags or wear backpacks, indicating they might be exploring or shopping. The buildings on either side are multi-story structures with balconies and large windows, featuring a mix of modern and traditional architectural styles. The overall ambiance is lively yet relaxed, with people walking in various directions, some in groups and others alone, contributing to the dynamic energy of the scene. As the video progresses, the camera remains stationary, capturing the continuous flow of pedestrians. The individuals continue their leisurely stroll, with some walking briskly and others moving more slowly. The trees continue to cast shadows, and the buildings maintain their imposing presence, reinforcing the sense of a well-established urban environment. The scene remains consistent throughout the video, with no significant changes in the environment or the actions of the people, maintaining the same lively yet tranquil atmosphere established in the first frame.",
   "observation": "outputs/chapter_03/pai/subset/condition_image/human_000.jpg",
   "outputs": [
-    "/mnt/ssd-4/nahid/world_model_from_scratch_private/outputs/chapter_03/pai/guidance7/runs/4997a45addcc/rollout.mp4"
+    "outputs/chapter_03/pai/guidance7/runs/4997a45addcc/rollout.mp4"
   ],
   "versions": {
     "torch": "2.6.0+cu124",

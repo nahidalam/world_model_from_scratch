@@ -14,12 +14,12 @@ The boundary of the world depends on the system and its task.
 
 A world model learns how that environment changes. It uses what has already been observed, and, when relevant, an action to predict what could happen next. For example: What happens if the car brakes? If the robot moves its arm? If the computer-use agent clicks a button?
 
-A prediction of the next observation is one predicted **transition**. A sequence
+A prediction of the next observation is one predicted transition. A sequence
 of predicted future observations is a predicted trajectory. In this book, that
-predicted trajectory is called a **rollout**.
+predicted trajectory is called a rollout.
 
 The way an environment changes from one time step to the next is called its
-**dynamics**. This includes the effect of actions on that change. A world model
+dynamics. This includes the effect of actions on that change. A world model
 learns an approximation of those dynamics. Given a history of observations
 and, when applicable, a sequence of actions, it predicts a distribution over
 future trajectories, or rollouts:

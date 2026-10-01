@@ -10,7 +10,7 @@
   "prompt": "A serene coastal scene bathed in the warm, golden light of either sunrise or sunset. The foreground is dominated by rugged, dark rocks covered in patches of reddish-brown seaweed, creating a textured and earthy foreground. These rocks are interspersed with smaller, smoother stones, adding depth to the composition. In the mid-ground, gentle waves lap against the rocky shoreline, their white foam contrasting softly with the darker tones of the rocks. The ocean extends into the distance, its surface a mix of deep blues and lighter hues where the sunlight reflects off the water's surface. The sky above is a soft gradient of light, suggesting the time of day is either early morning or late evening, enhancing the tranquil and picturesque quality of the scene. As the video progresses, the waves continue to crash against the rocks, creating small pools and splashes that add movement to the otherwise still landscape. The sun maintains its warm, golden glow throughout, casting a consistent light across the scene and highlighting the textures of the rocks and the frothy white of the waves as they break. No new objects appear; the focus remains on the natural interaction between the ocean and the rocky shore. The final frame captures this ongoing, peaceful interaction, with the waves continuing to flow and the rocks standing firm under the warm, glowing light.",
   "observation": "outputs/chapter_03/pai/subset/condition_image/misc_1093662-hd_1920_1080_30fps.jpg",
   "outputs": [
-    "/mnt/ssd-4/nahid/world_model_from_scratch_private/outputs/chapter_03/pai/guidance7/runs/bbfb8c42ceb3/rollout.mp4"
+    "outputs/chapter_03/pai/guidance7/runs/bbfb8c42ceb3/rollout.mp4"
   ],
   "versions": {
     "torch": "2.6.0+cu124",

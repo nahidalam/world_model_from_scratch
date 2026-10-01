@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="140" viewBox="0 0 1160 140" role="img" aria-labelledby="title desc">
+<title id="title">From frames to tokens</title><desc id="desc">The VAE encoder compresses 17 RGB frames at 128 by 128 into a latent with 16 channels, 5 frames, and a 16 by 16 grid. Grouping 1 by 2 by 2 latent cells gives 320 patches, and the input projection turns each patch into a 384-feature token.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#53637a"/></marker></defs>
+<rect width="1160" height="140" rx="16" fill="#f7f9fc"/>
+<g font-family="system-ui, sans-serif">
+<rect x="20" y="20" width="196" height="100" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="118.0" y="53.0" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Video frames</text>
+<text x="118.0" y="78.0" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">17 frames</text>
+<text x="118.0" y="101.0" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">128 × 128 RGB</text>
+<path d="M216 70H239" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="239.0,70.0 230.0,66.0 230.0,74.0" fill="#53637a"/>
+<rect x="250" y="20" width="196" height="100" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="348.0" y="53.0" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">VAE encoder</text>
+<text x="348.0" y="78.0" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">time: 17 → 5</text>
+<text x="348.0" y="101.0" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">space: 128 → 16</text>
+<path d="M446 70H469" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="469.0,70.0 460.0,66.0 460.0,74.0" fill="#53637a"/>
+<rect x="480" y="20" width="196" height="100" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="578.0" y="53.0" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Latent</text>
+<text x="578.0" y="78.0" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">16 channels</text>
+<text x="578.0" y="101.0" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">5 × 16 × 16</text>
+<path d="M676 70H699" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="699.0,70.0 690.0,66.0 690.0,74.0" fill="#53637a"/>
+<rect x="710" y="20" width="196" height="100" rx="10" fill="#fff" stroke="#c2cedc" stroke-width="1.5"/>
+<text x="808.0" y="53.0" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Patches</text>
+<text x="808.0" y="78.0" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">1 × 2 × 2 cells each</text>
+<text x="808.0" y="101.0" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">320 patches</text>
+<path d="M906 70H929" fill="none" stroke="#53637a" stroke-width="2"/>
+<polygon points="929.0,70.0 920.0,66.0 920.0,74.0" fill="#53637a"/>
+<rect x="940" y="20" width="196" height="100" rx="10" fill="#fff" stroke="#14243b" stroke-width="1.5"/>
+<text x="1038.0" y="53.0" font-size="17" fill="#14243b" font-weight="600" text-anchor="middle">Tokens</text>
+<text x="1038.0" y="78.0" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">input projection</text>
+<text x="1038.0" y="101.0" font-size="14" fill="#42536a" font-weight="400" text-anchor="middle">384 features each</text>
+</g></svg>

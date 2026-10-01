@@ -26,7 +26,7 @@ establish prediction accuracy.
 The optional evaluation report is an object with a `rows` array. Each row must
 contain a string `run_id`, a string `dimension`, and a finite numeric `score`.
 The page also accepts a bare array of these rows. Metadata outside `rows`,
-including `scope` and evaluator provenance, appears under **Report provenance**.
+including `scope` and evaluator provenance, appears under Report provenance.
 Import the report produced by the chapter evaluation script after running an
 official evaluator. The browser does not execute an evaluator.
 

@@ -1,0 +1,327 @@
+{
+  "schema_version": 1,
+  "experiment": "chapter04_training_publication",
+  "generator": "excavator-arm-v1",
+  "tracking": {
+    "target": "bucket",
+    "method": "largest eight-connected red-excess region; color-weighted centroid",
+    "red_excess_threshold": 40,
+    "minimum_reference_area_fraction": 0.25,
+    "maximum_reference_area_fraction": 4.0,
+    "missing_detection_penalty": "image diagonal in pixels"
+  },
+  "inputs": {
+    "training": "outputs/chapter_04/excavator_validation_20260929/base_train/training.json",
+    "evaluation": "outputs/chapter_04/excavator_validation_20260929/base_test/evaluation.json",
+    "overfit_training": "outputs/chapter_04/excavator_validation_20260929/overfit_train/training.json",
+    "overfit_evaluation": "outputs/chapter_04/excavator_validation_20260929/overfit_evaluation/evaluation.json",
+    "cache": "outputs/chapter_04/excavator_validation_20260929/data/cache.json",
+    "reconstruction_validation": "outputs/chapter_04/excavator_validation_20260929/reconstruction_check/reconstruction_validation.json",
+    "resume_verification": "outputs/chapter_04/excavator_validation_20260929/resume_deterministic/resume_verification.json"
+  },
+  "cache_roles": {
+    "training": {
+      "cache_id": "e79f6fd7bdd07a69b3b76fc8a19d4459d257a19c448cffced2bbcce8a07b39ac",
+      "matches_main_training_cache": true
+    },
+    "overfit_training": {
+      "cache_id": "13665c6e8e66697f68ee9e51e64c49808e7483568c7d563f150a479fcb40a491",
+      "matches_main_training_cache": false
+    },
+    "reconstruction_validation": {
+      "cache_id": "e79f6fd7bdd07a69b3b76fc8a19d4459d257a19c448cffced2bbcce8a07b39ac",
+      "matches_main_training_cache": true
+    },
+    "resume_verification": {
+      "cache_id": "13665c6e8e66697f68ee9e51e64c49808e7483568c7d563f150a479fcb40a491",
+      "matches_main_training_cache": false
+    }
+  },
+  "selection_criterion": "Main examples are fixed index 0 plus the lowest, upper-median, and highest generated penalized future-center errors; ties use trajectory seed. Repeated selections share one artifact directory. Overfit uses fixed index 0.",
+  "examples": [
+    {
+      "index": 0,
+      "roles": [
+        "fixed first example"
+      ],
+      "trajectory_seed": 2000000,
+      "run_id": "f1322a71a4b3",
+      "centroid_error_penalized_px": 1.1895508244633675,
+      "source": "outputs/chapter_04/excavator_validation_20260929/base_test/trajectory_2000000",
+      "destination": "examples/main/trajectory_2000000",
+      "files": [
+        "comparison.png",
+        "rollout.mp4",
+        "ground_truth.mp4",
+        "persistence.mp4",
+        "manifest.json",
+        "metrics.json",
+        "inference.json",
+        "frames.npy",
+        "latents.pt"
+      ]
+    },
+    {
+      "index": 10,
+      "roles": [
+        "best error"
+      ],
+      "trajectory_seed": 2000010,
+      "run_id": "d054b70e8b22",
+      "centroid_error_penalized_px": 0.16887271186957756,
+      "source": "outputs/chapter_04/excavator_validation_20260929/base_test/trajectory_2000010",
+      "destination": "examples/main/trajectory_2000010",
+      "files": [
+        "comparison.png",
+        "rollout.mp4",
+        "ground_truth.mp4",
+        "persistence.mp4",
+        "manifest.json",
+        "metrics.json",
+        "inference.json",
+        "frames.npy",
+        "latents.pt"
+      ]
+    },
+    {
+      "index": 61,
+      "roles": [
+        "median error"
+      ],
+      "trajectory_seed": 2000061,
+      "run_id": "52a7370b06b7",
+      "centroid_error_penalized_px": 0.5109781551485261,
+      "source": "outputs/chapter_04/excavator_validation_20260929/base_test/trajectory_2000061",
+      "destination": "examples/main/trajectory_2000061",
+      "files": [
+        "comparison.png",
+        "rollout.mp4",
+        "ground_truth.mp4",
+        "persistence.mp4",
+        "manifest.json",
+        "metrics.json",
+        "inference.json",
+        "frames.npy",
+        "latents.pt"
+      ]
+    },
+    {
+      "index": 33,
+      "roles": [
+        "worst error"
+      ],
+      "trajectory_seed": 2000033,
+      "run_id": "71215021f272",
+      "centroid_error_penalized_px": 2.457889170696338,
+      "source": "outputs/chapter_04/excavator_validation_20260929/base_test/trajectory_2000033",
+      "destination": "examples/main/trajectory_2000033",
+      "files": [
+        "comparison.png",
+        "rollout.mp4",
+        "ground_truth.mp4",
+        "persistence.mp4",
+        "manifest.json",
+        "metrics.json",
+        "inference.json",
+        "frames.npy",
+        "latents.pt"
+      ]
+    },
+    {
+      "index": 0,
+      "roles": [
+        "fixed first overfit example"
+      ],
+      "trajectory_seed": 0,
+      "run_id": "200d8dfb8889",
+      "centroid_error_penalized_px": 0.37029996203879517,
+      "source": "outputs/chapter_04/excavator_validation_20260929/overfit_evaluation/trajectory_0",
+      "destination": "examples/overfit/trajectory_0",
+      "files": [
+        "comparison.png",
+        "rollout.mp4",
+        "ground_truth.mp4",
+        "persistence.mp4",
+        "manifest.json",
+        "metrics.json",
+        "inference.json",
+        "frames.npy",
+        "latents.pt"
+      ]
+    }
+  ],
+  "reconstruction_selection": "All trajectories from the reconstruction report, in saved order.",
+  "reconstruction_pairs": [
+    {
+      "trajectory_seed": 1000000,
+      "source": "outputs/chapter_04/excavator_validation_20260929/reconstruction_check/trajectory_1000000",
+      "destination": "reconstruction/trajectory_1000000",
+      "files": {
+        "png": "reconstruction.png",
+        "video": "reconstruction.mp4"
+      },
+      "layout": "input left; reconstruction right"
+    },
+    {
+      "trajectory_seed": 1000001,
+      "source": "outputs/chapter_04/excavator_validation_20260929/reconstruction_check/trajectory_1000001",
+      "destination": "reconstruction/trajectory_1000001",
+      "files": {
+        "png": "reconstruction.png",
+        "video": "reconstruction.mp4"
+      },
+      "layout": "input left; reconstruction right"
+    },
+    {
+      "trajectory_seed": 1000002,
+      "source": "outputs/chapter_04/excavator_validation_20260929/reconstruction_check/trajectory_1000002",
+      "destination": "reconstruction/trajectory_1000002",
+      "files": {
+        "png": "reconstruction.png",
+        "video": "reconstruction.mp4"
+      },
+      "layout": "input left; reconstruction right"
+    },
+    {
+      "trajectory_seed": 1000003,
+      "source": "outputs/chapter_04/excavator_validation_20260929/reconstruction_check/trajectory_1000003",
+      "destination": "reconstruction/trajectory_1000003",
+      "files": {
+        "png": "reconstruction.png",
+        "video": "reconstruction.mp4"
+      },
+      "layout": "input left; reconstruction right"
+    },
+    {
+      "trajectory_seed": 1000004,
+      "source": "outputs/chapter_04/excavator_validation_20260929/reconstruction_check/trajectory_1000004",
+      "destination": "reconstruction/trajectory_1000004",
+      "files": {
+        "png": "reconstruction.png",
+        "video": "reconstruction.mp4"
+      },
+      "layout": "input left; reconstruction right"
+    },
+    {
+      "trajectory_seed": 1000005,
+      "source": "outputs/chapter_04/excavator_validation_20260929/reconstruction_check/trajectory_1000005",
+      "destination": "reconstruction/trajectory_1000005",
+      "files": {
+        "png": "reconstruction.png",
+        "video": "reconstruction.mp4"
+      },
+      "layout": "input left; reconstruction right"
+    },
+    {
+      "trajectory_seed": 1000006,
+      "source": "outputs/chapter_04/excavator_validation_20260929/reconstruction_check/trajectory_1000006",
+      "destination": "reconstruction/trajectory_1000006",
+      "files": {
+        "png": "reconstruction.png",
+        "video": "reconstruction.mp4"
+      },
+      "layout": "input left; reconstruction right"
+    },
+    {
+      "trajectory_seed": 1000007,
+      "source": "outputs/chapter_04/excavator_validation_20260929/reconstruction_check/trajectory_1000007",
+      "destination": "reconstruction/trajectory_1000007",
+      "files": {
+        "png": "reconstruction.png",
+        "video": "reconstruction.mp4"
+      },
+      "layout": "input left; reconstruction right"
+    }
+  ],
+  "source_archive": "training_source.zip",
+  "source_sha256": {
+    "scripts/chapter_04_check_reconstruction.py": "588d068936fd808fa4747183ddb4b4af6d36fc7b9515afc92f9a1209382f1ab8",
+    "scripts/chapter_04_verify_resume.py": "1dfb7f714073bedab10e7132cc3716ee3ab307c57c1d3ba02f1c7e5d6fbdd5cb",
+    "src/world_models/flow.py": "a8d15d568e6d3995a6f5ae208a092f5f3b56a3023fe4c39db189ddbd89d2c46d",
+    "src/world_models/latent_cache.py": "84c7621bbbdbd2e162fcc9df657fc8088539c650a80121b6faa06ae48fc53c00",
+    "src/world_models/models/cosmos_transformer.py": "b055b00fcb5156b2f7e2cdf50af01970bc7aa551fa74e34bd382aadd37cf63f9",
+    "src/world_models/small_world.py": "53deb99f13c2efd747ac4da60e10222940fcefbf8226832cf56827ddf88e0310",
+    "src/world_models/small_world_evaluation.py": "b88f6f130329fa98ae7fa3622abbdce81e76a89648e9bb502f2357d5999039a8",
+    "src/world_models/toy_video.py": "8925ff644c2b668d2cb556bf8e3391684fcc3de86c6c5f913b7acb457228ac61",
+    "src/world_models/training.py": "621c53faf777696d15a4e5eb2aeec6bc2b0fc078191c9929b8fe8f2c0c460fc2"
+  },
+  "publisher_sha256": "fea42adf82a62ab0302d6ff51866a01df69c499472e8fe4b08584c75a23ec9cc",
+  "artifact_sha256": {
+    "cache.json": "5b88cf52bc3d0d8d99f4193f4139b01233f915155e82c5b06ef95b3e137dfe86",
+    "evaluation.json": "d20a114631fcd87ab265ee1e0083d5014f187f328acf1b915b04879608b71f81",
+    "examples/main/trajectory_2000000/comparison.png": "91a4b6c8b2959c2e7b8c21bb34f5960ebb1dd2eeb7c60ee6be1549c5a8f9356b",
+    "examples/main/trajectory_2000000/frames.npy": "88850fd08b7716f52665457534b3d95e5b0ec72e5037eec9098d81b305c0be44",
+    "examples/main/trajectory_2000000/ground_truth.mp4": "cfebe381a10c8bb241245b538b7e83a4777293631e02675c4e10174c34c812b3",
+    "examples/main/trajectory_2000000/inference.json": "27fa0e5dbcae5d56efaae17d72ce84bb90c095d53628361fe756de69fdd8c7b6",
+    "examples/main/trajectory_2000000/latents.pt": "9a81d40589d4daf4c94ad7c3eff2e93df0b1ea670a8f7d9a2b9e2a688430a75f",
+    "examples/main/trajectory_2000000/manifest.json": "9d218a3950f24901869ecd148bc552bce8a0f43b08e8e8f4d104f135c3df5feb",
+    "examples/main/trajectory_2000000/metrics.json": "582950ba3f20d9229603147d7900a8bacab6907fe3ed346101f05dcdf652fe57",
+    "examples/main/trajectory_2000000/persistence.mp4": "775b49bc2cd19dd78c02c75bb091ffba335414927d8a339fb95901a33647d077",
+    "examples/main/trajectory_2000000/rollout.mp4": "1c3b1d045cde5b1d9fc6151d11729de27e191acc86e259258dbcb544abc3933e",
+    "examples/main/trajectory_2000010/comparison.png": "f9b00df5e4ff1788c2861c6c59dcd8acb5288f71cedf2973c69f728f981a87a8",
+    "examples/main/trajectory_2000010/frames.npy": "d8dff39d583867dcd5a034a8e82a5b9f854a16213231e20eff3543011591edbc",
+    "examples/main/trajectory_2000010/ground_truth.mp4": "17074f9a09578c89a5b57fa93390010a3c378204aeafd138647e7b4769508afb",
+    "examples/main/trajectory_2000010/inference.json": "27fa0e5dbcae5d56efaae17d72ce84bb90c095d53628361fe756de69fdd8c7b6",
+    "examples/main/trajectory_2000010/latents.pt": "4f6b4fdc9fc77da6c81309a42a8832eac676c24362b52030b8af31b3c23a5d47",
+    "examples/main/trajectory_2000010/manifest.json": "c10a59aee5801f5f4f36f5ad1339b5e93776e772c9e963198552e9bdeccb07f0",
+    "examples/main/trajectory_2000010/metrics.json": "4800c9f72c9362ae5a93379039c03937654121571a2eafc9472c13773a2e8afb",
+    "examples/main/trajectory_2000010/persistence.mp4": "fbd47896930533a91908ff2085ebee6aeafdd3f337a00912be72d38174942970",
+    "examples/main/trajectory_2000010/rollout.mp4": "39ac23f658aca21579e58d6f9103d28a63504eb48a5b24e1007de0bae8f6f319",
+    "examples/main/trajectory_2000033/comparison.png": "292fd9fbbc82750a91e52f5e6b2f1e6054ddb796aa95d6db8cee6725920704df",
+    "examples/main/trajectory_2000033/frames.npy": "153e22551f42fe2a60e6a99f09628ec8bed1918305b22ea0b0e60e8fb57eb6a1",
+    "examples/main/trajectory_2000033/ground_truth.mp4": "501d41056c2a9600b0d1c781c3ba571ce7a09aacbe639a09b24227c6c7e1bb69",
+    "examples/main/trajectory_2000033/inference.json": "27fa0e5dbcae5d56efaae17d72ce84bb90c095d53628361fe756de69fdd8c7b6",
+    "examples/main/trajectory_2000033/latents.pt": "79702e5a611b83ffee6b9c2c061fcc94beaf1bda87a3ebc51e7c303e0de2058f",
+    "examples/main/trajectory_2000033/manifest.json": "bcef633085abfe8d434df50de5a31677d1fb37b88b0ee2c62d2d369236216d37",
+    "examples/main/trajectory_2000033/metrics.json": "c1c47e25fc93cd3c26d7dd746d4ef2d6e23b297c8f0c100ed474f34842be3b60",
+    "examples/main/trajectory_2000033/persistence.mp4": "66c38d8b324ef8af7ac95c5cd87fd9f8419aae0c082d5fed04d1aace1fa85b30",
+    "examples/main/trajectory_2000033/rollout.mp4": "d3cb782b8bee3a724123af5a64a256430c0772c70e86928d440df364d9e2fce4",
+    "examples/main/trajectory_2000061/comparison.png": "b0494c3941d1b74528c3fdf7ca1a34608c207d883efb6a46fff0ba654aa93675",
+    "examples/main/trajectory_2000061/frames.npy": "a843dbea81b44260ed9342ab681c50fee1729387a72a6dd562895661177cec39",
+    "examples/main/trajectory_2000061/ground_truth.mp4": "3e9f7a55eb848b06c59fef9b03b536210d313f91c0447f656cb4c7857568f169",
+    "examples/main/trajectory_2000061/inference.json": "27fa0e5dbcae5d56efaae17d72ce84bb90c095d53628361fe756de69fdd8c7b6",
+    "examples/main/trajectory_2000061/latents.pt": "ed992fb0a48318ea64146c1ec1835e596c69f4bae86c9b33966c35a41998a00d",
+    "examples/main/trajectory_2000061/manifest.json": "ce8ea87d47b707f705fffe8cdbce79cfa72f925477cb8d4a8318eba66f265c7e",
+    "examples/main/trajectory_2000061/metrics.json": "108516a66071fea96dfade79fd28446f23654003b8aa3444520587433dbe54d1",
+    "examples/main/trajectory_2000061/persistence.mp4": "aee57fb2db7f0241b2cb04f375493348965f76f29676c434f79c470f727618c6",
+    "examples/main/trajectory_2000061/rollout.mp4": "1403ab2e6319a31b46bdf50d9c7533709dbf0a2230b9aac389bda4756c6a24fd",
+    "examples/overfit/trajectory_0/comparison.png": "870b9c5939be39c79ff9e6c573bf2bfe6773e9a78776762dc35dbb15b1f136db",
+    "examples/overfit/trajectory_0/frames.npy": "99d0ee1da3d649d65e63874c2d7d8c2011f1ee6af1cb6297115d56b3ed6deb52",
+    "examples/overfit/trajectory_0/ground_truth.mp4": "b41e8bd606f298e07e6ab0877126664361a3647fe0240e69fc0e94d373d844d5",
+    "examples/overfit/trajectory_0/inference.json": "9f7aa097a43b6ed2acd9038b3eb3df97e206cef19fc30b34a9ac2723cf79539d",
+    "examples/overfit/trajectory_0/latents.pt": "8ba6bc64160be66d8557c81d39facb5c0315d0249929ffb37eeb92671a00a233",
+    "examples/overfit/trajectory_0/manifest.json": "2fb301e9aed7ebf6c66bcb5603a38c478323a8848b9c12bc997cf803653f3450",
+    "examples/overfit/trajectory_0/metrics.json": "d8dbfa913ac8f9494e679664da3eb603b3abb4ec8bf1c563c7a7c0fff911fd6f",
+    "examples/overfit/trajectory_0/persistence.mp4": "a9e828d761e758f49c30b7c65ff5adae2304b95e0d3a4710e1049edbca2b7ee2",
+    "examples/overfit/trajectory_0/rollout.mp4": "396ee08f35be5bdde7f9d51a71583e46e02ef18f2b26e4d3527312cfc474f86a",
+    "loss_curve.png": "e01f7bf449e98a2f1721b3fcd689e038a44a7da17e9655bd6cfedd0d768660e8",
+    "metrics.jsonl": "ae0534993e5b18f2780dd5e47e398f277e3980157308bffda44891e038335d15",
+    "motion_error.png": "9c21700a397c63d9b34263398aee610925417f5535703e86c7dc97f448b89645",
+    "overfit_evaluation.json": "ec8867961f506c7fc7433c9e01de1bb4a1224ae6ff62d7b78e65e26c6b4672c5",
+    "overfit_metrics.jsonl": "78b14045cfddd62d912199a8e45369131119a72bed2efd0f9549eb29b7b0abe0",
+    "overfit_training.json": "df4ebd3b346d5a663f5c257f172b98d3eabc81205b016fc9d76049f3211bb7f7",
+    "overfit_training_initial.json": "a74f127b0f2344d14a5ff9e68ca39f112ced6c512fbd2b83ff2ee69cb19f6ef8",
+    "reconstruction/trajectory_1000000/reconstruction.mp4": "a3561e3320c86f02af11c34a1760b982306e0ff03afac82a84ea3c30a497d3a0",
+    "reconstruction/trajectory_1000000/reconstruction.png": "45da8667cce702a935f439dd1b39b94c5bef586348457351215a014a884931c2",
+    "reconstruction/trajectory_1000001/reconstruction.mp4": "a45ee2a60deefc14b9495063f909ed709822335ff48b01752f3fcd1daaf8e110",
+    "reconstruction/trajectory_1000001/reconstruction.png": "fc2a3152752ababa3a0aa4d0f361875b648c5fd81673702f69a0b7a26b1203a7",
+    "reconstruction/trajectory_1000002/reconstruction.mp4": "ba746af6dbb48e0a2d63dc2bdf28bf60580dba7b9642f7c7ba4aefbf92928a09",
+    "reconstruction/trajectory_1000002/reconstruction.png": "85188b53eae895527c53a270fbc7f8df3d00ac5ccc0c34deaa15420c3a4ed1f4",
+    "reconstruction/trajectory_1000003/reconstruction.mp4": "4e9206ea6c13bbfb8ab40cedfc92efa70af01c696b15346efb307861ac8c84d2",
+    "reconstruction/trajectory_1000003/reconstruction.png": "83b6110d99572690afd837f0a7ce07563aa883679a10f6296bad20e119e0339c",
+    "reconstruction/trajectory_1000004/reconstruction.mp4": "ac4860aafc1b050c812d1135e018080ab7de17274d4bf2fbd200059fbfdf90f4",
+    "reconstruction/trajectory_1000004/reconstruction.png": "eb2c4338eb75a7e5af4e85a6745f26d9751047162bfd4fcaafc6c9a0d99c1ba4",
+    "reconstruction/trajectory_1000005/reconstruction.mp4": "d4b38de554e208f54bb67f8ee2f5a2868525ce1bfa8b4ab90c4a401701e4a451",
+    "reconstruction/trajectory_1000005/reconstruction.png": "126236b7945555621d150e62995cd1d204ea31b95ba023f689f00bcdfcc75583",
+    "reconstruction/trajectory_1000006/reconstruction.mp4": "96bb1bc33d5b67387548903b14c013eda5e0eb7eb35e66d58eee6fcacd20326b",
+    "reconstruction/trajectory_1000006/reconstruction.png": "99d8094d38616e77a41a3e89f308b6d387f97b4ea393ef7a5299d3bfab6b6205",
+    "reconstruction/trajectory_1000007/reconstruction.mp4": "bba926b23be2c3b8cc5960a2cd8b57b494931a667222d0a34252f502b0fa8482",
+    "reconstruction/trajectory_1000007/reconstruction.png": "b549956c8ce7b3f7f66fb4c6ffdc8eb3519d06904e31ea9912738c304b6daf85",
+    "reconstruction_validation.json": "dce8f9d6f4cb1ef53751195659e1bdddcd4eba0d57e303407b61fc2b0a82982b",
+    "resume_training_initial.json": "8fcca8754e5f931c4ad58e21be4d353b2eac46c081c7851f558d323e85d4cf29",
+    "resume_verification.json": "7990722a5ab335df8c7564b092b489e0330b5d3e838061050a49cb188bc5b344",
+    "training.json": "c756c34fdda3b2e077ca5b6dd8bdb13296a11053b70438ec0102d40c1a925bb3",
+    "training_source.zip": "5e8d6229a0f1f9c5e151d95d7d2706540821eb77abbb39bc86690b674f83798d"
+  },
+  "scope": "Reports and run manifests retain their original identities and implementation hashes. Reconstruction and resume reports identify their own caches, including separate probe datasets. Motion errors include the image-diagonal penalty for missing detections."
+}

@@ -1,0 +1,869 @@
+{
+  "schema_version": 1,
+  "experiment": "cached_ground_truth_reconstruction",
+  "cache_id": "e79f6fd7bdd07a69b3b76fc8a19d4459d257a19c448cffced2bbcce8a07b39ac",
+  "generator": "excavator-arm-v1",
+  "tracking": {
+    "target": "bucket",
+    "method": "largest eight-connected red-excess region; color-weighted centroid",
+    "red_excess_threshold": 40,
+    "minimum_reference_area_fraction": 0.25,
+    "maximum_reference_area_fraction": 4.0,
+    "missing_detection_penalty": "image diagonal in pixels"
+  },
+  "data": "outputs/chapter_04/excavator_validation_20260929/data",
+  "split": "val",
+  "examples": 8,
+  "observed_frames": 5,
+  "decoder_dtype": "torch.bfloat16",
+  "vae_source": {
+    "checkpoint": "nvidia/Cosmos-Predict2.5-2B",
+    "revision": "0d37c7498f54cee3c599d438d895a0a4a8608064",
+    "subfolder": "vae"
+  },
+  "aggregate": {
+    "future_pixel_rmse": 0.02130383555777371,
+    "object_detection_fraction": 1.0,
+    "centroid_error_penalized_px": 0.18316370304576898,
+    "final_centroid_error_penalized_px": 0.2783660050481558
+  },
+  "trajectories": [
+    {
+      "trajectory_seed": 1000000,
+      "trajectory_id": "excavator-arm-v1-00000000000f4240",
+      "future_path_length_px": 19.44294548034668,
+      "future_displacement_px": 17.49266815185547,
+      "metrics": {
+        "future_pixel_rmse": 0.02073599211871624,
+        "object_detection_fraction": 1.0,
+        "centroid_error_detected_px": 0.189927834396561,
+        "centroid_error_penalized_px": 0.189927834396561,
+        "final_centroid_error_penalized_px": 0.24496370553970337,
+        "final_frame_detected": true,
+        "future_frames": 12,
+        "estimated_centers": [
+          [
+            91.68296813964844,
+            83.54737854003906
+          ],
+          [
+            91.6719741821289,
+            81.44842529296875
+          ],
+          [
+            91.68303680419922,
+            78.98465728759766
+          ],
+          [
+            91.51312255859375,
+            77.10442352294922
+          ],
+          [
+            90.85721588134766,
+            74.93318939208984
+          ],
+          [
+            90.35143280029297,
+            73.39285278320312
+          ],
+          [
+            89.77770233154297,
+            72.07261657714844
+          ],
+          [
+            89.22401428222656,
+            71.13897705078125
+          ],
+          [
+            88.34685516357422,
+            70.2626724243164
+          ],
+          [
+            87.57453155517578,
+            69.91046142578125
+          ],
+          [
+            86.74557495117188,
+            69.67691802978516
+          ],
+          [
+            85.85252380371094,
+            69.53816223144531
+          ]
+        ],
+        "per_frame_detected": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "per_frame_penalized_error_px": [
+          0.25184571743011475,
+          0.30902671813964844,
+          0.18140938878059387,
+          0.19482891261577606,
+          0.3043188750743866,
+          0.20416322350502014,
+          0.10184089094400406,
+          0.1887066513299942,
+          0.08809614926576614,
+          0.07156840711832047,
+          0.13836537301540375,
+          0.24496370553970337
+        ]
+      },
+      "reconstruction": {
+        "mae_0_1": 0.00678588543087244,
+        "rmse_0_1": 0.021573890120401618,
+        "psnr_db": 33.321430750710384,
+        "png": "reconstruction.png",
+        "video": "reconstruction.mp4",
+        "layout": "input left; reconstruction right"
+      },
+      "directory": "trajectory_1000000"
+    },
+    {
+      "trajectory_seed": 1000001,
+      "trajectory_id": "excavator-arm-v1-00000000000f4241",
+      "future_path_length_px": 28.177989959716797,
+      "future_displacement_px": 20.300344467163086,
+      "metrics": {
+        "future_pixel_rmse": 0.02176741138100624,
+        "object_detection_fraction": 1.0,
+        "centroid_error_detected_px": 0.18490468710660934,
+        "centroid_error_penalized_px": 0.18490468710660934,
+        "final_centroid_error_penalized_px": 0.27150964736938477,
+        "final_frame_detected": true,
+        "future_frames": 12,
+        "estimated_centers": [
+          [
+            91.27190399169922,
+            87.5809326171875
+          ],
+          [
+            91.54651641845703,
+            84.03854370117188
+          ],
+          [
+            91.6333236694336,
+            80.39573669433594
+          ],
+          [
+            91.4599380493164,
+            77.59766387939453
+          ],
+          [
+            90.7662124633789,
+            74.38534545898438
+          ],
+          [
+            89.99420928955078,
+            72.47111511230469
+          ],
+          [
+            88.84069061279297,
+            70.8972396850586
+          ],
+          [
+            87.90834045410156,
+            70.0733871459961
+          ],
+          [
+            86.61087036132812,
+            69.68468475341797
+          ],
+          [
+            85.60792541503906,
+            70.11226654052734
+          ],
+          [
+            84.44853210449219,
+            71.02046203613281
+          ],
+          [
+            83.32196044921875,
+            72.00060272216797
+          ]
+        ],
+        "per_frame_detected": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "per_frame_penalized_error_px": [
+          0.12150156497955322,
+          0.26899296045303345,
+          0.32003965973854065,
+          0.2457350343465805,
+          0.2858295738697052,
+          0.10501639544963837,
+          0.10553562641143799,
+          0.1457292139530182,
+          0.10929090529680252,
+          0.12138820439577103,
+          0.11828745901584625,
+          0.27150964736938477
+        ]
+      },
+      "reconstruction": {
+        "mae_0_1": 0.0069870902225375175,
+        "rmse_0_1": 0.022392363929888637,
+        "psnr_db": 32.998001123047544,
+        "png": "reconstruction.png",
+        "video": "reconstruction.mp4",
+        "layout": "input left; reconstruction right"
+      },
+      "directory": "trajectory_1000001"
+    },
+    {
+      "trajectory_seed": 1000002,
+      "trajectory_id": "excavator-arm-v1-00000000000f4242",
+      "future_path_length_px": 23.427410125732422,
+      "future_displacement_px": 13.092205047607422,
+      "metrics": {
+        "future_pixel_rmse": 0.02117963507771492,
+        "object_detection_fraction": 1.0,
+        "centroid_error_detected_px": 0.17546011022447297,
+        "centroid_error_penalized_px": 0.17546011022447297,
+        "final_centroid_error_penalized_px": 0.1351693570613861,
+        "final_frame_detected": true,
+        "future_frames": 12,
+        "estimated_centers": [
+          [
+            91.72654724121094,
+            80.19456481933594
+          ],
+          [
+            91.36177062988281,
+            77.39990234375
+          ],
+          [
+            90.72557830810547,
+            74.52188873291016
+          ],
+          [
+            90.14794158935547,
+            72.74272155761719
+          ],
+          [
+            89.15680694580078,
+            71.01569366455078
+          ],
+          [
+            88.112548828125,
+            70.24665069580078
+          ],
+          [
+            86.91284942626953,
+            69.78243255615234
+          ],
+          [
+            85.61803436279297,
+            69.53890228271484
+          ],
+          [
+            84.57170867919922,
+            70.339599609375
+          ],
+          [
+            83.68417358398438,
+            71.49081420898438
+          ],
+          [
+            82.75337219238281,
+            73.07254791259766
+          ],
+          [
+            81.79578399658203,
+            74.84567260742188
+          ]
+        ],
+        "per_frame_detected": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "per_frame_penalized_error_px": [
+          0.2528201937675476,
+          0.20082038640975952,
+          0.23438414931297302,
+          0.17283213138580322,
+          0.07265076041221619,
+          0.17941617965698242,
+          0.14985330402851105,
+          0.3191649913787842,
+          0.25159701704978943,
+          0.1291522979736328,
+          0.007660554256290197,
+          0.1351693570613861
+        ]
+      },
+      "reconstruction": {
+        "mae_0_1": 0.006923043169081211,
+        "rmse_0_1": 0.02216243118071992,
+        "psnr_db": 33.087651999398624,
+        "png": "reconstruction.png",
+        "video": "reconstruction.mp4",
+        "layout": "input left; reconstruction right"
+      },
+      "directory": "trajectory_1000002"
+    },
+    {
+      "trajectory_seed": 1000003,
+      "trajectory_id": "excavator-arm-v1-00000000000f4243",
+      "future_path_length_px": 24.794700622558594,
+      "future_displacement_px": 24.63563346862793,
+      "metrics": {
+        "future_pixel_rmse": 0.020972734317183495,
+        "object_detection_fraction": 1.0,
+        "centroid_error_detected_px": 0.08073039259761572,
+        "centroid_error_penalized_px": 0.08073039259761572,
+        "final_centroid_error_penalized_px": 0.13018856942653656,
+        "final_frame_detected": true,
+        "future_frames": 12,
+        "estimated_centers": [
+          [
+            83.98865509033203,
+            71.15060424804688
+          ],
+          [
+            83.17526245117188,
+            72.43447875976562
+          ],
+          [
+            82.24127197265625,
+            74.10067749023438
+          ],
+          [
+            81.38941955566406,
+            75.80452728271484
+          ],
+          [
+            80.43894958496094,
+            77.61153411865234
+          ],
+          [
+            79.5544204711914,
+            79.64395141601562
+          ],
+          [
+            78.64929962158203,
+            81.8425064086914
+          ],
+          [
+            77.64330291748047,
+            83.91574096679688
+          ],
+          [
+            76.64476776123047,
+            86.03498077392578
+          ],
+          [
+            75.82396697998047,
+            88.26463317871094
+          ],
+          [
+            74.85614776611328,
+            90.33698272705078
+          ],
+          [
+            73.83039855957031,
+            92.35737609863281
+          ]
+        ],
+        "per_frame_detected": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "per_frame_penalized_error_px": [
+          0.03752899914979935,
+          0.03633321821689606,
+          0.04200427606701851,
+          0.06040406972169876,
+          0.04940904676914215,
+          0.09289631992578506,
+          0.03246559202671051,
+          0.12563586235046387,
+          0.21094892919063568,
+          0.06828708946704865,
+          0.08266273885965347,
+          0.13018856942653656
+        ]
+      },
+      "reconstruction": {
+        "mae_0_1": 0.006678405217826366,
+        "rmse_0_1": 0.021044916260269372,
+        "psnr_db": 33.53705596023439,
+        "png": "reconstruction.png",
+        "video": "reconstruction.mp4",
+        "layout": "input left; reconstruction right"
+      },
+      "directory": "trajectory_1000003"
+    },
+    {
+      "trajectory_seed": 1000004,
+      "trajectory_id": "excavator-arm-v1-00000000000f4244",
+      "future_path_length_px": 18.358028411865234,
+      "future_displacement_px": 16.21384620666504,
+      "metrics": {
+        "future_pixel_rmse": 0.019917789846658707,
+        "object_detection_fraction": 1.0,
+        "centroid_error_detected_px": 0.23349637662371,
+        "centroid_error_penalized_px": 0.23349637662371,
+        "final_centroid_error_penalized_px": 0.22909274697303772,
+        "final_frame_detected": true,
+        "future_frames": 12,
+        "estimated_centers": [
+          [
+            73.03216552734375,
+            105.72298431396484
+          ],
+          [
+            73.81228637695312,
+            106.13628387451172
+          ],
+          [
+            74.83660125732422,
+            106.42174530029297
+          ],
+          [
+            75.87397003173828,
+            106.60650634765625
+          ],
+          [
+            77.19287109375,
+            106.26317596435547
+          ],
+          [
+            78.4374008178711,
+            105.85291290283203
+          ],
+          [
+            79.78689575195312,
+            105.25577545166016
+          ],
+          [
+            81.4444351196289,
+            104.62092590332031
+          ],
+          [
+            82.99776458740234,
+            102.99725341796875
+          ],
+          [
+            84.2010269165039,
+            101.6755142211914
+          ],
+          [
+            85.61896514892578,
+            99.74237823486328
+          ],
+          [
+            87.21891784667969,
+            98.43672180175781
+          ]
+        ],
+        "per_frame_detected": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "per_frame_penalized_error_px": [
+          0.14997918903827667,
+          0.28444063663482666,
+          0.2537248432636261,
+          0.1463990956544876,
+          0.20901024341583252,
+          0.22696678340435028,
+          0.2540031969547272,
+          0.12004780769348145,
+          0.2591191232204437,
+          0.30375176668167114,
+          0.3654210865497589,
+          0.22909274697303772
+        ]
+      },
+      "reconstruction": {
+        "mae_0_1": 0.006437710020691156,
+        "rmse_0_1": 0.02022959316784596,
+        "psnr_db": 33.88025702252378,
+        "png": "reconstruction.png",
+        "video": "reconstruction.mp4",
+        "layout": "input left; reconstruction right"
+      },
+      "directory": "trajectory_1000004"
+    },
+    {
+      "trajectory_seed": 1000005,
+      "trajectory_id": "excavator-arm-v1-00000000000f4245",
+      "future_path_length_px": 19.619895935058594,
+      "future_displacement_px": 18.966720581054688,
+      "metrics": {
+        "future_pixel_rmse": 0.021109603345394135,
+        "object_detection_fraction": 1.0,
+        "centroid_error_detected_px": 0.1982490662485361,
+        "centroid_error_penalized_px": 0.1982490662485361,
+        "final_centroid_error_penalized_px": 0.4160084128379822,
+        "final_frame_detected": true,
+        "future_frames": 12,
+        "estimated_centers": [
+          [
+            75.7620620727539,
+            88.49797058105469
+          ],
+          [
+            74.96878814697266,
+            90.67176055908203
+          ],
+          [
+            74.09425354003906,
+            92.17925262451172
+          ],
+          [
+            73.20492553710938,
+            93.88429260253906
+          ],
+          [
+            72.64771270751953,
+            95.48323059082031
+          ],
+          [
+            72.2576904296875,
+            97.15721893310547
+          ],
+          [
+            71.7237319946289,
+            98.95759582519531
+          ],
+          [
+            71.47090911865234,
+            100.32301330566406
+          ],
+          [
+            71.38610076904297,
+            101.83065795898438
+          ],
+          [
+            71.43279266357422,
+            103.0404052734375
+          ],
+          [
+            71.79439544677734,
+            104.17211151123047
+          ],
+          [
+            72.2586669921875,
+            104.70857238769531
+          ]
+        ],
+        "per_frame_detected": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "per_frame_penalized_error_px": [
+          0.12268063426017761,
+          0.23729541897773743,
+          0.16663622856140137,
+          0.18472528457641602,
+          0.278953492641449,
+          0.22580498456954956,
+          0.10387587547302246,
+          0.18523837625980377,
+          0.09715717285871506,
+          0.22305132448673248,
+          0.1375615894794464,
+          0.4160084128379822
+        ]
+      },
+      "reconstruction": {
+        "mae_0_1": 0.006695826072245836,
+        "rmse_0_1": 0.02148125433473825,
+        "psnr_db": 33.358807257633615,
+        "png": "reconstruction.png",
+        "video": "reconstruction.mp4",
+        "layout": "input left; reconstruction right"
+      },
+      "directory": "trajectory_1000005"
+    },
+    {
+      "trajectory_seed": 1000006,
+      "trajectory_id": "excavator-arm-v1-00000000000f4246",
+      "future_path_length_px": 32.9085807800293,
+      "future_displacement_px": 30.10894012451172,
+      "metrics": {
+        "future_pixel_rmse": 0.022374821826815605,
+        "object_detection_fraction": 1.0,
+        "centroid_error_detected_px": 0.2758197815467914,
+        "centroid_error_penalized_px": 0.2758197815467914,
+        "final_centroid_error_penalized_px": 0.3262248933315277,
+        "final_frame_detected": true,
+        "future_frames": 12,
+        "estimated_centers": [
+          [
+            76.3368148803711,
+            106.31965637207031
+          ],
+          [
+            77.91800689697266,
+            105.89757537841797
+          ],
+          [
+            79.72692108154297,
+            105.24974060058594
+          ],
+          [
+            81.86840057373047,
+            104.41844940185547
+          ],
+          [
+            83.961669921875,
+            102.16767883300781
+          ],
+          [
+            85.50858306884766,
+            100.09086608886719
+          ],
+          [
+            87.35145568847656,
+            97.25808715820312
+          ],
+          [
+            89.08055877685547,
+            94.7957763671875
+          ],
+          [
+            90.2784423828125,
+            91.37085723876953
+          ],
+          [
+            91.12300109863281,
+            88.36552429199219
+          ],
+          [
+            91.51041412353516,
+            84.86399841308594
+          ],
+          [
+            91.8109359741211,
+            82.13368225097656
+          ]
+        ],
+        "per_frame_detected": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "per_frame_penalized_error_px": [
+          0.33864906430244446,
+          0.35337644815444946,
+          0.3382394313812256,
+          0.2955624461174011,
+          0.22842809557914734,
+          0.27827373147010803,
+          0.32630857825279236,
+          0.15375588834285736,
+          0.21574874222278595,
+          0.11305252462625504,
+          0.3422175347805023,
+          0.3262248933315277
+        ]
+      },
+      "reconstruction": {
+        "mae_0_1": 0.006881353445351124,
+        "rmse_0_1": 0.0220102458863462,
+        "psnr_db": 33.14750211441523,
+        "png": "reconstruction.png",
+        "video": "reconstruction.mp4",
+        "layout": "input left; reconstruction right"
+      },
+      "directory": "trajectory_1000006"
+    },
+    {
+      "trajectory_seed": 1000007,
+      "trajectory_id": "excavator-arm-v1-00000000000f4247",
+      "future_path_length_px": 28.308971405029297,
+      "future_displacement_px": 27.765899658203125,
+      "metrics": {
+        "future_pixel_rmse": 0.022372696548700333,
+        "object_detection_fraction": 1.0,
+        "centroid_error_detected_px": 0.12672137562185526,
+        "centroid_error_penalized_px": 0.12672137562185526,
+        "final_centroid_error_penalized_px": 0.47377070784568787,
+        "final_frame_detected": true,
+        "future_frames": 12,
+        "estimated_centers": [
+          [
+            79.26021575927734,
+            80.31651306152344
+          ],
+          [
+            78.23565673828125,
+            82.85968017578125
+          ],
+          [
+            77.02064514160156,
+            85.4120101928711
+          ],
+          [
+            75.72554779052734,
+            88.09822845458984
+          ],
+          [
+            74.70128631591797,
+            90.4327621459961
+          ],
+          [
+            73.78945922851562,
+            92.99633026123047
+          ],
+          [
+            72.8819580078125,
+            95.28804779052734
+          ],
+          [
+            72.14411163330078,
+            97.14559173583984
+          ],
+          [
+            71.73139190673828,
+            99.27130126953125
+          ],
+          [
+            71.45831298828125,
+            101.1522216796875
+          ],
+          [
+            71.38609313964844,
+            102.90530395507812
+          ],
+          [
+            71.82146453857422,
+            103.8930435180664
+          ]
+        ],
+        "per_frame_detected": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "per_frame_penalized_error_px": [
+          0.09890462458133698,
+          0.08891747891902924,
+          0.06444503366947174,
+          0.05071094632148743,
+          0.046916473656892776,
+          0.10347771644592285,
+          0.10666435211896896,
+          0.21423225104808807,
+          0.1366131603717804,
+          0.0321587473154068,
+          0.10384501516819,
+          0.47377070784568787
+        ]
+      },
+      "reconstruction": {
+        "mae_0_1": 0.006811653729528189,
+        "rmse_0_1": 0.022078134434531625,
+        "psnr_db": 33.12075253101081,
+        "png": "reconstruction.png",
+        "video": "reconstruction.mp4",
+        "layout": "input left; reconstruction right"
+      },
+      "directory": "trajectory_1000007"
+    }
+  ],
+  "decoding": {
+    "seconds": 3.247389033436775,
+    "peak_allocated_bytes": 446410240,
+    "peak_reserved_bytes": 574619648
+  },
+  "seconds": 4.754177873022854,
+  "runtime": {
+    "torch": "2.6.0+cu124",
+    "python": "3.10.12",
+    "device": "cuda:0",
+    "gpu": "NVIDIA A40",
+    "gpu_total_bytes": 51043958784,
+    "cuda": "12.4"
+  },
+  "source": {
+    "scripts/chapter_04_check_reconstruction.py": "588d068936fd808fa4747183ddb4b4af6d36fc7b9515afc92f9a1209382f1ab8",
+    "latent_cache.py": "84c7621bbbdbd2e162fcc9df657fc8088539c650a80121b6faa06ae48fc53c00",
+    "small_world_evaluation.py": "b88f6f130329fa98ae7fa3622abbdce81e76a89648e9bb502f2357d5999039a8",
+    "toy_video.py": "8925ff644c2b668d2cb556bf8e3391684fcc3de86c6c5f913b7acb457228ac61"
+  },
+  "scope": "Frozen-VAE reconstruction of ground-truth cached latents. Future-only pixel and bucket-center metrics establish the compression and detector reference. Paired media show ground truth on the left and VAE reconstruction on the right. Future path length and displacement describe bucket motion from the last observed frame."
+}
