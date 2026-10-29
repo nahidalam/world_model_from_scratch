@@ -152,6 +152,7 @@ DreamerV4 (2025) trains an agent inside a world model learned from offline video
 
 *Figure: DreamerV4 generative simulation loop.*
 
+Explore this DreamerV4 section in the [hands-on Colab notebook](../../notebooks/chapter_10/dreamer_v4_hands_on_executable.ipynb), with executable examples and small experiments.
 
 ### 1. Architecture Overview
 
