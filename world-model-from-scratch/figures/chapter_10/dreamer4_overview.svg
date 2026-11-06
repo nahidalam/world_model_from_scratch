@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="292" viewBox="0 0 1080 292" role="img" aria-labelledby="title desc">
+  <title id="title">DreamerV4 architecture overview</title>
+  <desc id="desc">Offline video and action data pass through a causal video tokenizer into an action-conditioned generative transformer. Four shortcut steps produce each imagined next frame representation. A task-conditioned policy, reward model, and value model learn from generated trajectories, with policy actions fed back to the transformer.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+      <path d="M0 0L9 4.5L0 9Z" fill="#52677f"/>
+    </marker>
+  </defs>
+  <rect width="1080" height="292" rx="16" fill="#f7f9fc"/>
+  <g font-family="system-ui, -apple-system, sans-serif" fill="#14243b">
+    <text x="36" y="43" font-size="24" font-weight="650">DreamerV4: learn inside a generative simulator</text>
+
+    <rect x="36" y="82" width="171" height="111" rx="12" fill="#e5f0fd" stroke="#2677d4" stroke-width="2"/>
+    <text x="121.5" y="121" text-anchor="middle" font-size="18" font-weight="650">Offline data</text>
+    <text x="121.5" y="151" text-anchor="middle" font-size="14" fill="#46566b">videos, some actions</text>
+
+    <rect x="244" y="82" width="171" height="111" rx="12" fill="#dff4f4" stroke="#238a8f" stroke-width="2"/>
+    <text x="329.5" y="121" text-anchor="middle" font-size="18" font-weight="650">Causal</text>
+    <text x="329.5" y="146" text-anchor="middle" font-size="18" font-weight="650">tokenizer</text>
+    <text x="329.5" y="173" text-anchor="middle" font-size="14" fill="#46566b">continuous latents</text>
+
+    <rect x="452" y="82" width="171" height="111" rx="12" fill="#f0eafd" stroke="#7654c4" stroke-width="2"/>
+    <text x="537.5" y="121" text-anchor="middle" font-size="18" font-weight="650">Generative</text>
+    <text x="537.5" y="146" text-anchor="middle" font-size="18" font-weight="650">transformer</text>
+    <text x="537.5" y="173" text-anchor="middle" font-size="14" fill="#46566b">conditioned on action</text>
+
+    <rect x="660" y="82" width="171" height="111" rx="12" fill="#fff1dd" stroke="#c8791a" stroke-width="2"/>
+    <text x="745.5" y="121" text-anchor="middle" font-size="18" font-weight="650">Imagined</text>
+    <text x="745.5" y="146" text-anchor="middle" font-size="18" font-weight="650">trajectories</text>
+    <text x="745.5" y="173" text-anchor="middle" font-size="14" fill="#46566b">4 steps per frame</text>
+
+    <rect x="868" y="82" width="176" height="111" rx="12" fill="#e8f5ec" stroke="#328554" stroke-width="2"/>
+    <text x="956" y="121" text-anchor="middle" font-size="18" font-weight="650">Agent learning</text>
+    <text x="956" y="151" text-anchor="middle" font-size="14" fill="#46566b">policy, reward, value</text>
+
+    <path d="M207 137H235M415 137H443M623 137H651M831 137H859" stroke="#52677f" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+    <path d="M956 193V242H537V202" stroke="#52677f" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+    <text x="746" y="263" text-anchor="middle" font-size="14" fill="#46566b">next policy action</text>
+  </g>
+</svg>

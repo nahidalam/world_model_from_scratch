@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="480" viewBox="0 0 800 480" role="img" aria-labelledby="title desc">
+  <title id="title">DreamerV1 to DreamerV3 training loop</title>
+  <desc id="desc">DreamerV1, V2, and V3 share a clockwise training cycle: collect real experience, train the RSSM world model on real data, imagine latent trajectories, train the actor and critic on imagined data, then collect more real experience.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#52677f"/>
+    </marker>
+  </defs>
+  <rect width="800" height="480" rx="16" fill="#f7f9fc"/>
+  <g font-family="system-ui, -apple-system, sans-serif" fill="#14243b">
+    <text x="32" y="43" font-size="24" font-weight="650">DreamerV1 to DreamerV3 training loop</text>
+
+    <path d="M520 130C595 130 670 165 670 205" stroke="#52677f" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+    <path d="M670 295C670 350 590 390 530 390" stroke="#52677f" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+    <path d="M280 390C205 390 130 350 130 310" stroke="#52677f" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+    <path d="M130 215C130 165 205 130 270 130" stroke="#52677f" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+
+    <rect x="280" y="85" width="240" height="90" rx="12" fill="#e5f0fd" stroke="#2677d4" stroke-width="2"/>
+    <text x="400" y="121" text-anchor="middle" font-size="18" font-weight="650">Collect real experience</text>
+    <text x="400" y="150" text-anchor="middle" font-size="14" fill="#46566b">observations, actions, rewards</text>
+
+    <rect x="550" y="215" width="235" height="80" rx="12" fill="#f0eafd" stroke="#7654c4" stroke-width="2"/>
+    <text x="667.5" y="248" text-anchor="middle" font-size="18" font-weight="650">Train world model</text>
+    <text x="667.5" y="275" text-anchor="middle" font-size="14" fill="#46566b">RSSM learns from real data</text>
+
+    <rect x="280" y="345" width="240" height="90" rx="12" fill="#fff1dd" stroke="#c8791a" stroke-width="2"/>
+    <text x="400" y="380" text-anchor="middle" font-size="18" font-weight="650">Imagine trajectories</text>
+    <text x="400" y="409" text-anchor="middle" font-size="14" fill="#46566b">latent states, rewards</text>
+
+    <rect x="15" y="215" width="235" height="80" rx="12" fill="#e8f5ec" stroke="#328554" stroke-width="2"/>
+    <text x="132.5" y="248" text-anchor="middle" font-size="18" font-weight="650">Train actor, critic</text>
+    <text x="132.5" y="275" text-anchor="middle" font-size="14" fill="#46566b">learn from imagined data</text>
+  </g>
+</svg>

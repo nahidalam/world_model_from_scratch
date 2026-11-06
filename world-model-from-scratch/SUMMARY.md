@@ -25,3 +25,4 @@
   * [3.5 Evaluate with PAI-Bench-G](chapters/chapter_03/05-evaluate-with-pai-bench.md)
   * [3.6 Check the Scores Against the Videos](chapters/chapter_03/06-interpret-results.md)
   * [3.7 Chapter Project: Build an Evaluation Report](chapters/chapter_03/07-build-an-evaluation-report.md)
+* [10.14 A Primer on the Dreamer Series Model](chapters/chapter_10/14-dreamer-series-primer.md)
