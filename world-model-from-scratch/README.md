@@ -2,10 +2,9 @@
 
 *Building Modern World Models from First Principles*
 
-**[View the source on GitHub](https://github.com/nahidalam/world_model_from_scratch)**
-
-This book is a hands-on guide for builders who want to understand, train,
-evaluate, customize, and deploy world models.
+This book is a hands-on guide to world-model foundations, running a pretrained
+model, evaluating results, building a small model, and exploring modern
+architectures.
 
 ## Chapters
 
